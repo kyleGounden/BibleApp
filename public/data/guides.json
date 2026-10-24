@@ -1,0 +1,1368 @@
+{
+  "people": [
+    {
+      "id": "moses",
+      "name": "Moses",
+      "also": "drawn from the water",
+      "origin": "egypt",
+      "about": "Moses was born to Hebrew parents in Egypt, hidden, and raised in Pharaoh's house. He fled after he killed an Egyptian, and kept sheep near Horeb until the Lord sent him back. He stood before Pharaoh, led Israel out, received the law at Sinai, and bore the people through the wilderness. He died on Mount Nebo in sight of the land, and the book says the Lord buried him.",
+      "verses": ["EXO.2.10", "EXO.3.10", "DEU.34.5", "DEU.34.10"]
+    },
+    {
+      "id": "joshua",
+      "name": "Joshua",
+      "also": "son of Nun",
+      "about": "Joshua was Moses' servant and one of the twelve spies who believed the Lord could give the land. Moses laid hands on him, and the Lord charged him to be strong and to take Israel across the Jordan. He led the conquest, allotted the inheritance, and at the end called the people to choose whom they would serve. The book records his death, so a later hand closed it.",
+      "verses": ["EXO.17.9", "NUM.14.6", "JOS.1.1", "JOS.24.15", "JOS.24.29"]
+    },
+    {
+      "id": "david",
+      "name": "David",
+      "also": "son of Jesse",
+      "origin": "bethlehem",
+      "about": "David was the youngest son of Jesse of Bethlehem, a shepherd anointed king while Saul still reigned. He killed Goliath, fled Saul, and at last reigned in Hebron and then Jerusalem. He brought up the ark, received the promise of a house, and fell grievously with Bathsheba. Many psalms carry his name, in trouble and in praise. He is the king the later books look back to, and the line from which the Christ is named.",
+      "verses": ["1SA.16.13", "1SA.17.50", "2SA.5.3", "2SA.7.12", "PSA.23.1"]
+    },
+    {
+      "id": "solomon",
+      "name": "Solomon",
+      "also": "son of David",
+      "origin": "jerusalem",
+      "about": "Solomon was the son of David and Bathsheba. He asked for wisdom, built the temple, and his fame and his wealth spread. He also loved many foreign women, and his heart turned after their gods. Proverbs gathers sayings in his name, the Song is titled as his, and Ecclesiastes speaks as a son of David, king in Jerusalem, looking back on a life of building and pleasure.",
+      "verses": ["1KI.3.9", "1KI.6.1", "1KI.11.4", "PRO.1.1"]
+    },
+    {
+      "id": "isaiah",
+      "name": "Isaiah",
+      "also": "son of Amoz",
+      "origin": "jerusalem",
+      "about": "Isaiah prophesied in Judah in the days of Uzziah, Jotham, Ahaz, and Hezekiah. He saw the Lord high and lifted up, and was sent to a people who would hear and not understand. He faced the Assyrian threat, confronted Ahaz, and stood with Hezekiah when Sennacherib's army came. The book carries his vision on past his own hour, to comfort and to a servant and to a restored city. It presents that whole vision under his name.",
+      "verses": ["ISA.1.1", "ISA.6.1", "ISA.6.8", "ISA.37.2"]
+    },
+    {
+      "id": "jeremiah",
+      "name": "Jeremiah",
+      "also": "son of Hilkiah",
+      "about": "Jeremiah was a priest of Anathoth, called as a young man in the days of Josiah, and he prophesied until Jerusalem fell. He was beaten, put in the stocks, and lowered into a cistern. Baruch wrote his words at his dictation. He pleaded with the people to turn, and he also told them to submit to Babylon when judgment had been fixed. After the fall he was taken toward Egypt. The church has long read Lamentations as his as well. The book of Lamentations itself does not sign his name.",
+      "verses": ["JER.1.1", "JER.1.6", "JER.20.2", "JER.36.4", "JER.39.1"]
+    },
+    {
+      "id": "ezekiel",
+      "name": "Ezekiel",
+      "also": "son of Buzi, a priest",
+      "origin": "babylon",
+      "about": "Ezekiel was a priest taken into exile with the captives by the river Chebar. There the heavens were opened and he saw visions of God. He was made a watchman. He acted out the siege, the exile, and the death of the city. He saw the glory leave the temple, and later a temple measured, and the glory returning. He spoke to exiles who still hoped for a quick return, and then to exiles who had heard that the city had fallen.",
+      "verses": ["EZK.1.1", "EZK.1.3", "EZK.3.17", "EZK.10.18"]
+    },
+    {
+      "id": "daniel",
+      "name": "Daniel",
+      "about": "Daniel was taken to Babylon as a youth of the nobility, trained for the king's service, and resolved not to defile himself. He served through the courts of Babylon and into the Persian rule. He read the writing on the wall, and he was cast into the lions' den. The book tells his story in the third person, and then records visions in his own voice. He does not add a line that says he published the book.",
+      "verses": ["DAN.1.6", "DAN.1.8", "DAN.5.17", "DAN.6.16", "DAN.8.1"]
+    },
+    {
+      "id": "hosea",
+      "name": "Hosea",
+      "also": "son of Beeri",
+      "about": "Hosea prophesied to the northern kingdom in the days of Uzziah, Jotham, Ahaz, and Hezekiah of Judah, and of Jeroboam son of Joash of Israel. The Lord told him to take a wife who would not be faithful, and to name the children as signs of judgment. His own house became the picture of the Lord's love for a people who went after other gods.",
+      "verses": ["HOS.1.1", "HOS.1.2", "HOS.3.1"]
+    },
+    {
+      "id": "joel",
+      "name": "Joel",
+      "also": "son of Pethuel",
+      "about": "Joel is named as the son of Pethuel, and the book tells almost nothing else of his life. He speaks to elders, priests, and the people of the land when locusts have stripped the fields. He calls a fast, and he speaks of the day of the Lord, of the Spirit poured out, and of the nations gathered.",
+      "verses": ["JOL.1.1", "JOL.1.14", "JOL.2.28"]
+    },
+    {
+      "id": "amos",
+      "name": "Amos",
+      "about": "Amos was a herdsman of Tekoa, and a dresser of sycamore figs, not a prophet by trade and not a prophet's son. The Lord took him from the flock and sent him to the northern kingdom in the days of Uzziah of Judah and Jeroboam of Israel. He preached at Bethel until Amaziah the priest told him to flee to Judah. He would not. The luxury of Samaria and the selling of the poor are the sins he names.",
+      "verses": ["AMO.1.1", "AMO.7.14", "AMO.7.15"]
+    },
+    {
+      "id": "obadiah",
+      "name": "Obadiah",
+      "about": "The book names Obadiah and says nothing of his father, his town, or his king. He speaks an oracle against Edom for violence done to his brother Jacob in the day of Jerusalem's trouble. Several men in Scripture are called Obadiah. The book does not say which, if any, this is.",
+      "verses": ["OBA.1.1"]
+    },
+    {
+      "id": "micah",
+      "name": "Micah",
+      "also": "of Moresheth",
+      "about": "Micah of Moresheth prophesied in the days of Jotham, Ahaz, and Hezekiah, the same years as Isaiah. He spoke against Samaria and Jerusalem, against rulers who tore the people, and against prophets who cried peace. He also spoke of a ruler to come from Bethlehem. Jeremiah's hearers still remembered that Hezekiah had feared Micah's word.",
+      "verses": ["MIC.1.1", "MIC.5.2", "JER.26.18"]
+    },
+    {
+      "id": "nahum",
+      "name": "Nahum",
+      "also": "the Elkoshite",
+      "about": "Nahum is called the Elkoshite. The book does not say where Elkosh was, or under which king he spoke. His burden is Nineveh. Jonah had once seen that city repent. Nahum sees the Lord's patience ended, and the lion's den of Assyria about to be emptied.",
+      "verses": ["NAM.1.1", "NAM.1.3"]
+    },
+    {
+      "id": "habakkuk",
+      "name": "Habakkuk",
+      "about": "Habakkuk is named, and not described. He stands on a watchtower and argues with the Lord. Violence in Judah has gone unanswered, and the answer he receives is harder than the question: the Chaldeans are raised up. He asks how the Lord can use a cruel nation, and he ends in a prayer, waiting for trouble he can already see coming.",
+      "verses": ["HAB.1.1", "HAB.1.2", "HAB.2.1", "HAB.3.1"]
+    },
+    {
+      "id": "zephaniah",
+      "name": "Zephaniah",
+      "also": "son of Cushi",
+      "about": "Zephaniah is traced back four generations to Hezekiah, and he prophesied in the days of Josiah. He speaks before or amid Josiah's reforms, against the remnant of Baal and against officials who wear foreign clothes. The day of the Lord is near, he says, and after the judgment a remnant is left, and the Lord sings over them.",
+      "verses": ["ZEP.1.1", "ZEP.1.14", "ZEP.3.17"]
+    },
+    {
+      "id": "haggai",
+      "name": "Haggai",
+      "about": "Haggai prophesied in the second year of Darius, to Zerubbabel and to Joshua the high priest, when the returned people had left the Lord's house unfinished and were building their own. His words are dated by the month and the day. Within weeks the people set their hands to the work again.",
+      "verses": ["HAG.1.1", "HAG.1.14", "EZR.5.1"]
+    },
+    {
+      "id": "zechariah",
+      "name": "Zechariah",
+      "also": "son of Berechiah",
+      "about": "Zechariah, son of Berechiah, son of Iddo, began in the same year as Haggai, the second year of Darius. He was among the returned exiles. He saw night visions: horses, a measuring line, a lampstand, and the high priest in filthy clothes. He spoke of a king riding into Zion, and of a shepherd, and of a day when the Lord stands on the Mount of Olives.",
+      "verses": ["ZEC.1.1", "ZEC.1.7", "ZEC.9.9", "EZR.5.1"]
+    },
+    {
+      "id": "malachi",
+      "name": "Malachi",
+      "about": "The book opens with 'the burden of the word of the Lord to Israel by Malachi.' The name means 'my messenger,' and the book does not add a father's name, a town, or a king. He speaks to a people after the return, when the priests despise the Lord's table, the people rob God, and they say it is vain to serve him. He looks for a messenger to prepare the way, and for the day that burns like an oven.",
+      "verses": ["MAL.1.1", "MAL.1.6", "MAL.3.1"]
+    },
+    {
+      "id": "ezra",
+      "name": "Ezra",
+      "also": "a scribe of the law",
+      "about": "Ezra was a priest and a scribe skilled in the law of Moses. He came up from Babylon in the reign of Artaxerxes, with the king's leave to teach the law and to carry silver for the house of God. The book speaks of him in the third person, and from chapter 7 also in the first. He read the law to the people in Nehemiah's day, and the people wept, and then they kept the feast.",
+      "verses": ["EZR.7.6", "EZR.7.10", "NEH.8.1", "NEH.8.9"]
+    },
+    {
+      "id": "nehemiah",
+      "name": "Nehemiah",
+      "also": "the cupbearer",
+      "origin": "shushan",
+      "about": "Nehemiah was cupbearer to Artaxerxes in Shushan. When he heard that Jerusalem's wall was broken, he wept, fasted, and asked leave to go. He rode the circuit of the ruined wall by night, armed the builders, and the wall was finished in fifty-two days. He contended with nobles who exacted from their brothers, and he set the city in order. The book is his own account, written as 'I.'",
+      "verses": ["NEH.1.1", "NEH.1.11", "NEH.2.12", "NEH.6.15"]
+    },
+    {
+      "id": "matthew",
+      "name": "Matthew",
+      "also": "Levi, the tax collector",
+      "about": "Matthew, also called Levi, was a tax collector sitting at the receipt of custom when Jesus said, 'Follow me.' He left the booth and made Jesus a feast in his house. The Gospel does not sign his name. From early days the church has received the book as his, and has read it as the account that sets Jesus in the line of David and Abraham, for hearers who knew the Scriptures of Israel.",
+      "verses": ["MAT.9.9", "MAT.10.3", "MRK.2.14"]
+    },
+    {
+      "id": "mark",
+      "name": "Mark",
+      "also": "John Mark",
+      "about": "Mark, also called John, had a house in Jerusalem where the church prayed. He went with Barnabas and Paul as far as Perga, then left them, and later Barnabas took him to Cyprus. Paul later calls him useful. Peter calls him his son. The Gospel does not sign a name. From the second century the church has received it as Mark's, and has often connected its plain, swift story with Peter's preaching.",
+      "verses": ["ACT.12.12", "ACT.12.25", "ACT.13.13", "ACT.15.37", "1PE.5.13"]
+    },
+    {
+      "id": "luke",
+      "name": "Luke",
+      "also": "the physician",
+      "about": "Luke is named by Paul as the beloved physician who stayed with him. The Gospel and Acts do not sign that name. The Gospel opens in the first person to Theophilus, and Acts continues the same work. In the later chapters of Acts the story says 'we,' when the writer is on the ship and on the road with Paul. The church has received both books as Luke's.",
+      "verses": ["LUK.1.1", "LUK.1.3", "COL.4.14", "ACT.16.10", "2TI.4.11"]
+    },
+    {
+      "id": "john",
+      "name": "John",
+      "also": "the son of Zebedee",
+      "origin": "galilee",
+      "about": "John was a son of Zebedee and a fisherman, called from the boat with his brother James. He was one of the three who saw the transfiguration and the agony in the garden. The Gospel does not sign a name. It points to the disciple Jesus loved as the witness behind it. The church has received that disciple as John. Two short letters sign only 'the elder.' Revelation names John, a brother and companion in tribulation, on the island of Patmos, writing to the seven churches of Asia.",
+      "verses": ["MAT.4.21", "JHN.21.20", "JHN.21.24", "REV.1.1", "REV.1.9"]
+    },
+    {
+      "id": "paul",
+      "name": "Paul",
+      "also": "Saul of Tarsus",
+      "origin": "tarsus",
+      "about": "Paul was Saul of Tarsus, a Pharisee, taught at the feet of Gamaliel, and a persecutor of the church. On the road to Damascus the Lord stopped him. He was baptized, sent out from Antioch with Barnabas, and then walked the cities of Asia, Macedonia, and Greece, planting churches and writing to them. He was beaten, stoned, shipwrecked, and held in custody. His letters name him. In the later ones he is in bonds, and he asks for prayer, for a cloak, and for the scrolls.",
+      "verses": ["ACT.9.1", "ACT.9.4", "ACT.22.3", "PHP.3.5", "2TI.4.6", "2TI.4.13"]
+    },
+    {
+      "id": "james",
+      "name": "James",
+      "also": "the Lord's brother",
+      "about": "The letter names 'James, a servant of God and of the Lord Jesus Christ,' and does not say which James. The New Testament knows James the son of Zebedee, James the son of Alphaeus, and James the Lord's brother, who led the church in Jerusalem. The church has long read this letter as that James of Jerusalem. He speaks to the twelve tribes in the dispersion, about faith that works, the tongue, and the rich who oppress the poor.",
+      "verses": ["JAS.1.1", "GAL.1.19", "ACT.15.13"]
+    },
+    {
+      "id": "peter",
+      "name": "Peter",
+      "also": "Simon, Cephas",
+      "origin": "bethsaida",
+      "about": "Peter was Simon, a fisherman of Bethsaida, brother of Andrew. Jesus named him Peter. He confessed Jesus as the Christ, tried to turn him from the cross, denied him, and was restored. In Acts he preached at Pentecost, was imprisoned, and opened the door to Cornelius. The first letter names Peter, an apostle, writing to exiles of the dispersion. The second letter names Simon Peter again, shortly before his death, which the Lord had shown him.",
+      "verses": ["MAT.4.18", "MAT.16.16", "LUK.22.61", "JHN.21.17", "1PE.1.1", "2PE.1.14"]
+    },
+    {
+      "id": "jude",
+      "name": "Jude",
+      "also": "brother of James",
+      "about": "The letter names Jude, a servant of Jesus Christ and brother of James. It does not tell his trade or his town. The church has read him as the brother of James of Jerusalem, and so of the Lord, one of the brothers who did not believe at first and who later traveled with their wives. He had meant to write about the common salvation, and instead wrote to urge the saints to contend for the faith.",
+      "verses": ["JUD.1.1", "JUD.1.3", "MAT.13.55"]
+    }
+  ],
+  "books": [
+    {
+      "id": "GEN",
+      "line": "Moses · Israel before the land",
+      "writer": { "person": "moses", "how": "traditional", "verse": "LUK.24.44", "note": "Genesis does not sign a name. Scripture speaks of the law, of which this is the first book, as Moses'." },
+      "audience": { "who": "Israel in the wilderness", "where": "moab", "when": "Before they crossed the Jordan. The book does not date itself by a later century.", "situation": "A people newly formed, about to enter a land promised to fathers they had never seen. They needed to know who made the world, who called Abraham, and how they came to Egypt." },
+      "when": "In the wilderness years, with the rest of the law.",
+      "purpose": "To tell how the Lord made the world, chose Abraham, and brought Israel down to Egypt, so the people would know whose land they were entering.",
+      "outline": [
+        { "label": "Creation, fall, and the nations", "from": 1, "to": 11 },
+        { "label": "Abraham", "from": 12, "to": 25 },
+        { "label": "Isaac and Jacob", "from": 26, "to": 36 },
+        { "label": "Joseph, and Israel in Egypt", "from": 37, "to": 50 }
+      ]
+    },
+    {
+      "id": "EXO",
+      "line": "Moses · Israel, newly freed",
+      "writer": { "person": "moses", "how": "named", "verse": "EXO.17.14", "note": "The Lord tells Moses to write, and Moses writes the words of the covenant. The book is the account of that deliverance and that law." },
+      "audience": { "who": "Israel at Sinai, and their children", "where": "sinai", "when": "In the year after they left Egypt.", "situation": "A nation of slaves standing at a mountain, bound now by covenant, with a tabernacle to build and a wilderness still ahead." },
+      "writtenFrom": "sinai",
+      "when": "During the wilderness years.",
+      "purpose": "To record how the Lord brought Israel out of Egypt, cut a covenant at Sinai, and dwelt among them in the tabernacle.",
+      "outline": [
+        { "label": "Egypt and the exodus", "from": 1, "to": 15 },
+        { "label": "From the sea to Sinai", "from": 16, "to": 18 },
+        { "label": "The covenant", "from": 19, "to": 24 },
+        { "label": "The tabernacle", "from": 25, "to": 40 }
+      ]
+    },
+    {
+      "id": "LEV",
+      "line": "Moses · Israel at the tent",
+      "writer": { "person": "moses", "how": "named", "verse": "LEV.1.1", "note": "The book is what the Lord spoke to Moses from the tent of meeting. Again and again it says, the Lord spoke to Moses." },
+      "audience": { "who": "Israel camped at Sinai, priests and people", "where": "sinai", "when": "In the year at Sinai, between the raising of the tabernacle and the departure in Numbers.", "situation": "The glory had filled the tent. The people needed to know how to draw near: offerings, priests, what is clean, the Day of Atonement, and a holy life in the camp." },
+      "writtenFrom": "sinai",
+      "when": "At Sinai, in that first year.",
+      "purpose": "To teach a holy people how to live with a holy God in their midst.",
+      "outline": [
+        { "label": "Offerings", "from": 1, "to": 7 },
+        { "label": "The priests begin", "from": 8, "to": 10 },
+        { "label": "Clean and unclean, and the Day", "from": 11, "to": 16 },
+        { "label": "A holy life", "from": 17, "to": 27 }
+      ]
+    },
+    {
+      "id": "NUM",
+      "line": "Moses · Israel in the wilderness",
+      "writer": { "person": "moses", "how": "named", "verse": "NUM.33.2", "note": "Moses wrote their goings out by the commandment of the Lord. The book numbers the camp and tells the years between Sinai and the plains of Moab." },
+      "audience": { "who": "The camp of Israel, and the generation that would enter", "where": "moab", "when": "From the second year after Egypt to the fortieth.", "situation": "The first generation refused the land and died in the wilderness. Their children are numbered again on the plains of Moab, within sight of Canaan." },
+      "when": "Across the forty years, closed on the plains of Moab.",
+      "purpose": "To show how the Lord led, judged, and kept a people between Sinai and the edge of the land.",
+      "outline": [
+        { "label": "The camp at Sinai", "from": 1, "to": 10 },
+        { "label": "Rebellion in the wilderness", "from": 11, "to": 19 },
+        { "label": "From Kadesh toward Moab", "from": 20, "to": 25 },
+        { "label": "The new generation", "from": 26, "to": 36 }
+      ]
+    },
+    {
+      "id": "DEU",
+      "line": "Moses · Israel on the plains of Moab",
+      "writer": { "person": "moses", "how": "named", "verse": "DEU.1.1", "note": "These are the words Moses spoke beyond the Jordan. He wrote the law and gave it to the priests. The last chapter records his death, so another hand closed the book." },
+      "audience": { "who": "Israel on the plains of Moab, the generation about to cross", "where": "moab", "when": "At the end of the forty years, just before Moses' death.", "situation": "Their parents had heard the law at Sinai and had died. These sons and daughters must hear it again, choose life, and go in without Moses." },
+      "writtenFrom": "moab",
+      "when": "At the end of the wilderness years.",
+      "purpose": "To set the covenant before the new generation so they will love the Lord and live in the land.",
+      "outline": [
+        { "label": "What the road has been", "from": 1, "to": 4 },
+        { "label": "The law preached", "from": 5, "to": 26 },
+        { "label": "Blessing and curse", "from": 27, "to": 30 },
+        { "label": "Moses' last words and death", "from": 31, "to": 34 }
+      ]
+    },
+    {
+      "id": "JOS",
+      "line": "Joshua · Israel taking the land",
+      "writer": { "person": "joshua", "how": "traditional", "verse": "JOS.24.26", "note": "Joshua wrote words in the book of the law of God. The narrative of the conquest has long been received as his. It records his death, so it was finished by another hand." },
+      "audience": { "who": "Israel settled in the land", "where": "canaan", "when": "In the generation of the conquest, and for those who came after.", "situation": "The land was being taken and then allotted. The people needed the story of how the Lord gave it, and the warning Joshua left them." },
+      "when": "In Joshua's lifetime, closed after his death.",
+      "purpose": "To record how the Lord gave Israel the land, and to bind them to serve him in it.",
+      "outline": [
+        { "label": "Across the Jordan", "from": 1, "to": 5 },
+        { "label": "The land taken", "from": 6, "to": 12 },
+        { "label": "The land allotted", "from": 13, "to": 21 },
+        { "label": "The covenant at Shechem", "from": 22, "to": 24 }
+      ]
+    },
+    {
+      "id": "JDG",
+      "line": "Unnamed · Israel before the kings",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It looks back on the days before a king in Israel, and it tells the pattern of those years." },
+      "audience": { "who": "Israel looking back on the days before the throne", "where": "canaan", "when": "The book itself gives no date. It ends in the days when there was no king.", "situation": "A people who had the land and kept turning to other gods. Deliverers rose and died, and each time the land grew darker." },
+      "when": "After the judges, looking back. The book does not name the year.",
+      "purpose": "To show the cycle of sin, oppression, and rescue, and what the land became when everyone did what was right in his own eyes.",
+      "outline": [
+        { "label": "The pattern begins", "from": 1, "to": 2 },
+        { "label": "The judges", "from": 3, "to": 16 },
+        { "label": "No king in Israel", "from": 17, "to": 21 }
+      ]
+    },
+    {
+      "id": "RUT",
+      "line": "Unnamed · the days of the judges",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It is set in the days when the judges ruled, and it ends with the line of David." },
+      "audience": { "who": "Israel, in or after David's house", "where": "bethlehem", "when": "The story is in the days of the judges. The genealogy runs on to David, so the book was finished no earlier than his day.", "situation": "Famine, a foreign widow, and a kinsman in Bethlehem. The hearers are people who know David's name and are shown the loyalty that lay behind it." },
+      "when": "Not earlier than David's day. The book does not say how much later.",
+      "purpose": "To tell how the Lord kept a family, and how Ruth the Moabitess became the great-grandmother of David.",
+      "outline": [
+        { "label": "Naomi and Ruth return", "from": 1, "to": 1 },
+        { "label": "The field and the threshing floor", "from": 2, "to": 3 },
+        { "label": "The kinsman redeemer", "from": 4, "to": 4 }
+      ]
+    },
+    {
+      "id": "1SA",
+      "line": "Unnamed · from Samuel to the death of Saul",
+      "writer": { "how": "unnamed", "verse": "1CH.29.29", "note": "The book names no writer. A later book points to the acts of Samuel, Nathan, and Gad. Samuel dies before the story ends, so he did not write it all." },
+      "audience": { "who": "Israel under the early kings, and after", "where": "canaan", "when": "The events run from Hannah to the death of Saul. The writing looks back on them.", "situation": "The priesthood at Shiloh had failed. The people asked for a king. Saul was given, and rejected, and David was anointed while Saul still hunted him." },
+      "when": "After Samuel's death. The book does not name its year.",
+      "purpose": "To tell how the Lord gave Israel a king, rejected Saul, and raised up David.",
+      "outline": [
+        { "label": "Samuel", "from": 1, "to": 7 },
+        { "label": "Saul made king", "from": 8, "to": 15 },
+        { "label": "David anointed, Saul falls", "from": 16, "to": 31 }
+      ]
+    },
+    {
+      "id": "2SA",
+      "line": "Unnamed · the reign of David",
+      "writer": { "how": "unnamed", "verse": "1CH.29.29", "note": "The book names no writer. It continues the story of David. Chronicles points to the records of Samuel, Nathan, and Gad." },
+      "audience": { "who": "Israel remembering David's throne", "where": "jerusalem", "when": "The events are David's reign. The writing looks back.", "situation": "David reigns, first in Hebron and then in Jerusalem. The ark comes up. The promise of a house is given. Then his own house breaks, through Bathsheba, Amnon, and Absalom." },
+      "when": "After David's reign. The book does not name its year.",
+      "purpose": "To tell David's reign in its glory and its fracture, and the promise the Lord made to his house.",
+      "outline": [
+        { "label": "David established", "from": 1, "to": 10 },
+        { "label": "The house troubled", "from": 11, "to": 20 },
+        { "label": "Last accounts", "from": 21, "to": 24 }
+      ]
+    },
+    {
+      "id": "1KI",
+      "line": "Unnamed · Solomon, and the torn kingdom",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It often points to the book of the acts of Solomon, and to the chronicles of the kings of Israel and of Judah." },
+      "audience": { "who": "A people who had seen the kingdom torn, and who would see it fall", "where": "jerusalem", "when": "From the death of David to the reign of Jehoshaphat and Ahaziah. Written after those reigns.", "situation": "Solomon's temple and Solomon's turning. Then two kingdoms, golden calves in the north, and Elijah on Carmel against Baal." },
+      "when": "After the reigns it records. It does not name its year.",
+      "purpose": "To judge the kings by whether they walked with the Lord, from Solomon's glory to Elijah's fire.",
+      "outline": [
+        { "label": "Solomon and the temple", "from": 1, "to": 11 },
+        { "label": "The kingdom torn", "from": 12, "to": 16 },
+        { "label": "Elijah", "from": 17, "to": 22 }
+      ]
+    },
+    {
+      "id": "2KI",
+      "line": "Unnamed · from Elijah to the exile",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It carries the kings of Israel and Judah down to the burning of the temple and the exile." },
+      "audience": { "who": "A people in or after the exile, asking why the city fell", "where": "babylon", "when": "The story ends with Jehoiachin lifted up in Babylon, in the thirty-seventh year of his exile.", "situation": "Elisha's ministry, the end of the northern kingdom, Hezekiah and the Assyrian, Josiah's reform, and then Babylon at the gates. The hearers live with the ruin." },
+      "when": "No earlier than the thirty-seventh year of Jehoiachin's exile.",
+      "purpose": "To show why Samaria and Jerusalem fell, and that the Lord's word to the prophets stood.",
+      "outline": [
+        { "label": "Elisha", "from": 1, "to": 8 },
+        { "label": "The kingdoms to the fall of Samaria", "from": 9, "to": 17 },
+        { "label": "Judah, from Hezekiah to the exile", "from": 18, "to": 25 }
+      ]
+    },
+    {
+      "id": "1CH",
+      "line": "Unnamed · the returned people, looking at David",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It was written for a people who had the genealogies and the hope of David's house after the exile." },
+      "audience": { "who": "Israel after the return, gathered again around David and the temple", "where": "jerusalem", "when": "After the exile. The genealogies and the close of the companion book reach the return.", "situation": "A small people back in the land, needing to know that they still belonged to the tribes, and that the throne and the worship of David were the Lord's plan, not a lost age." },
+      "when": "After the return. The book does not name its year.",
+      "purpose": "To retell Israel's story so the returned people would see David, the ark, and the temple at the center.",
+      "outline": [
+        { "label": "Genealogies", "from": 1, "to": 9 },
+        { "label": "David's reign", "from": 10, "to": 21 },
+        { "label": "David prepares the house", "from": 22, "to": 29 }
+      ]
+    },
+    {
+      "id": "2CH",
+      "line": "Unnamed · the kings of Judah, to Cyrus",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It follows the kings of Judah, the temple, and the reforms, and it ends with Cyrus sending the exiles home." },
+      "audience": { "who": "The returned community", "where": "jerusalem", "when": "After Cyrus. The last verses are his decree.", "situation": "They are rebuilding. The book tells which kings sought the Lord and which forsook him, and it ends with an open door back to Jerusalem." },
+      "when": "After the decree of Cyrus.",
+      "purpose": "To call the returned people to seek the Lord as the faithful kings did, and to go up and build.",
+      "outline": [
+        { "label": "Solomon and the temple", "from": 1, "to": 9 },
+        { "label": "The kings, from Rehoboam to Ahaz", "from": 10, "to": 28 },
+        { "label": "Hezekiah to Josiah", "from": 29, "to": 35 },
+        { "label": "The fall, and Cyrus", "from": 36, "to": 36 }
+      ]
+    },
+    {
+      "id": "EZR",
+      "line": "Ezra · the exiles who came home",
+      "writer": { "person": "ezra", "how": "traditional", "verse": "EZR.7.28", "note": "From chapter 7 the book speaks as Ezra. The earlier chapters tell the first return, before he came. The church has received the book with his name." },
+      "audience": { "who": "The returned exiles in Jerusalem", "where": "jerusalem", "when": "From the first year of Cyrus to the reign of Artaxerxes, when Ezra arrived.", "situation": "The altar and the house were begun, opposed, and finished. Later Ezra came with the law and found the people married into the nations around them." },
+      "writtenFrom": "jerusalem",
+      "when": "After Ezra's mission. The book does not add a later date.",
+      "purpose": "To tell how the Lord brought his people back and how the house of God was raised again.",
+      "outline": [
+        { "label": "The first return and the house", "from": 1, "to": 6 },
+        { "label": "Ezra's coming and reform", "from": 7, "to": 10 }
+      ]
+    },
+    {
+      "id": "NEH",
+      "line": "Nehemiah · Jerusalem rebuilding the wall",
+      "writer": { "person": "nehemiah", "how": "named", "verse": "NEH.1.1", "note": "The book is Nehemiah's account. It opens with his name and continues as 'I.'" },
+      "audience": { "who": "The people of the rebuilt city", "where": "jerusalem", "when": "In the twentieth year of Artaxerxes, and the years of the wall and the reforms after it.", "situation": "The wall was broken and the gates burned. Enemies mocked the builders. Inside, nobles exacted from the poor, and the law had to be read again." },
+      "writtenFrom": "jerusalem",
+      "when": "After the wall and the later reforms.",
+      "purpose": "To record how Nehemiah rebuilt the wall, renewed the covenant, and set the city in order.",
+      "outline": [
+        { "label": "The wall", "from": 1, "to": 7 },
+        { "label": "The law and the covenant", "from": 8, "to": 10 },
+        { "label": "The city kept", "from": 11, "to": 13 }
+      ]
+    },
+    {
+      "id": "EST",
+      "line": "Unnamed · the Jews in Persia",
+      "writer": { "how": "unnamed", "note": "The book names no writer. It is set in the citadel of Shushan, in the days of Ahasuerus." },
+      "audience": { "who": "Jews of the Persian empire, and those who kept Purim after them", "where": "shushan", "when": "In the reign of Ahasuerus. The book does not place the writing by a later king.", "situation": "A Jewish girl is queen. A decree goes out to destroy her people. They cannot see the Lord's name on the page, and deliverance comes by a sleepless night and a reversed edict." },
+      "when": "After the events, when Purim was being kept. The year is not stated.",
+      "purpose": "To tell how the Jews were preserved in Persia, and why they keep the days of Purim.",
+      "outline": [
+        { "label": "Vashti and Esther", "from": 1, "to": 2 },
+        { "label": "Haman's plot", "from": 3, "to": 5 },
+        { "label": "The reversal", "from": 6, "to": 8 },
+        { "label": "Purim", "from": 9, "to": 10 }
+      ]
+    },
+    {
+      "id": "JOB",
+      "line": "Unnamed · a righteous man in Uz",
+      "writer": { "how": "unnamed", "note": "The book names no writer, and it does not date itself. It sets the story in the land of Uz." },
+      "audience": { "who": "The people of God, in suffering that has no easy cause", "when": "The book does not say. The world of the story is early: wealth in flocks, sacrifices offered by the father, a long life at the end.", "situation": "A blameless man loses his children, his wealth, and his health. His friends say he must have sinned. He refuses their answer, and he will not curse God." },
+      "when": "Not stated.",
+      "purpose": "To set a righteous man's suffering before God, and to hear the Lord answer out of the whirlwind.",
+      "outline": [
+        { "label": "The loss", "from": 1, "to": 2 },
+        { "label": "Job and his friends", "from": 3, "to": 31 },
+        { "label": "Elihu", "from": 32, "to": 37 },
+        { "label": "The Lord answers", "from": 38, "to": 42 }
+      ]
+    },
+    {
+      "id": "PSA",
+      "line": "David and others · Israel at worship",
+      "writer": { "person": "david", "how": "gathered", "verse": "PSA.72.20", "note": "Many psalms name David. Others name Asaph, the sons of Korah, Solomon, Moses, Heman, or Ethan, and many name no one. The book is a gathering, in five parts, for the worship of Israel." },
+      "audience": { "who": "Israel at prayer, in the temple and in exile and after", "where": "jerusalem", "when": "From Moses and David down to the return. One psalm sings of Babylon. The collection grew over centuries.", "situation": "Kings, choirs, and ordinary sufferers needed words for trouble, for thanks, for the king, and for the law. The five books were their prayer book." },
+      "when": "Gathered over many generations, finished after the exile.",
+      "purpose": "To give Israel words to sing before the Lord, in every kind of day.",
+      "outline": [
+        { "label": "Book one", "from": 1, "to": 41 },
+        { "label": "Book two", "from": 42, "to": 72 },
+        { "label": "Book three", "from": 73, "to": 89 },
+        { "label": "Book four", "from": 90, "to": 106 },
+        { "label": "Book five", "from": 107, "to": 150 }
+      ]
+    },
+    {
+      "id": "PRO",
+      "line": "Solomon and others · a son learning wisdom",
+      "writer": { "person": "solomon", "how": "gathered", "verse": "PRO.1.1", "note": "The title names Solomon, and later sections name other hands: the wise, Hezekiah's men, Agur, and Lemuel's mother. It is a gathering, not one sitting." },
+      "audience": { "who": "The young, and anyone who would be wise", "where": "jerusalem", "when": "Solomon's sayings are from his reign. Hezekiah's men copied more, long after.", "situation": "A son is being taught before he meets the street, the strange woman, the sluggard, and the court. Wisdom cries in public, and folly does too." },
+      "when": "Begun under Solomon, still being copied under Hezekiah.",
+      "purpose": "To train a person to fear the Lord and to live with skill among neighbors, work, and words.",
+      "outline": [
+        { "label": "The invitation", "from": 1, "to": 9 },
+        { "label": "Solomon's proverbs", "from": 10, "to": 24 },
+        { "label": "Copied under Hezekiah", "from": 25, "to": 29 },
+        { "label": "Agur, Lemuel, and the strong woman", "from": 30, "to": 31 }
+      ]
+    },
+    {
+      "id": "ECC",
+      "line": "The Preacher · a gathering in Jerusalem",
+      "writer": { "person": "solomon", "how": "traditional", "verse": "ECC.1.1", "note": "The book names the Preacher, son of David, king in Jerusalem. It does not spell the name Solomon. The church has long read the Preacher as Solomon." },
+      "audience": { "who": "An assembly in Jerusalem, and anyone chasing gain under the sun", "where": "jerusalem", "when": "Spoken as a king looking back. The book does not add a year.", "situation": "The hearers know wealth, work, and pleasure, and the weariness of them. The Preacher has tested it all and calls it vapor." },
+      "writtenFrom": "jerusalem",
+      "when": "In the voice of the king's later years. No year is given.",
+      "purpose": "To show that life under the sun does not hold, and to send the hearer to fear God and keep his commandments.",
+      "outline": [
+        { "label": "The test of pleasure and work", "from": 1, "to": 2 },
+        { "label": "Time, and life in company", "from": 3, "to": 6 },
+        { "label": "What he found", "from": 7, "to": 11 },
+        { "label": "Remember your Creator", "from": 12, "to": 12 }
+      ]
+    },
+    {
+      "id": "SNG",
+      "line": "Solomon · a bride and her beloved",
+      "writer": { "person": "solomon", "how": "named", "verse": "SNG.1.1", "note": "The title calls it the Song of songs, which is Solomon's. That can mean the song is by him, or about him. The church has read it as his." },
+      "audience": { "who": "Hearers of a wedding song in Israel", "where": "jerusalem", "when": "Associated with Solomon. The book does not date the singing.", "situation": "A woman and a man speak love in the open, among vineyards, a city watch, and a garden. Companions listen and answer." },
+      "when": "In Solomon's time, if the title is a date as well as a name. The book does not say more.",
+      "purpose": "To sing the desire of bride and bridegroom, without shame and without a speech beside the song.",
+      "outline": [
+        { "label": "Longing", "from": 1, "to": 2 },
+        { "label": "Seeking and finding", "from": 3, "to": 5 },
+        { "label": "Love as strong as death", "from": 6, "to": 8 }
+      ]
+    },
+    {
+      "id": "ISA",
+      "line": "Isaiah · Judah under Assyria, and beyond",
+      "writer": { "person": "isaiah", "how": "named", "verse": "ISA.1.1", "note": "The vision of Isaiah the son of Amoz, which he saw concerning Judah and Jerusalem. The book carries that vision past his own kings, and it still bears his name." },
+      "audience": { "who": "Judah and Jerusalem in the days of Uzziah, Jotham, Ahaz, and Hezekiah, and the exiles the vision addresses later", "where": "jerusalem", "when": "From the death of Uzziah into Hezekiah's reign, with words that speak to a later exile.", "situation": "Assyria is the threat they can see. Ahaz will not ask a sign. Hezekiah prays and the army withdraws. Beyond that hour the book speaks to people whose city has fallen, and tells them to comfort Zion." },
+      "writtenFrom": "jerusalem",
+      "when": "Across the reigns named in the first verse, and the vision reaches further.",
+      "purpose": "To call Judah back to the Holy One, and to promise a child, a servant, and a city restored.",
+      "outline": [
+        { "label": "Judah and the Assyrian threat", "from": 1, "to": 12 },
+        { "label": "The nations", "from": 13, "to": 27 },
+        { "label": "Woe, and Hezekiah", "from": 28, "to": 39 },
+        { "label": "Comfort", "from": 40, "to": 55 },
+        { "label": "The restored people", "from": 56, "to": 66 }
+      ]
+    },
+    {
+      "id": "JER",
+      "line": "Jeremiah · Judah in the last days before exile",
+      "writer": { "person": "jeremiah", "how": "named", "verse": "JER.1.1", "note": "The words of Jeremiah the son of Hilkiah. Baruch wrote them on a scroll at Jeremiah's dictation, and wrote them again when the king burned the first scroll." },
+      "audience": { "who": "Judah and Jerusalem, from Josiah to the fall, and the remnant after", "where": "jerusalem", "when": "From the thirteenth year of Josiah until the captivity of Jerusalem.", "situation": "The temple was still standing and the people trusted it. Babylon was coming. Prophets said peace. Jeremiah said the city would fall, and he was hated for it." },
+      "writtenFrom": "jerusalem",
+      "when": "Spoken across those reigns, and the book collected through the fall.",
+      "purpose": "To warn Judah, to weep over her, and to promise a new covenant after the tearing down.",
+      "outline": [
+        { "label": "The word to Judah", "from": 1, "to": 25 },
+        { "label": "The fall, and the remnant", "from": 26, "to": 45 },
+        { "label": "The nations", "from": 46, "to": 51 },
+        { "label": "The city taken", "from": 52, "to": 52 }
+      ]
+    },
+    {
+      "id": "LAM",
+      "line": "Unnamed · Jerusalem after the fall",
+      "writer": { "person": "jeremiah", "how": "traditional", "note": "The book does not sign a name. The church has long read these dirges as Jeremiah's, the prophet who saw the city fall." },
+      "audience": { "who": "The survivors of Jerusalem", "where": "jerusalem", "when": "After the burning of the city, while the ruin was still fresh.", "situation": "The temple is ash, the princes are gone, and children have starved. The poems give the city a voice, and in the middle of them a man remembers that the Lord's mercies are new." },
+      "writtenFrom": "jerusalem",
+      "when": "In the aftermath of the fall. No year is added.",
+      "purpose": "To lament the fallen city before the Lord, and not to let grief go unspoken.",
+      "outline": [
+        { "label": "The city sits alone", "from": 1, "to": 1 },
+        { "label": "The Lord has done it", "from": 2, "to": 2 },
+        { "label": "Hope in the middle", "from": 3, "to": 3 },
+        { "label": "The ruin, and the prayer", "from": 4, "to": 5 }
+      ]
+    },
+    {
+      "id": "EZK",
+      "line": "Ezekiel · exiles by the Chebar",
+      "writer": { "person": "ezekiel", "how": "named", "verse": "EZK.1.3", "note": "The word of the Lord came expressly to Ezekiel the priest, by the river Chebar, and the hand of the Lord was on him." },
+      "audience": { "who": "The exiles of Judah in Babylonia", "where": "babylon", "when": "From the fifth year of Jehoiachin's exile, across the fall of the city, into the years after.", "situation": "They were already in exile and still hoped the city would stand. Ezekiel told them it would not. After the news came that Jerusalem had fallen, he spoke of bones, a shepherd, and a temple." },
+      "writtenFrom": "babylon",
+      "when": "Dated from the fifth year of Jehoiachin's captivity onward.",
+      "purpose": "To be a watchman to the exiles, to explain the fall, and to show the glory returning.",
+      "outline": [
+        { "label": "Glory, and judgment on the city", "from": 1, "to": 24 },
+        { "label": "The nations", "from": 25, "to": 32 },
+        { "label": "After the fall", "from": 33, "to": 39 },
+        { "label": "The temple measured", "from": 40, "to": 48 }
+      ]
+    },
+    {
+      "id": "DAN",
+      "line": "Daniel · exiles in the courts of Babylon",
+      "writer": { "person": "daniel", "how": "named", "verse": "DAN.8.1", "note": "The opening stories speak of Daniel by name. From the visions he says 'I Daniel.' The book does not add a line that says he published it." },
+      "audience": { "who": "Exiles serving in a foreign court, and those who would wait through later empires", "where": "babylon", "when": "From Nebuchadnezzar's reign into the third year of Cyrus.", "situation": "Young men of Judah are being remade as Babylonians. Kings dream, and a hand writes on a wall. Then the visions look past Babylon to beasts, and to a son of man, and to a time still ahead." },
+      "writtenFrom": "babylon",
+      "when": "Across those reigns, into the days of Cyrus.",
+      "purpose": "To show that the God of Israel rules the courts and the empires, and that his people can stay faithful in them.",
+      "outline": [
+        { "label": "The court", "from": 1, "to": 6 },
+        { "label": "The visions", "from": 7, "to": 12 }
+      ]
+    },
+    {
+      "id": "HOS",
+      "line": "Hosea · the northern kingdom",
+      "writer": { "person": "hosea", "how": "named", "verse": "HOS.1.1", "note": "The word of the Lord that came to Hosea the son of Beeri." },
+      "audience": { "who": "The northern kingdom, called Ephraim and Israel", "where": "samaria", "when": "In the days of Uzziah, Jotham, Ahaz, and Hezekiah of Judah, and Jeroboam of Israel.", "situation": "The nation was prosperous under Jeroboam and unfaithful. They ran to Assyria and to Egypt and to Baal. Hosea's marriage was the sign they were meant to see." },
+      "when": "Across the reigns named in the first verse.",
+      "purpose": "To charge Israel with breaking covenant, and to say that the Lord will not finally let them go.",
+      "outline": [
+        { "label": "The wife and the children", "from": 1, "to": 3 },
+        { "label": "The case against Israel", "from": 4, "to": 10 },
+        { "label": "The Lord will heal", "from": 11, "to": 14 }
+      ]
+    },
+    {
+      "id": "JOL",
+      "line": "Joel · Judah under the locusts",
+      "writer": { "person": "joel", "how": "named", "verse": "JOL.1.1", "note": "The word of the Lord that came to Joel the son of Pethuel. No king is named, so the year is not fixed." },
+      "audience": { "who": "The elders, priests, and people of Judah", "where": "jerusalem", "when": "Not dated by a king. The temple and the priests are standing.", "situation": "Locusts have eaten the harvest. The drink offering is cut off. Joel reads the plague as a trumpet for the day of the Lord, and he calls a fast." },
+      "writtenFrom": "jerusalem",
+      "when": "Not fixed. The house of the Lord is in view.",
+      "purpose": "To turn a ruined harvest into repentance, and to promise the Spirit and the day of the Lord.",
+      "outline": [
+        { "label": "The locusts", "from": 1, "to": 1 },
+        { "label": "The day, and the Spirit", "from": 2, "to": 2 },
+        { "label": "The nations, and Zion", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "AMO",
+      "line": "Amos · the northern kingdom, from Tekoa",
+      "writer": { "person": "amos", "how": "named", "verse": "AMO.1.1", "note": "The words of Amos, who was among the herdmen of Tekoa, which he saw concerning Israel." },
+      "audience": { "who": "The northern kingdom, especially Samaria and Bethel", "where": "samaria", "when": "In the days of Uzziah of Judah and Jeroboam of Israel, two years before the earthquake.", "situation": "The kingdom was rich and at ease. They sold the poor for a pair of shoes and kept feast days. Amos, a southerner, was told to take his word back to Judah. He stayed and spoke." },
+      "when": "Under Jeroboam II, two years before the earthquake.",
+      "purpose": "To announce judgment on nations and on Israel, and to leave a promise that the booth of David will be raised.",
+      "outline": [
+        { "label": "Oracles against the nations, and Israel", "from": 1, "to": 2 },
+        { "label": "The word to ease and worship", "from": 3, "to": 6 },
+        { "label": "Visions, and the end", "from": 7, "to": 9 }
+      ]
+    },
+    {
+      "id": "OBA",
+      "line": "Obadiah · a word against Edom",
+      "writer": { "person": "obadiah", "how": "named", "verse": "OBA.1.1", "note": "The vision of Obadiah. The book tells nothing more of him." },
+      "audience": { "who": "Edom, and Jacob who suffered from him", "where": "edom", "when": "After an attack on Jerusalem. The book does not name which one.", "situation": "Edom stood by, or joined in, when strangers entered Jacob's gates. The oracle answers that violence." },
+      "when": "After a day of Jerusalem's calamity. The year is not named.",
+      "purpose": "To judge Edom for harming his brother, and to say that the kingdom will be the Lord's.",
+      "outline": [
+        { "label": "The vision against Edom", "from": 1, "to": 1 }
+      ]
+    },
+    {
+      "id": "JON",
+      "line": "Unnamed · the story of Jonah and Nineveh",
+      "writer": { "how": "unnamed", "note": "The book does not name its writer. It tells the story of Jonah the son of Amittai, the prophet of Israel whom 2 Kings also names." },
+      "audience": { "who": "Israel, who knew Jonah as their prophet", "when": "Jonah son of Amittai served under Jeroboam II. The book does not say when the story was written down.", "situation": "A prophet is sent to the capital of Assyria, the nation Israel feared. He runs the other way. The city repents, and he is angry that God shows mercy." },
+      "when": "After the events. The year of writing is not stated.",
+      "purpose": "To tell how the Lord pursued his prophet and spared a wicked city.",
+      "outline": [
+        { "label": "The flight", "from": 1, "to": 1 },
+        { "label": "The fish", "from": 2, "to": 2 },
+        { "label": "Nineveh", "from": 3, "to": 3 },
+        { "label": "The plant", "from": 4, "to": 4 }
+      ]
+    },
+    {
+      "id": "MIC",
+      "line": "Micah · Samaria and Jerusalem",
+      "writer": { "person": "micah", "how": "named", "verse": "MIC.1.1", "note": "The word of the Lord that came to Micah the Morasthite." },
+      "audience": { "who": "Samaria and Jerusalem", "where": "jerusalem", "when": "In the days of Jotham, Ahaz, and Hezekiah.", "situation": "Both capitals are in view. Rulers hate good and love evil. Prophets divine for money. A remnant is promised, and a ruler from Bethlehem." },
+      "when": "Across the reigns named in the first verse.",
+      "purpose": "To announce judgment on both kingdoms, and to point to Bethlehem and to what the Lord requires.",
+      "outline": [
+        { "label": "Judgment on the capitals", "from": 1, "to": 3 },
+        { "label": "The mountain, and Bethlehem", "from": 4, "to": 5 },
+        { "label": "The controversy, and hope", "from": 6, "to": 7 }
+      ]
+    },
+    {
+      "id": "NAM",
+      "line": "Nahum · a burden against Nineveh",
+      "writer": { "person": "nahum", "how": "named", "verse": "NAM.1.1", "note": "The burden of Nineveh. The book of the vision of Nahum the Elkoshite." },
+      "audience": { "who": "Nineveh, and Judah who lived in Assyria's shadow", "where": "nineveh", "when": "After Thebes in Egypt had fallen, which the book mentions, and before Nineveh fell. No king of Judah is named.", "situation": "Assyria had been the terror. Nahum says the Lord is slow to anger and will not leave the guilty. The city that Jonah saw spared is now told it will be emptied." },
+      "when": "Between the fall of Thebes and the fall of Nineveh.",
+      "purpose": "To declare the end of Nineveh and the comfort of those she had crushed.",
+      "outline": [
+        { "label": "The Lord against his enemies", "from": 1, "to": 1 },
+        { "label": "Nineveh falls", "from": 2, "to": 3 }
+      ]
+    },
+    {
+      "id": "HAB",
+      "line": "Habakkuk · Judah, as Babylon rises",
+      "writer": { "person": "habakkuk", "how": "named", "verse": "HAB.1.1", "note": "The burden which Habakkuk the prophet did see." },
+      "audience": { "who": "Judah, in a time of violence at home and a cruel empire abroad", "where": "jerusalem", "when": "When the Chaldeans are being raised up, before they have finished with Jerusalem.", "situation": "The prophet sees strife and the law slacked. The Lord's answer is the Chaldean army. Habakkuk asks how a holy God can use them, and then he waits." },
+      "when": "As the Chaldeans rise. No year is numbered.",
+      "purpose": "To wrestle with the Lord's justice, and to end in a prayer that will rejoice even if the fig tree does not blossom.",
+      "outline": [
+        { "label": "The complaint and the answer", "from": 1, "to": 2 },
+        { "label": "The prayer", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "ZEP",
+      "line": "Zephaniah · Judah in the days of Josiah",
+      "writer": { "person": "zephaniah", "how": "named", "verse": "ZEP.1.1", "note": "The word of the Lord which came to Zephaniah in the days of Josiah." },
+      "audience": { "who": "Judah and Jerusalem under Josiah", "where": "jerusalem", "when": "In the days of Josiah, while the remnant of Baal was still in the land.", "situation": "Officials worship the host of heaven. Merchants are complacent. Josiah will reform the nation, but Zephaniah says the day of the Lord is near, and he also promises a humble remnant." },
+      "writtenFrom": "jerusalem",
+      "when": "In Josiah's reign.",
+      "purpose": "To warn of the day of the Lord and to promise that the Lord will rejoice over a remnant.",
+      "outline": [
+        { "label": "The day against Judah", "from": 1, "to": 1 },
+        { "label": "The nations", "from": 2, "to": 2 },
+        { "label": "The remnant", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "HAG",
+      "line": "Haggai · the returned exiles",
+      "writer": { "person": "haggai", "how": "named", "verse": "HAG.1.1", "note": "The word of the Lord by Haggai the prophet, dated to the second year of Darius." },
+      "audience": { "who": "Zerubbabel, Joshua the high priest, and the remnant of the people", "where": "jerusalem", "when": "The second year of Darius, over a few months.", "situation": "They had come home and paneled their own houses. The Lord's house lay waste. The harvest was thin. Haggai tells them to consider their ways and to build." },
+      "writtenFrom": "jerusalem",
+      "when": "The second year of Darius.",
+      "purpose": "To set the people back to building the house, and to promise that its latter glory will be greater.",
+      "outline": [
+        { "label": "Build the house", "from": 1, "to": 1 },
+        { "label": "Glory, and Zerubbabel", "from": 2, "to": 2 }
+      ]
+    },
+    {
+      "id": "ZEC",
+      "line": "Zechariah · the returned exiles",
+      "writer": { "person": "zechariah", "how": "named", "verse": "ZEC.1.1", "note": "The word of the Lord to Zechariah the son of Berechiah, in the second year of Darius." },
+      "audience": { "who": "The remnant building the house in Jerusalem", "where": "jerusalem", "when": "From the second year of Darius, with later oracles the book does not redate.", "situation": "The house was unfinished and the people were small. Zechariah's night visions answer their fear. Later oracles speak of a king on a donkey, a pierced one, and the Lord on the Mount of Olives." },
+      "writtenFrom": "jerusalem",
+      "when": "Beginning in the second year of Darius.",
+      "purpose": "To strengthen the builders, and to point past them to the king and the day of the Lord.",
+      "outline": [
+        { "label": "Night visions", "from": 1, "to": 6 },
+        { "label": "Fasting, and the question of justice", "from": 7, "to": 8 },
+        { "label": "The king and the day", "from": 9, "to": 14 }
+      ]
+    },
+    {
+      "id": "MAL",
+      "line": "Malachi · Judah after the return",
+      "writer": { "person": "malachi", "how": "named", "verse": "MAL.1.1", "note": "The burden of the word of the Lord to Israel by Malachi. No king and no father's name are given." },
+      "audience": { "who": "Israel after the temple was standing again", "where": "jerusalem", "when": "After the return, when a governor is in the land and the altar is in use. No year is numbered.", "situation": "The priests offer blemished animals. The people say it is vain to serve God. Marriages are broken. Tithes are kept back. They ask, where is the God of judgment?" },
+      "writtenFrom": "jerusalem",
+      "when": "After the return. The year is not stated.",
+      "purpose": "To answer a weary people, to rebuke the priests, and to promise a messenger before the day.",
+      "outline": [
+        { "label": "Love, and the priests", "from": 1, "to": 2 },
+        { "label": "The messenger and the day", "from": 3, "to": 4 }
+      ]
+    },
+    {
+      "id": "MAT",
+      "line": "Matthew · hearers who knew the Scriptures",
+      "writer": { "person": "matthew", "how": "traditional", "note": "The book does not sign a name. From early days the church has received it as Matthew's, the tax collector among the twelve." },
+      "audience": { "who": "Hearers who knew the Law, the Prophets, and the hope of David's king", "where": "canaan", "when": "After the resurrection. The book does not name the year.", "situation": "They needed the story of Jesus told as the fulfillment of what was spoken: his birth, his sermons, his signs, his rejection, and his commission to the nations." },
+      "when": "After the events. The church received it early. No year is stated in the book.",
+      "purpose": "To show that Jesus is the Christ, the son of David, the son of Abraham, and that all authority is his.",
+      "outline": [
+        { "label": "Birth and preparation", "from": 1, "to": 4 },
+        { "label": "The sermon, and the signs", "from": 5, "to": 10 },
+        { "label": "Parables, and who he is", "from": 11, "to": 18 },
+        { "label": "Up to Jerusalem", "from": 19, "to": 25 },
+        { "label": "Death and resurrection", "from": 26, "to": 28 }
+      ],
+      "mapPlaces": ["bethlehem", "nazareth", "capernaum", "jerusalem"]
+    },
+    {
+      "id": "MRK",
+      "line": "Mark · hearers who needed the story plainly",
+      "writer": { "person": "mark", "how": "traditional", "note": "The book does not sign a name. From the second century the church has received it as Mark's, and has often connected it with Peter's preaching." },
+      "audience": { "who": "Hearers who needed Jesus' works told straight, including people outside Judea", "where": "rome", "when": "After the resurrection. The book does not name the place or the year. The church has often placed the hearers in Rome.", "situation": "The story moves quickly. A Gentile reader is helped with Jewish customs. The cross takes a large share of a short book." },
+      "fromNote": "The book does not name a city. The church has often placed Mark's hearers in Rome.",
+      "when": "After the events. No year is stated.",
+      "purpose": "To announce the beginning of the gospel of Jesus Christ, the Son of God, and to follow him to the cross.",
+      "outline": [
+        { "label": "Galilee", "from": 1, "to": 8 },
+        { "label": "On the way to the cross", "from": 9, "to": 10 },
+        { "label": "Jerusalem", "from": 11, "to": 13 },
+        { "label": "Death and resurrection", "from": 14, "to": 16 }
+      ],
+      "mapPlaces": ["capernaum", "galilee", "jerusalem"]
+    },
+    {
+      "id": "LUK",
+      "line": "Luke · Theophilus",
+      "writer": { "person": "luke", "how": "traditional", "verse": "LUK.1.3", "note": "The preface speaks in the first person to Theophilus and does not sign a name. The church has received the book as Luke's, the physician Paul names." },
+      "audience": { "who": "Theophilus, and with him a wide circle of hearers", "when": "After the events, written so that Theophilus might know the certainty of what he had been taught.", "situation": "Theophilus had already been instructed. Luke sets the story in order, from the temple in Herod's day to the ascension, with care for outsiders, the poor, and prayer." },
+      "when": "After the events, before or with Acts. No year is stated.",
+      "purpose": "To set down an orderly account so Theophilus would know the certainty of the things he had heard.",
+      "outline": [
+        { "label": "Birth and beginning", "from": 1, "to": 4 },
+        { "label": "Galilee", "from": 5, "to": 9 },
+        { "label": "On the way to Jerusalem", "from": 10, "to": 19 },
+        { "label": "Death, resurrection, ascension", "from": 20, "to": 24 }
+      ]
+    },
+    {
+      "id": "JHN",
+      "line": "John · so that you may believe",
+      "writer": { "person": "john", "how": "traditional", "verse": "JHN.21.24", "note": "The book does not sign a name. It says the disciple Jesus loved is the witness behind it. The church has received that disciple as John." },
+      "audience": { "who": "Hearers who should believe that Jesus is the Christ, the Son of God", "when": "After the resurrection, looking back. The book does not name the year.", "situation": "Signs are chosen, not all of them. Conversations run long. The hearers are to have life in his name, and a later note says these things were written for that." },
+      "when": "After the events. No year is stated.",
+      "purpose": "To set down signs so that you may believe that Jesus is the Christ, the Son of God, and have life in his name.",
+      "outline": [
+        { "label": "The Word, and the first signs", "from": 1, "to": 4 },
+        { "label": "Feasts and disputes", "from": 5, "to": 12 },
+        { "label": "The upper room", "from": 13, "to": 17 },
+        { "label": "Death and resurrection", "from": 18, "to": 21 }
+      ],
+      "mapPlaces": ["bethsaida", "cana", "jerusalem", "galilee"]
+    },
+    {
+      "id": "ACT",
+      "line": "Luke · Theophilus, as the word goes out",
+      "writer": { "person": "luke", "how": "traditional", "verse": "ACT.1.1", "note": "The former treatise was to Theophilus. This book continues it and does not sign a new name. Later the story says 'we.' The church has received it as Luke's." },
+      "audience": { "who": "Theophilus, and the churches who lived in this story", "when": "After the events it tells, which run from the ascension to Paul's two years in Rome.", "situation": "The word moves from Jerusalem to Judea, Samaria, and as far as Rome. Theophilus is to see that this was the Lord's doing, through apostles, persecution, and open doors." },
+      "when": "After Paul's Roman custody had lasted two years. The book stops there.",
+      "purpose": "To tell what Jesus continued to do, by the Spirit, through the witnesses, from Jerusalem to Rome.",
+      "outline": [
+        { "label": "Jerusalem", "from": 1, "to": 7 },
+        { "label": "Judea and Samaria, and Saul", "from": 8, "to": 12 },
+        { "label": "The first and second journeys", "from": 13, "to": 18 },
+        { "label": "Ephesus, and the road to Jerusalem", "from": 19, "to": 23 },
+        { "label": "Caesarea, the voyage, Rome", "from": 24, "to": 28 }
+      ]
+    },
+    {
+      "id": "ROM",
+      "line": "Paul · the church in Rome",
+      "writer": { "person": "paul", "how": "named", "verse": "ROM.1.1", "note": "The letter opens in Paul's name, to all who are in Rome, beloved of God." },
+      "audience": { "who": "the church in Rome", "where": "rome", "when": "Often placed in the mid-50s, late on the third journey. The letter itself gives no year.", "situation": "A church Paul had not planted, Jews and Gentiles together in the capital. He had wanted to come for years. He writes before he does, to set the gospel out in full and to ask their help farther west." },
+      "writtenFrom": "corinth",
+      "fromNote": "The letter does not name the city. Phoebe of Cenchrea, and the household greetings, have long been read as Corinth.",
+      "when": "Often placed in the mid-50s.",
+      "purpose": "To set the gospel before a church he had not yet visited, and to ask them to send him on toward Spain.",
+      "outline": [
+        { "label": "The gospel, for Jew and Gentile", "from": 1, "to": 4 },
+        { "label": "Life in Christ", "from": 5, "to": 8 },
+        { "label": "Israel", "from": 9, "to": 11 },
+        { "label": "The common life", "from": 12, "to": 15 },
+        { "label": "Greetings", "from": 16, "to": 16 }
+      ]
+    },
+    {
+      "id": "1CO",
+      "line": "Paul · the church in Corinth",
+      "writer": { "person": "paul", "how": "named", "verse": "1CO.1.1", "note": "Paul, called to be an apostle, to the church of God which is at Corinth." },
+      "audience": { "who": "the church in Corinth", "where": "corinth", "when": "Often placed in the mid-50s, while Paul was in Ephesus. The letter says he will stay in Ephesus until Pentecost.", "situation": "A gifted, divided church in a port city. They wrote him questions. He had also heard of factions, a case of immorality, and disorder at the supper and in the assembly." },
+      "writtenFrom": "ephesus",
+      "fromNote": "He says he will tarry at Ephesus until Pentecost.",
+      "when": "Often placed in the mid-50s.",
+      "purpose": "To answer a proud and divided church, and to set the cross and the resurrection at the center of their life.",
+      "outline": [
+        { "label": "Divisions and the cross", "from": 1, "to": 4 },
+        { "label": "The body, marriage, and food", "from": 5, "to": 10 },
+        { "label": "The assembly", "from": 11, "to": 14 },
+        { "label": "The resurrection", "from": 15, "to": 16 }
+      ]
+    },
+    {
+      "id": "2CO",
+      "line": "Paul · the church in Corinth, again",
+      "writer": { "person": "paul", "how": "named", "verse": "2CO.1.1", "note": "Paul, an apostle, to the church of God which is at Corinth, with all the saints in Achaia." },
+      "audience": { "who": "the church in Corinth and the saints of Achaia", "where": "corinth", "when": "After 1 Corinthians, often placed within a year or so of it. He writes from Macedonia.", "situation": "A painful visit and a severe letter lay behind them. Many had repented. Some still questioned Paul's authority. He defends his ministry and asks them to finish the collection." },
+      "fromNote": "He speaks of coming into Macedonia. The letter does not name one city.",
+      "when": "Soon after 1 Corinthians. Often placed in the mid-50s.",
+      "purpose": "To reconcile the church to their apostle, and to spell out a ministry of the new covenant.",
+      "outline": [
+        { "label": "Comfort and the new covenant", "from": 1, "to": 7 },
+        { "label": "The collection", "from": 8, "to": 9 },
+        { "label": "Paul defends his ministry", "from": 10, "to": 13 }
+      ]
+    },
+    {
+      "id": "GAL",
+      "line": "Paul · the churches of Galatia",
+      "writer": { "person": "paul", "how": "named", "verse": "GAL.1.1", "note": "Paul, an apostle, to the churches of Galatia." },
+      "audience": { "who": "the churches of Galatia", "where": "galatia", "when": "After Paul had preached there and other teachers had troubled them. The letter does not date itself, before or after the council in Acts 15.", "situation": "They had begun by faith and were being told they must be circumcised to belong. Paul had become their enemy, they thought, for telling them the truth." },
+      "when": "After the Galatian churches were founded. The year is not stated.",
+      "purpose": "To defend the gospel of justification by faith, and to call the Galatians back from another message.",
+      "outline": [
+        { "label": "Paul's gospel and story", "from": 1, "to": 2 },
+        { "label": "Faith, not the law as a way in", "from": 3, "to": 4 },
+        { "label": "Freedom and the Spirit", "from": 5, "to": 6 }
+      ]
+    },
+    {
+      "id": "EPH",
+      "line": "Paul · the saints, long read as Ephesus",
+      "writer": { "person": "paul", "how": "named", "verse": "EPH.1.1", "note": "The letter names Paul. Many copies address the saints which are at Ephesus. A few early copies do not name the city." },
+      "audience": { "who": "the saints, received as the church in Ephesus", "where": "ephesus", "when": "Written from prison. Often placed in the early 60s, with the custody in Rome. The letter does not name the year or the prison.", "situation": "Gentiles who were once far off are told they are one new people with Israel, in Christ. They need to know what that means for the church, the home, and the fight they are in." },
+      "fromNote": "He is a prisoner. The letter does not name the city. The church has long read it as Rome, in the years of Acts 28.",
+      "when": "During an imprisonment. Often placed in the early 60s.",
+      "purpose": "To show the church what God has done in Christ, and how that people now walks.",
+      "outline": [
+        { "label": "Every spiritual blessing", "from": 1, "to": 3 },
+        { "label": "The worthy walk", "from": 4, "to": 6 }
+      ]
+    },
+    {
+      "id": "PHP",
+      "line": "Paul · the church in Philippi",
+      "writer": { "person": "paul", "how": "named", "verse": "PHP.1.1", "note": "Paul and Timothy, servants of Jesus Christ, to all the saints in Philippi, with the bishops and deacons." },
+      "audience": { "who": "the church in Philippi", "where": "philippi", "when": "Written from prison, after they had sent a gift by Epaphroditus. Often placed in the early 60s.", "situation": "A generous church, his partners from the first day. They were anxious for him in bonds. There was also a rift between two women, and teachers who boasted in the flesh." },
+      "fromNote": "He is in bonds, and the palace guard hears the gospel. The letter does not name the city. The church has long read it as Rome.",
+      "when": "During an imprisonment. Often placed in the early 60s.",
+      "purpose": "To thank Philippi, to steady them, and to show them a joy that prison does not cancel.",
+      "outline": [
+        { "label": "Partnership and prison", "from": 1, "to": 1 },
+        { "label": "The mind of Christ", "from": 2, "to": 2 },
+        { "label": "Gain, and the goal", "from": 3, "to": 3 },
+        { "label": "Thanks for the gift", "from": 4, "to": 4 }
+      ]
+    },
+    {
+      "id": "COL",
+      "line": "Paul · the church in Colossae",
+      "writer": { "person": "paul", "how": "named", "verse": "COL.1.1", "note": "Paul, an apostle, and Timothy, to the saints and faithful brethren at Colossae. He had not visited them himself. Epaphras had taught them." },
+      "audience": { "who": "the church in Colossae", "where": "colossae", "when": "Written from prison, carried with the letter to Philemon and a letter for Laodicea. Often placed in the early 60s.", "situation": "A young church in the Lycus valley was being offered a fuller spirituality: angels, rules, and a worship that did not hold the Head. Paul sets Christ over every power." },
+      "fromNote": "He is in bonds. The letter does not name the prison. The church has long read it as Rome, sent with Onesimus.",
+      "when": "During an imprisonment. Often placed in the early 60s.",
+      "purpose": "To hold the church to Christ as enough, against a teaching that added to him.",
+      "outline": [
+        { "label": "Christ over all", "from": 1, "to": 2 },
+        { "label": "The new life", "from": 3, "to": 4 }
+      ],
+      "mapPlaces": ["colossae", "laodicea", "hierapolis"]
+    },
+    {
+      "id": "1TH",
+      "line": "Paul · the church in Thessalonica",
+      "writer": { "person": "paul", "how": "named", "verse": "1TH.1.1", "note": "Paul, Silvanus, and Timothy, to the church of the Thessalonians." },
+      "audience": { "who": "the church in Thessalonica", "where": "thessalonica", "when": "Not long after Paul had been driven out of the city, often placed around the year 50, from Corinth.", "situation": "A new church, mostly Gentile, under local pressure. Paul had left quickly. Timothy brought back news of their faith, and of their questions about those who had died before the Lord comes." },
+      "writtenFrom": "corinth",
+      "fromNote": "Acts places Paul in Corinth after Athens, and from there he sends word north. The letter names Paul, Silvanus, and Timothy together.",
+      "when": "Soon after the church began. Often placed around the year 50.",
+      "purpose": "To encourage a young, suffering church, and to answer them about the coming of the Lord.",
+      "outline": [
+        { "label": "Thanks for their faith", "from": 1, "to": 3 },
+        { "label": "How to walk, and the coming", "from": 4, "to": 5 }
+      ]
+    },
+    {
+      "id": "2TH",
+      "line": "Paul · the church in Thessalonica, again",
+      "writer": { "person": "paul", "how": "named", "verse": "2TH.1.1", "note": "Paul, Silvanus, and Timothy, to the church of the Thessalonians." },
+      "audience": { "who": "the church in Thessalonica", "where": "thessalonica", "when": "Soon after the first letter. Some were shaken, thinking the day of the Lord had already come.", "situation": "Persecution continued. A letter or a rumor had unsettled them about the day. Some had stopped working. Paul tells them what must come first, and tells the idle to work." },
+      "writtenFrom": "corinth",
+      "fromNote": "Still in the company of Silvanus and Timothy, read with the first letter as from the same stay in Corinth.",
+      "when": "Soon after 1 Thessalonians.",
+      "purpose": "To steady them about the day of the Lord, and to correct those who would not work.",
+      "outline": [
+        { "label": "Endurance, and the day", "from": 1, "to": 2 },
+        { "label": "Work, and a closing", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "1TI",
+      "line": "Paul · Timothy in Ephesus",
+      "writer": { "person": "paul", "how": "named", "verse": "1TI.1.1", "note": "Paul, an apostle, to Timothy, his own son in the faith." },
+      "audience": { "who": "Timothy, left in Ephesus", "where": "ephesus", "when": "While Timothy was charging certain people not to teach another doctrine. Acts ends with Paul in custody and does not tell a later journey.", "situation": "False teaching was growing in Ephesus. The church needed qualified elders and deacons, care for widows, and a young pastor who would not let anyone despise his youth." },
+      "fromNote": "The letter speaks of Paul free to travel and to leave Timothy behind. Acts does not narrate that season. The church has often placed the letter after the Roman custody of Acts 28.",
+      "when": "After Paul had left Timothy in Ephesus. The year is not stated.",
+      "purpose": "To tell Timothy how the church in Ephesus ought to behave, and how he ought to stay.",
+      "outline": [
+        { "label": "Charge, and prayer", "from": 1, "to": 2 },
+        { "label": "Overseers, deacons, the faith", "from": 3, "to": 4 },
+        { "label": "Widows, elders, and the charge", "from": 5, "to": 6 }
+      ]
+    },
+    {
+      "id": "2TI",
+      "line": "Paul · Timothy, from prison",
+      "writer": { "person": "paul", "how": "named", "verse": "2TI.1.1", "note": "Paul, an apostle, to Timothy, his dearly beloved son." },
+      "audience": { "who": "Timothy", "where": "ephesus", "when": "Paul is a prisoner again and expects death. Often placed in the mid-60s. The letter does not name the year.", "situation": "Friends had turned away. Alexander did him harm. Only Luke is with him. He asks Timothy to come before winter, and to bring the cloak and the books. He charges him to preach the word." },
+      "fromNote": "He is in bonds and speaks of his departure. The letter does not name the city. The church has long read it as Rome.",
+      "when": "Near the end of Paul's life. Often placed in the mid-60s.",
+      "purpose": "To charge Timothy to guard the gospel and to come to Paul soon.",
+      "outline": [
+        { "label": "Do not be ashamed", "from": 1, "to": 1 },
+        { "label": "A workman, and the last days", "from": 2, "to": 3 },
+        { "label": "Preach the word, and come", "from": 4, "to": 4 }
+      ]
+    },
+    {
+      "id": "TIT",
+      "line": "Paul · Titus in Crete",
+      "writer": { "person": "paul", "how": "named", "verse": "TIT.1.1", "note": "Paul, a servant of God, to Titus, his own son after the common faith." },
+      "audience": { "who": "Titus, left in Crete", "where": "crete", "when": "While Titus was setting in order the things that were wanting, and ordaining elders. Acts does not tell this stay.", "situation": "The churches of Crete were unfinished. Elders were lacking. There were many vain talkers. Paul quotes a hard word about Cretans and tells Titus to rebuke them sharply, and to teach sound living." },
+      "fromNote": "Paul is free enough to plan a winter in Nicopolis and to send Artemas or Tychicus to relieve Titus. Acts does not narrate that season.",
+      "when": "While Titus worked in Crete. The year is not stated.",
+      "purpose": "To tell Titus to finish ordering the churches in Crete and to teach what fits sound doctrine.",
+      "outline": [
+        { "label": "Elders", "from": 1, "to": 1 },
+        { "label": "Sound teaching", "from": 2, "to": 2 },
+        { "label": "Ready for every good work", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "PHM",
+      "line": "Paul · Philemon",
+      "writer": { "person": "paul", "how": "named", "verse": "PHM.1.1", "note": "Paul, a prisoner of Jesus Christ, and Timothy, to Philemon." },
+      "audience": { "who": "Philemon, Apphia, Archippus, and the church in Philemon's house", "where": "colossae", "when": "Sent from prison with Onesimus, in company with the letter to Colossae. Often placed in the early 60s.", "situation": "Onesimus, a slave from Philemon's house, had come to Paul in prison and become a believer. Paul sends him back, no longer only a slave but a brother, and offers to cover any debt." },
+      "fromNote": "Paul is a prisoner. He hopes to be granted to them. The church in the house is read with Colossians as Colossae.",
+      "when": "During the same imprisonment as Colossians. Often placed in the early 60s.",
+      "purpose": "To ask Philemon to receive Onesimus as a brother, for love's sake and not by command.",
+      "outline": [
+        { "label": "A plea for Onesimus", "from": 1, "to": 1 }
+      ]
+    },
+    {
+      "id": "HEB",
+      "line": "Unnamed · a people tempted to turn back",
+      "writer": { "how": "unnamed", "note": "The book names no writer. From early days readers have guessed. The book itself never says." },
+      "audience": { "who": "A people who had received the word and were tempted to drift", "when": "While the first hearers of the Lord were still in memory, and before the exhortation would have been different if the temple service had already ended. The book does not name the year.", "situation": "They had endured reproach and the loss of goods. Some were neglecting the assembly. The writer warns them not to turn back from a great high priest to the shadows." },
+      "when": "In the first generation of the church. No year is stated.",
+      "purpose": "To show that the Son is better than angels, Moses, and the old covenant, and to urge the hearers to hold fast.",
+      "outline": [
+        { "label": "The Son", "from": 1, "to": 2 },
+        { "label": "Better than Moses, and a priest", "from": 3, "to": 7 },
+        { "label": "A better covenant", "from": 8, "to": 10 },
+        { "label": "Faith, and the call to endure", "from": 11, "to": 13 }
+      ]
+    },
+    {
+      "id": "JAS",
+      "line": "James · the twelve tribes in the dispersion",
+      "writer": { "person": "james", "how": "named", "verse": "JAS.1.1", "note": "James, a servant of God and of the Lord Jesus Christ. The letter does not say which James. The church has long read it as James of Jerusalem, the Lord's brother." },
+      "audience": { "who": "the twelve tribes scattered abroad", "when": "Not dated. The poor and the rich in the assembly, and elders who pray for the sick, are in view.", "situation": "Trials, a double mind, a tongue out of control, and rich men who drag the poor before judges. Faith that does not work is called dead." },
+      "when": "Not stated.",
+      "purpose": "To call scattered believers to a faith that endures testing and shows itself in works.",
+      "outline": [
+        { "label": "Trials, and hearing", "from": 1, "to": 1 },
+        { "label": "Faith and works, and the tongue", "from": 2, "to": 3 },
+        { "label": "Quarrels, the rich, and prayer", "from": 4, "to": 5 }
+      ]
+    },
+    {
+      "id": "1PE",
+      "line": "Peter · exiles of the dispersion",
+      "writer": { "person": "peter", "how": "named", "verse": "1PE.1.1", "note": "Peter, an apostle of Jesus Christ, to the strangers scattered through Pontus, Galatia, Cappadocia, Asia, and Bithynia." },
+      "audience": { "who": "elect exiles across those provinces", "where": "galatia", "when": "While they were suffering for the name. Silvanus carried the letter. Often placed in the early 60s. The letter gives no year.", "situation": "They were sojourners, spoken against, and some were under the pressure of masters and unbelieving husbands. Peter tells them their suffering is not strange, and that they are a holy nation." },
+      "writtenFrom": "babylon",
+      "fromNote": "The letter says the co-elected in Babylon salute you. It does not explain the name. Readers have long asked whether that is the city on the Euphrates or a name for Rome. The text says Babylon.",
+      "when": "During a time of suffering for these churches. Often placed in the early 60s.",
+      "purpose": "To strengthen exiles who suffer for Christ, and to tell them how to live as a holy people.",
+      "outline": [
+        { "label": "A living hope", "from": 1, "to": 2 },
+        { "label": "Suffering, and a good conscience", "from": 3, "to": 4 },
+        { "label": "Elders, and the lion", "from": 5, "to": 5 }
+      ]
+    },
+    {
+      "id": "2PE",
+      "line": "Peter · those who share the faith",
+      "writer": { "person": "peter", "how": "named", "verse": "2PE.1.1", "note": "Simon Peter, a servant and an apostle, to those who have obtained a like precious faith." },
+      "audience": { "who": "those who share the faith he writes to, including the hearers of his first letter", "when": "Shortly before his death, which he says the Lord has shown him. No year is numbered.", "situation": "False teachers were coming, denying the Lord and twisting the Scriptures. Some scoffed that the promise of his coming was late. Peter says he writes so that after his departure they may remember." },
+      "when": "Near Peter's death. The year is not stated.",
+      "purpose": "To stir them up to remember, and to warn them of false teachers and of scoffers.",
+      "outline": [
+        { "label": "Make your calling sure", "from": 1, "to": 1 },
+        { "label": "False teachers", "from": 2, "to": 2 },
+        { "label": "The day of the Lord", "from": 3, "to": 3 }
+      ]
+    },
+    {
+      "id": "1JN",
+      "line": "Unnamed · a church he calls his children",
+      "writer": { "person": "john", "how": "traditional", "note": "The letter does not sign a name. It shares the voice of the Gospel, and the church has read it as John's." },
+      "audience": { "who": "a church he calls little children, fathers, and young men", "when": "After the Gospel's witness. The letter does not name the year.", "situation": "Some had left, denying that Jesus Christ is come in the flesh. Those who remained needed to know how to tell the truth: by the message, by love, and by keeping his commandments." },
+      "when": "Not stated.",
+      "purpose": "So that their joy may be full, and so that they may know they have eternal life.",
+      "outline": [
+        { "label": "The message, and walking in light", "from": 1, "to": 2 },
+        { "label": "Love and the truth", "from": 3, "to": 4 },
+        { "label": "The witness, and life", "from": 5, "to": 5 }
+      ]
+    },
+    {
+      "id": "2JN",
+      "line": "The elder · the elect lady",
+      "writer": { "person": "john", "how": "named", "verse": "2JN.1.1", "note": "The elder, to the elect lady and her children. The letter does not add the name John. The church has read the elder as John." },
+      "audience": { "who": "the elect lady and her children", "when": "While deceivers were going about, denying the coming of Jesus Christ in the flesh. No year is given.", "situation": "A short letter to a household or a church pictured as a lady. He rejoices that some of her children walk in truth, and he warns her not to receive a deceiver into the house." },
+      "when": "Not stated.",
+      "purpose": "To ask them to love one another and not to welcome a false teaching.",
+      "outline": [
+        { "label": "Walk in truth and love", "from": 1, "to": 1 }
+      ]
+    },
+    {
+      "id": "3JN",
+      "line": "The elder · Gaius",
+      "writer": { "person": "john", "how": "named", "verse": "3JN.1.1", "note": "The elder, to the wellbeloved Gaius. The name John is not added. The church has read the elder as John." },
+      "audience": { "who": "Gaius", "when": "While traveling teachers needed a welcome, and Diotrephes was refusing them. No year is given.", "situation": "Gaius was walking in the truth and receiving strangers. Diotrephes loved to have the pretense and was casting people out of the church. Demetrius had a good report." },
+      "when": "Not stated.",
+      "purpose": "To commend Gaius for receiving the brothers, and to warn him about Diotrephes.",
+      "outline": [
+        { "label": "A letter to Gaius", "from": 1, "to": 1 }
+      ]
+    },
+    {
+      "id": "JUD",
+      "line": "Jude · those called and kept",
+      "writer": { "person": "jude", "how": "named", "verse": "JUD.1.1", "note": "Jude, a servant of Jesus Christ, and brother of James." },
+      "audience": { "who": "those who are called, beloved, and kept", "when": "When certain men had crept in unnoticed. The letter does not name the year.", "situation": "He had meant to write about the salvation they share. The threat changed the letter. Ungodly people were turning grace into license and denying the only Lord." },
+      "when": "Not stated.",
+      "purpose": "To urge them to contend for the faith once delivered to the saints.",
+      "outline": [
+        { "label": "Contend for the faith", "from": 1, "to": 1 }
+      ]
+    },
+    {
+      "id": "REV",
+      "line": "John · the seven churches of Asia",
+      "writer": { "person": "john", "how": "named", "verse": "REV.1.1", "note": "The revelation of Jesus Christ, sent and signified to his servant John, who bare record of the word of God." },
+      "audience": { "who": "the seven churches in Asia", "where": "ephesus", "when": "While John was on Patmos for the word of God. The book does not name the emperor or the year.", "situation": "Churches under pressure, some faithful and some compromised, in the cities of Asia. He writes what he is told to write, in the images of the prophets, so they will hear and overcome." },
+      "writtenFrom": "patmos",
+      "when": "While John was on Patmos. No year is stated.",
+      "purpose": "To show the servants of Jesus what must shortly come to pass, and to call the seven churches to overcome.",
+      "outline": [
+        { "label": "Patmos, and the one he saw", "from": 1, "to": 1 },
+        { "label": "The seven churches", "from": 2, "to": 3 },
+        { "label": "The throne, the seals, the trumpets", "from": 4, "to": 11 },
+        { "label": "The conflict", "from": 12, "to": 18 },
+        { "label": "The city, and the end", "from": 19, "to": 22 }
+      ],
+      "mapPlaces": ["patmos", "ephesus", "smyrna", "pergamum", "thyatira", "sardis", "philadelphia", "laodicea"]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "abraham",
+      "title": "Abraham’s road",
+      "who": "Abraham",
+      "summary": "The Lord called Abram out of Ur. He went to Haran, then into Canaan, down to Egypt in a famine, and back to the oaks of Hebron. Years later he took Isaac to Moriah.",
+      "stops": [
+        { "place": "ur", "at": [{ "book": "GEN", "chapters": [11] }], "ref": "GEN.11.31", "note": "Terah took Abram from Ur of the Chaldees toward Canaan, and they stopped in Haran." },
+        { "place": "haran", "at": [{ "book": "GEN", "chapters": [11, 12] }], "ref": "GEN.12.4", "note": "Abram was seventy-five when he left Haran, as the Lord had said." },
+        { "place": "shechem", "at": [{ "book": "GEN", "chapters": [12] }], "ref": "GEN.12.6", "note": "He passed through the land to Shechem, and the Lord appeared to him there." },
+        { "place": "bethel", "at": [{ "book": "GEN", "chapters": [12, 13] }], "ref": "GEN.12.8", "note": "He pitched his tent between Bethel and Ai and built an altar. After Egypt he came back to this place." },
+        { "place": "egypt", "at": [{ "book": "GEN", "chapters": [12] }], "ref": "GEN.12.10", "note": "A famine sent him down to Egypt. He came up again." },
+        { "place": "hebron", "at": [{ "book": "GEN", "chapters": [13] }], "ref": "GEN.13.18", "note": "He moved his tent to the oaks of Mamre in Hebron and built an altar." },
+        { "place": "moriah", "at": [{ "book": "GEN", "chapters": [22] }], "ref": "GEN.22.2", "note": "He took Isaac to the land of Moriah, to the mount the Lord would show him." }
+      ],
+      "chapterNotes": {
+        "GEN.11": "Terah’s family left Ur of the Chaldees for Canaan and settled in Haran. Terah died there.",
+        "GEN.12": "Abram left Haran for Canaan. He stopped at Shechem and at Bethel, then went down to Egypt because the famine was severe, and Pharaoh sent him away.",
+        "GEN.13": "He came up out of Egypt to the place between Bethel and Ai, and then settled by the oaks of Mamre at Hebron. Lot had gone toward Sodom.",
+        "GEN.22": "From Beersheba he went to the land of Moriah with Isaac, and on the third day he saw the place."
+      }
+    },
+    {
+      "id": "exodus",
+      "title": "Out of Egypt",
+      "who": "Israel",
+      "summary": "Israel left Egypt, met the Lord at Sinai, and wandered until a new generation stood on the plains of Moab. The camps between Egypt and Sinai are named in the book. Their mounds are not marked here, because the text does not fix them on a modern map.",
+      "stops": [
+        { "place": "egypt", "at": [{ "book": "EXO", "chapters": [1, 12, 13] }], "ref": "EXO.12.37", "note": "They journeyed from Rameses toward Succoth, about six hundred thousand men on foot, besides children." },
+        { "place": "sinai", "at": [{ "book": "EXO", "chapters": [19] }, { "book": "NUM", "chapters": [10] }], "ref": "EXO.19.1", "note": "In the third month they came into the wilderness of Sinai and camped before the mount." },
+        { "place": "kadesh", "at": [{ "book": "NUM", "chapters": [13, 20] }], "ref": "NUM.13.26", "note": "The spies returned here. A generation later Miriam died here, and Moses struck the rock." },
+        { "place": "edom", "at": [{ "book": "NUM", "chapters": [20] }], "ref": "NUM.20.14", "note": "They asked passage through Edom. Edom refused, and they turned away." },
+        { "place": "moab", "at": [{ "book": "NUM", "chapters": [22, 33] }, { "book": "DEU", "chapters": [1] }], "ref": "NUM.22.1", "note": "They camped in the plains of Moab, by Jordan, opposite Jericho." },
+        { "place": "nebo", "at": [{ "book": "DEU", "chapters": [34] }], "ref": "DEU.34.1", "note": "Moses went up from the plains to Mount Nebo and saw the land. He died there." }
+      ],
+      "chapterNotes": {
+        "EXO.12": "On the night of the passover they left. The march began from Rameses toward Succoth.",
+        "EXO.13": "God did not lead them by the way of the Philistines. He led them by the way of the wilderness of the Red Sea.",
+        "EXO.19": "They had come to Sinai. Moses went up to God, and the Lord called Israel a kingdom of priests.",
+        "NUM.10": "The cloud lifted from the tabernacle, and they left Sinai toward the wilderness of Paran.",
+        "NUM.13": "From Kadesh the spies went up and came back. The people refused the land.",
+        "NUM.20": "At Kadesh, Miriam died and Moses struck the rock. Then Edom refused them the highway, and they turned.",
+        "NUM.22": "They were on the plains of Moab, and Balak called Balaam.",
+        "DEU.1": "Moses began to explain the law on the east side of Jordan, in the land of Moab.",
+        "DEU.34": "He climbed Nebo, to the top of Pisgah, looked at the land, and died there."
+      }
+    },
+    {
+      "id": "into-the-land",
+      "title": "Into the land",
+      "who": "Joshua",
+      "summary": "Joshua brought Israel across the Jordan to Gilgal, took Jericho and Ai, and at the end gathered them at Shechem.",
+      "stops": [
+        { "place": "moab", "at": [{ "book": "JOS", "chapters": [1] }], "ref": "JOS.1.2", "note": "They were still east of the Jordan when the Lord told Joshua to cross." },
+        { "place": "gilgal", "at": [{ "book": "JOS", "chapters": [4, 5] }], "ref": "JOS.4.19", "note": "They came up out of the Jordan on the tenth day of the first month and camped at Gilgal." },
+        { "place": "jericho", "at": [{ "book": "JOS", "chapters": [6] }], "ref": "JOS.6.1", "note": "Jericho was shut. They circled it, and the wall fell." },
+        { "place": "ai", "at": [{ "book": "JOS", "chapters": [7, 8] }], "ref": "JOS.7.2", "note": "Ai was the next town, east of Bethel. The first attack failed. The second took it." },
+        { "place": "shechem", "at": [{ "book": "JOS", "chapters": [24] }], "ref": "JOS.24.1", "note": "Joshua gathered all the tribes to Shechem and set the covenant before them." }
+      ],
+      "chapterNotes": {
+        "JOS.1": "The camp was still in the plains, east of the Jordan. Joshua was told to arise and go over.",
+        "JOS.3": "The priests stood in the Jordan, and the people crossed on dry ground.",
+        "JOS.4": "Twelve stones were set up at Gilgal, where they camped that night.",
+        "JOS.6": "From Gilgal they went against Jericho.",
+        "JOS.7": "After Jericho, Joshua sent men up to Ai, and Israel fled.",
+        "JOS.8": "He took Ai, and afterward read the law at Mount Ebal and Mount Gerizim, by Shechem.",
+        "JOS.24": "At the end he gathered them again at Shechem."
+      }
+    },
+    {
+      "id": "jonah",
+      "title": "Jonah’s flight",
+      "who": "Jonah",
+      "summary": "Jonah was sent to Nineveh. He went down to Joppa and boarded a ship for Tarshish, the other way. The book does not locate Tarshish, so that port is not marked. The storm, the fish, and then Nineveh are the road the text finishes.",
+      "stops": [
+        { "place": "joppa", "at": [{ "book": "JON", "chapters": [1] }], "ref": "JON.1.3", "note": "He went down to Joppa, found a ship going to Tarshish, paid the fare, and went aboard." },
+        { "place": "nineveh", "at": [{ "book": "JON", "chapters": [3] }], "ref": "JON.3.3", "note": "The second time, he arose and went to Nineveh, a great city of three days’ journey." }
+      ],
+      "chapterNotes": {
+        "JON.1": "The word sent him east to Nineveh. He went west, down to Joppa, and out to sea toward Tarshish. The Lord sent a wind.",
+        "JON.2": "From the fish he prayed. The Lord spoke to the fish, and it put him out on dry land. The book does not name the beach.",
+        "JON.3": "He walked a day’s journey into Nineveh and cried against it. The city repented.",
+        "JON.4": "He went out of the city and sat on the east side, and made a booth, and waited to see what would become of it."
+      }
+    },
+    {
+      "id": "to-jerusalem",
+      "title": "The road to Jerusalem",
+      "who": "Jesus",
+      "summary": "He set his face to go to Jerusalem. Luke follows the way at length. Matthew and Mark take up the same approach through Jericho and Bethany into the city.",
+      "stops": [
+        { "place": "galilee", "at": [{ "book": "LUK", "chapters": [9] }, { "book": "MAT", "chapters": [19] }, { "book": "MRK", "chapters": [10] }], "ref": "LUK.9.51", "note": "When the time was come, he steadfastly set his face to go to Jerusalem." },
+        { "place": "samaria", "at": [{ "book": "LUK", "chapters": [9] }], "ref": "LUK.9.52", "note": "He sent messengers into a village of the Samaritans. They would not receive him, because his face was toward Jerusalem." },
+        { "place": "jericho", "at": [{ "book": "LUK", "chapters": [18, 19] }, { "book": "MAT", "chapters": [20] }, { "book": "MRK", "chapters": [10] }], "ref": "LUK.18.35", "note": "He drew near Jericho. A blind man cried out. In Luke he then enters and finds Zacchaeus." },
+        { "place": "bethany", "at": [{ "book": "LUK", "chapters": [19] }, { "book": "MAT", "chapters": [21] }, { "book": "MRK", "chapters": [11] }], "ref": "MRK.11.1", "note": "They came near Jerusalem, to Bethany, at the Mount of Olives." },
+        { "place": "jerusalem", "at": [{ "book": "LUK", "chapters": [19] }, { "book": "MAT", "chapters": [21] }, { "book": "MRK", "chapters": [11] }], "ref": "LUK.19.41", "note": "He saw the city and wept over it, and entered the temple." }
+      ],
+      "chapterNotes": {
+        "LUK.9": "From Galilee he set his face to Jerusalem. A Samaritan village refused him on the way.",
+        "LUK.18": "He told the twelve what would happen in the city, and as he drew near Jericho a blind man received his sight.",
+        "LUK.19": "He passed through Jericho, stayed with Zacchaeus, and went on up. From the slope he wept over the city and entered it.",
+        "MAT.19": "He left Galilee and came into the coasts of Judea beyond Jordan. The way to the city has begun.",
+        "MAT.20": "They were going up to Jerusalem. Leaving Jericho, two blind men cried out and followed him.",
+        "MAT.21": "They came to Bethphage, toward the Mount of Olives, and he entered Jerusalem.",
+        "MRK.10": "He rose from Galilee and went to the coasts of Judea. They were on the way up. He passed through Jericho.",
+        "MRK.11": "From Bethany he sent for the colt and entered Jerusalem, then went out to Bethany again that evening."
+      }
+    },
+    {
+      "id": "paul-first",
+      "title": "Paul’s first journey",
+      "who": "Paul",
+      "person": "paul",
+      "summary": "The church at Antioch sent Barnabas and Saul. They sailed to Cyprus, crossed to Pamphylia, and preached inland through Pisidian Antioch, Iconium, Lystra, and Derbe, then came home by the same coast.",
+      "stops": [
+        { "place": "antioch", "at": [{ "book": "ACT", "chapters": [13, 14] }], "ref": "ACT.13.1", "note": "In the church at Antioch the Spirit said, Separate me Barnabas and Saul. They were sent away." },
+        { "place": "seleucia", "at": [{ "book": "ACT", "chapters": [13] }], "ref": "ACT.13.4", "note": "They went down to Seleucia and from there sailed to Cyprus." },
+        { "place": "salamis", "at": [{ "book": "ACT", "chapters": [13] }], "ref": "ACT.13.5", "note": "At Salamis they preached the word of God in the synagogues. John Mark was with them." },
+        { "place": "paphos", "at": [{ "book": "ACT", "chapters": [13] }], "ref": "ACT.13.6", "note": "They crossed the island to Paphos. The proconsul believed. Saul is also called Paul from here." },
+        { "place": "perga", "at": [{ "book": "ACT", "chapters": [13] }], "ref": "ACT.13.13", "note": "They sailed to Perga in Pamphylia. John left them and returned to Jerusalem." },
+        { "place": "antioch-pisidia", "at": [{ "book": "ACT", "chapters": [13] }], "ref": "ACT.13.14", "note": "They went inland to Pisidian Antioch and sat down in the synagogue on the sabbath." },
+        { "place": "iconium", "at": [{ "book": "ACT", "chapters": [13, 14] }], "ref": "ACT.13.51", "note": "Shaken off from Antioch, they came to Iconium and spoke in the synagogue. The city divided." },
+        { "place": "lystra", "at": [{ "book": "ACT", "chapters": [14] }], "ref": "ACT.14.6", "note": "They fled to Lystra. A lame man was healed. The crowd tried to sacrifice, then stoned Paul." },
+        { "place": "derbe", "at": [{ "book": "ACT", "chapters": [14] }], "ref": "ACT.14.20", "note": "The next day he left with Barnabas for Derbe, preached there, and made many disciples." },
+        { "place": "attalia", "at": [{ "book": "ACT", "chapters": [14] }], "ref": "ACT.14.25", "note": "On the way home they passed through Perga again and went down to Attalia, and sailed to Antioch." }
+      ],
+      "chapterNotes": {
+        "ACT.13": "From Antioch they sailed out of Seleucia to Salamis, crossed Cyprus to Paphos, then sailed to Perga. Mark left. They went up to Pisidian Antioch, preached, and were expelled toward Iconium.",
+        "ACT.14": "In Iconium, Lystra, and Derbe they preached. Paul was stoned at Lystra and lived. They returned through the same cities, sailed from Attalia, and gathered the church at Antioch to report what God had done."
+      }
+    },
+    {
+      "id": "paul-second",
+      "title": "Paul’s second journey",
+      "who": "Paul",
+      "person": "paul",
+      "summary": "After the council, Paul and Silas went back through Syria and Cilicia, picked up Timothy at Lystra, were forbidden to preach in Asia, and crossed from Troas into Macedonia. The journey ended with a long stay in Corinth and a return to Antioch.",
+      "stops": [
+        { "place": "antioch", "at": [{ "book": "ACT", "chapters": [15] }], "ref": "ACT.15.35", "note": "Paul and Barnabas stayed in Antioch, teaching. Then Paul proposed a return visit to the churches." },
+        { "place": "derbe", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.1", "note": "He came to Derbe and then Lystra, delivering the decrees as he went." },
+        { "place": "lystra", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.1", "note": "At Lystra he found Timothy and took him along." },
+        { "place": "galatia", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.6", "note": "They went through the region of Phrygia and Galatia. The Spirit forbade them to speak the word in Asia." },
+        { "place": "troas", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.8", "note": "Passing by Mysia, they came down to Troas. A vision called him into Macedonia." },
+        { "place": "samothrace", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.11", "note": "They sailed from Troas and ran a straight course to Samothrace." },
+        { "place": "neapolis", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.11", "note": "The next day they reached Neapolis, the port." },
+        { "place": "philippi", "at": [{ "book": "ACT", "chapters": [16] }], "ref": "ACT.16.12", "note": "From Neapolis they went inland to Philippi, a Roman colony, and stayed certain days." },
+        { "place": "thessalonica", "at": [{ "book": "ACT", "chapters": [17] }], "ref": "ACT.17.1", "note": "They passed through Amphipolis and Apollonia and came to Thessalonica." },
+        { "place": "berea", "at": [{ "book": "ACT", "chapters": [17] }], "ref": "ACT.17.10", "note": "By night the brothers sent Paul and Silas away to Berea." },
+        { "place": "athens", "at": [{ "book": "ACT", "chapters": [17] }], "ref": "ACT.17.15", "note": "The brothers brought him as far as Athens and left him there." },
+        { "place": "corinth", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.1", "note": "After Athens he came to Corinth, found Aquila and Priscilla, and stayed a year and six months." },
+        { "place": "cenchrea", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.18", "note": "He sailed from Cenchrea, Corinth’s eastern port, after he had shorn his head." },
+        { "place": "ephesus", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.19", "note": "He landed at Ephesus, reasoned in the synagogue, and would not stay." },
+        { "place": "caesarea", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.22", "note": "He landed at Caesarea, went up and greeted the church, and went down to Antioch." }
+      ],
+      "chapterNotes": {
+        "ACT.15": "From Antioch, Paul chose Silas and went out through Syria and Cilicia, strengthening the churches. The cities of the next chapter begin the named road.",
+        "ACT.16": "He came through Derbe and Lystra, took Timothy, crossed Phrygia and Galatia, and was kept from Bithynia. At Troas he saw the Macedonian man. They sailed to Samothrace, the next day to Neapolis, and from there inland to Philippi.",
+        "ACT.17": "From Philippi they passed Amphipolis and Apollonia, neither of which is given a stay, and came to Thessalonica. By night they went to Berea. Paul was sent on to Athens, and he spoke on the Areopagus.",
+        "ACT.18": "He left Athens for Corinth and stayed eighteen months. Then he sailed from Cenchrea, touched Ephesus, landed at Caesarea, greeted the church, and went down to Antioch."
+      }
+    },
+    {
+      "id": "paul-third",
+      "title": "Paul’s third journey",
+      "who": "Paul",
+      "person": "paul",
+      "summary": "He left Antioch again, passed through Galatia and Phrygia, and settled in Ephesus. After a riot he went through Macedonia into Greece, and then raced back to Jerusalem, picking up the ship from port to port.",
+      "stops": [
+        { "place": "antioch", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.23", "note": "After spending some time in Antioch, he departed and went over Galatia and Phrygia in order." },
+        { "place": "galatia", "at": [{ "book": "ACT", "chapters": [18] }], "ref": "ACT.18.23", "note": "He strengthened the disciples through the Galatian and Phrygian country." },
+        { "place": "ephesus", "at": [{ "book": "ACT", "chapters": [19] }], "ref": "ACT.19.1", "note": "Paul came to Ephesus by the upper parts, while Apollos was already in Corinth. He stayed over two years." },
+        { "place": "corinth", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.2", "note": "After the uproar he went through Macedonia into Greece and stayed three months. A plot against a voyage to Syria sent him back through Macedonia." },
+        { "place": "philippi", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.6", "note": "He sailed from Philippi after the days of unleavened bread and came to Troas in five days." },
+        { "place": "troas", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.6", "note": "They stayed seven days. On the first day of the week he preached until midnight, and Eutychus fell." },
+        { "place": "assos", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.13", "note": "Paul went to Assos on foot. The others took the ship around." },
+        { "place": "mitylene", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.14", "note": "He met the ship at Assos, and they came to Mitylene." },
+        { "place": "chios", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.15", "note": "The next day they came over against Chios." },
+        { "place": "samos", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.15", "note": "The next day they arrived at Samos." },
+        { "place": "miletus", "at": [{ "book": "ACT", "chapters": [20] }], "ref": "ACT.20.15", "note": "The following day they came to Miletus. He sent to Ephesus for the elders, to save the time of going up." },
+        { "place": "cos", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.1", "note": "They launched straight and came to Cos." },
+        { "place": "rhodes", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.1", "note": "The next day, Rhodes." },
+        { "place": "patara", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.1", "note": "From Patara they found a ship crossing to Phoenicia." },
+        { "place": "tyre", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.3", "note": "They sighted Cyprus, sailed on, and landed at Tyre, where the ship was to unload. They stayed seven days." },
+        { "place": "ptolemais", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.7", "note": "They finished the voyage from Tyre and greeted the brothers at Ptolemais for one day." },
+        { "place": "caesarea", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.8", "note": "They came to Caesarea and stayed with Philip the evangelist. Agabus bound his own hands with Paul’s belt." },
+        { "place": "jerusalem", "at": [{ "book": "ACT", "chapters": [21] }], "ref": "ACT.21.17", "note": "They went up to Jerusalem, and the brothers received them gladly." }
+      ],
+      "chapterNotes": {
+        "ACT.18": "The second journey has brought him home to Antioch. After some time he leaves again and goes over Galatia and Phrygia. That departure is the start of the third journey.",
+        "ACT.19": "He came to Ephesus and stayed, so that all in Asia heard the word. After the riot of the silversmiths he purposed to go to Jerusalem by way of Macedonia and Achaia.",
+        "ACT.20": "He went through Macedonia into Greece for three months, then back through Macedonia. From Philippi he sailed to Troas, walked to Assos, and the ship took him past Mitylene, Chios, and Samos to Miletus, where he met the elders of Ephesus.",
+        "ACT.21": "From Miletus they ran Cos, Rhodes, and Patara, sighted Cyprus, and landed at Tyre for seven days. Then Ptolemais for a day, Caesarea and Philip’s house, and up to Jerusalem."
+      }
+    },
+    {
+      "id": "paul-rome",
+      "title": "The voyage to Rome",
+      "who": "Paul",
+      "person": "paul",
+      "summary": "As a prisoner he was put on a ship for Italy. They coasted to Myra, fought the wind below Crete, and were wrecked on Malta. Another ship brought him to Puteoli, and the brothers met him on the Appian Way.",
+      "stops": [
+        { "place": "caesarea", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.1", "note": "When it was decided he should sail for Italy, he was handed to Julius, a centurion of Augustus’ band." },
+        { "place": "sidon", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.3", "note": "The next day they touched at Sidon. Julius let Paul go to his friends for care." },
+        { "place": "cyprus", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.4", "note": "They sailed under the lee of Cyprus, because the winds were contrary." },
+        { "place": "myra", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.5", "note": "They crossed the sea off Cilicia and Pamphylia and landed at Myra. There they changed to an Alexandrian ship bound for Italy." },
+        { "place": "cnidus", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.7", "note": "For many days they made little headway and hardly arrived off Cnidus. The wind would not let them on." },
+        { "place": "fair-havens", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.8", "note": "They ran under the lee of Crete and came to Fair Havens, near Lasea. Paul urged them to winter there." },
+        { "place": "clauda", "at": [{ "book": "ACT", "chapters": [27] }], "ref": "ACT.27.16", "note": "A storm caught them off Crete. They ran under the lee of Clauda and secured the boat." },
+        { "place": "malta", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.1", "note": "They escaped to the island. The locals told them it was Malta. They stayed three months." },
+        { "place": "syracuse", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.12", "note": "They sailed on an Alexandrian ship and landed at Syracuse for three days." },
+        { "place": "rhegium", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.13", "note": "From Syracuse they fetched a compass and came to Rhegium. After one day a south wind rose." },
+        { "place": "puteoli", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.13", "note": "They came the next day to Puteoli, found brothers, and were asked to stay seven days." },
+        { "place": "appii-forum", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.15", "note": "Brothers from Rome met him as far as Appii Forum." },
+        { "place": "three-taverns", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.15", "note": "Others met him at Three Taverns. He thanked God and took courage." },
+        { "place": "rome", "at": [{ "book": "ACT", "chapters": [28] }], "ref": "ACT.28.16", "note": "When they entered Rome, Paul was allowed to live by himself with a soldier who guarded him." }
+      ],
+      "chapterNotes": {
+        "ACT.27": "From Caesarea they touched Sidon, ran under Cyprus, and changed ships at Myra. The wind held them off Cnidus, so they crept under Crete to Fair Havens. Putting out again, they were driven past Clauda, and on the fourteenth night the ship was wrecked. The chapter ends on an unnamed shore.",
+        "ACT.28": "The shore was Malta. After three months they sailed to Syracuse, Rhegium, and Puteoli. On the road, brothers met him at Appii Forum and Three Taverns, and so he came into Rome."
+      }
+    },
+    {
+      "id": "seven-churches",
+      "title": "The seven churches",
+      "who": "John",
+      "person": "john",
+      "summary": "John was on Patmos. He was told to write what he saw and send it to seven churches, in the order the letters stand: Ephesus, Smyrna, Pergamum, Thyatira, Sardis, Philadelphia, and Laodicea.",
+      "stops": [
+        { "place": "patmos", "at": [{ "book": "REV", "chapters": [1] }], "ref": "REV.1.9", "note": "He was on the island called Patmos, for the word of God and for the testimony of Jesus." },
+        { "place": "ephesus", "at": [{ "book": "REV", "chapters": [2] }], "ref": "REV.2.1", "note": "The first letter: to the angel of the church in Ephesus." },
+        { "place": "smyrna", "at": [{ "book": "REV", "chapters": [2] }], "ref": "REV.2.8", "note": "The second letter: Smyrna." },
+        { "place": "pergamum", "at": [{ "book": "REV", "chapters": [2] }], "ref": "REV.2.12", "note": "The third letter: Pergamum." },
+        { "place": "thyatira", "at": [{ "book": "REV", "chapters": [2] }], "ref": "REV.2.18", "note": "The fourth letter: Thyatira." },
+        { "place": "sardis", "at": [{ "book": "REV", "chapters": [3] }], "ref": "REV.3.1", "note": "The fifth letter: Sardis." },
+        { "place": "philadelphia", "at": [{ "book": "REV", "chapters": [3] }], "ref": "REV.3.7", "note": "The sixth letter: Philadelphia." },
+        { "place": "laodicea", "at": [{ "book": "REV", "chapters": [3] }], "ref": "REV.3.14", "note": "The seventh letter: Laodicea." }
+      ],
+      "chapterNotes": {
+        "REV.1": "John is on Patmos when he hears the voice and is told to write to the seven churches.",
+        "REV.2": "The letters run Ephesus, Smyrna, Pergamum, and Thyatira, in that order.",
+        "REV.3": "The letters continue to Sardis, Philadelphia, and Laodicea."
+      }
+    }
+  ]
+}

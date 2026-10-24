@@ -1,0 +1,947 @@
+[
+  {
+    "id": "jerusalem",
+    "name": "Jerusalem",
+    "aliases": ["jerusalem", "jebus", "salem"],
+    "lat": 31.778,
+    "lng": 35.235,
+    "note": "City of David, of the temple, and of the passion.",
+    "verses": ["2SA.5.7", "PSA.122.2", "MAT.21.10"]
+  },
+  {
+    "id": "bethlehem",
+    "name": "Bethlehem",
+    "aliases": ["bethlehem", "ephrath", "ephratah"],
+    "lat": 31.705,
+    "lng": 35.202,
+    "note": "Town of Judah, home of David and birthplace of Jesus.",
+    "verses": ["RUT.1.19", "MIC.5.2", "LUK.2.4"]
+  },
+  {
+    "id": "nazareth",
+    "name": "Nazareth",
+    "aliases": ["nazareth"],
+    "lat": 32.7,
+    "lng": 35.303,
+    "note": "The Galilean town where Jesus grew up.",
+    "verses": ["LUK.1.26", "MAT.2.23", "JHN.1.46"]
+  },
+  {
+    "id": "capernaum",
+    "name": "Capernaum",
+    "aliases": ["capernaum"],
+    "lat": 32.88,
+    "lng": 35.575,
+    "note": "Lakeside town where Jesus taught and healed.",
+    "verses": ["MAT.4.13", "MRK.2.1", "JHN.6.59"]
+  },
+  {
+    "id": "galilee",
+    "name": "Sea of Galilee",
+    "aliases": ["galilee", "sea of galilee", "gennesaret", "lake of gennesaret", "sea of tiberias"],
+    "lat": 32.833,
+    "lng": 35.583,
+    "note": "The freshwater lake, and the region around it.",
+    "verses": ["MAT.4.18", "MRK.1.16", "JHN.6.1"]
+  },
+  {
+    "id": "jordan",
+    "name": "Jordan",
+    "aliases": ["jordan", "jordan river"],
+    "lat": 31.837,
+    "lng": 35.54,
+    "note": "The river Israel crossed, and where Jesus was baptized.",
+    "verses": ["JOS.3.15", "2KI.5.10", "MAT.3.13"]
+  },
+  {
+    "id": "jericho",
+    "name": "Jericho",
+    "aliases": ["jericho"],
+    "lat": 31.87,
+    "lng": 35.444,
+    "note": "The city of palms in the Jordan valley.",
+    "verses": ["JOS.6.1", "LUK.19.1", "MRK.10.46"]
+  },
+  {
+    "id": "dead-sea",
+    "name": "Dead Sea",
+    "aliases": ["dead sea", "salt sea"],
+    "lat": 31.33,
+    "lng": 35.47,
+    "note": "The salt sea at the end of the Jordan.",
+    "verses": ["GEN.14.3", "EZK.47.8"]
+  },
+  {
+    "id": "hebron",
+    "name": "Hebron",
+    "aliases": ["hebron", "kirjatharba", "kirjath arba"],
+    "lat": 31.533,
+    "lng": 35.1,
+    "note": "Abraham's burial place, and David's first capital.",
+    "verses": ["GEN.23.2", "JOS.14.15", "2SA.2.1"]
+  },
+  {
+    "id": "beersheba",
+    "name": "Beersheba",
+    "aliases": ["beersheba", "beer sheba", "beer-sheba"],
+    "lat": 31.252,
+    "lng": 34.791,
+    "note": "The southern well of the patriarchs.",
+    "verses": ["GEN.21.31", "1KI.19.3"]
+  },
+  {
+    "id": "gaza",
+    "name": "Gaza",
+    "aliases": ["gaza", "azzah"],
+    "lat": 31.502,
+    "lng": 34.467,
+    "note": "A Philistine city on the coast, later on the road south.",
+    "verses": ["JDG.16.1", "ACT.8.26"]
+  },
+  {
+    "id": "joppa",
+    "name": "Joppa",
+    "aliases": ["joppa", "jaffa"],
+    "lat": 32.053,
+    "lng": 34.75,
+    "note": "The port where Jonah sailed, and where Peter stayed.",
+    "verses": ["JON.1.3", "ACT.9.36"]
+  },
+  {
+    "id": "caesarea",
+    "name": "Caesarea",
+    "aliases": ["caesarea"],
+    "lat": 32.5,
+    "lng": 34.892,
+    "note": "Herod's port, where Peter met Cornelius.",
+    "verses": ["ACT.10.1", "ACT.21.8"]
+  },
+  {
+    "id": "samaria",
+    "name": "Samaria",
+    "aliases": ["samaria"],
+    "lat": 32.277,
+    "lng": 35.19,
+    "note": "Capital of the northern kingdom, and the region around it.",
+    "verses": ["1KI.16.24", "JHN.4.4", "ACT.8.5"]
+  },
+  {
+    "id": "shechem",
+    "name": "Shechem",
+    "aliases": ["shechem", "sichem", "sychem"],
+    "lat": 32.213,
+    "lng": 35.282,
+    "note": "The pass between Ebal and Gerizim.",
+    "verses": ["GEN.12.6", "JOS.24.1", "GEN.33.18"]
+  },
+  {
+    "id": "bethel",
+    "name": "Bethel",
+    "aliases": ["bethel", "luz"],
+    "lat": 31.93,
+    "lng": 35.221,
+    "note": "Where Jacob dreamed of the ladder.",
+    "verses": ["GEN.28.19", "1KI.12.29", "AMO.7.13"]
+  },
+  {
+    "id": "shiloh",
+    "name": "Shiloh",
+    "aliases": ["shiloh"],
+    "lat": 32.055,
+    "lng": 35.289,
+    "note": "The first resting place of the tabernacle.",
+    "verses": ["JOS.18.1", "1SA.1.3", "PSA.78.60"]
+  },
+  {
+    "id": "gilgal",
+    "name": "Gilgal",
+    "aliases": ["gilgal"],
+    "lat": 31.858,
+    "lng": 35.434,
+    "note": "The camp after Israel crossed the Jordan.",
+    "verses": ["JOS.4.19", "1SA.11.15"]
+  },
+  {
+    "id": "ai",
+    "name": "Ai",
+    "aliases": ["ai"],
+    "lat": 31.917,
+    "lng": 35.261,
+    "note": "The town east of Bethel that Joshua took.",
+    "verses": ["JOS.7.2", "JOS.8.1"]
+  },
+  {
+    "id": "emmaus",
+    "name": "Emmaus",
+    "aliases": ["emmaus"],
+    "lat": 31.839,
+    "lng": 34.989,
+    "note": "A village on the road where the risen Jesus was recognized. The exact site is debated.",
+    "verses": ["LUK.24.13"]
+  },
+  {
+    "id": "bethany",
+    "name": "Bethany",
+    "aliases": ["bethany"],
+    "lat": 31.771,
+    "lng": 35.261,
+    "note": "The village of Martha, Mary, and Lazarus, on the slope toward the Mount of Olives.",
+    "verses": ["JHN.11.1", "MAT.21.17"]
+  },
+  {
+    "id": "olives",
+    "name": "Mount of Olives",
+    "aliases": ["mount of olives", "olives", "olivet"],
+    "lat": 31.778,
+    "lng": 35.245,
+    "note": "The ridge east of Jerusalem.",
+    "verses": ["ZEC.14.4", "MAT.24.3", "LUK.22.39"]
+  },
+  {
+    "id": "gethsemane",
+    "name": "Gethsemane",
+    "aliases": ["gethsemane"],
+    "lat": 31.779,
+    "lng": 35.24,
+    "note": "The garden at the foot of the Mount of Olives.",
+    "verses": ["MAT.26.36", "MRK.14.32"]
+  },
+  {
+    "id": "golgotha",
+    "name": "Golgotha",
+    "aliases": ["golgotha", "calvary"],
+    "lat": 31.779,
+    "lng": 35.23,
+    "note": "The place of the skull. Marked at the traditional site of the Church of the Holy Sepulchre.",
+    "verses": ["MAT.27.33", "JHN.19.17"]
+  },
+  {
+    "id": "moriah",
+    "name": "Mount Moriah",
+    "aliases": ["moriah", "mount moriah"],
+    "lat": 31.778,
+    "lng": 35.235,
+    "note": "The hill of Abraham's offering, later the temple mount.",
+    "verses": ["GEN.22.2", "2CH.3.1"]
+  },
+  {
+    "id": "zion",
+    "name": "Zion",
+    "aliases": ["zion", "sion", "mount zion"],
+    "lat": 31.772,
+    "lng": 35.232,
+    "note": "The stronghold David took, and a name for God's city.",
+    "verses": ["2SA.5.7", "PSA.48.2", "HEB.12.22"]
+  },
+  {
+    "id": "sodom",
+    "name": "Sodom",
+    "aliases": ["sodom"],
+    "lat": 31.1,
+    "lng": 35.5,
+    "note": "One of the cities of the plain. The site is not certain; tradition places it near the southern Dead Sea.",
+    "verses": ["GEN.19.24", "LUK.17.29"]
+  },
+  {
+    "id": "en-gedi",
+    "name": "En Gedi",
+    "aliases": ["en gedi", "engedi", "en-gedi"],
+    "lat": 31.461,
+    "lng": 35.392,
+    "note": "The spring and wilderness where David hid.",
+    "verses": ["1SA.23.29", "SNG.1.14"]
+  },
+  {
+    "id": "megiddo",
+    "name": "Megiddo",
+    "aliases": ["megiddo", "megiddon", "armageddon"],
+    "lat": 32.585,
+    "lng": 35.184,
+    "note": "The fortress pass where Josiah fell, named again in Revelation.",
+    "verses": ["JOS.12.21", "2KI.23.29", "REV.16.16"]
+  },
+  {
+    "id": "carmel",
+    "name": "Mount Carmel",
+    "aliases": ["carmel", "mount carmel"],
+    "lat": 32.74,
+    "lng": 35.033,
+    "note": "The ridge where Elijah called down fire.",
+    "verses": ["1KI.18.19", "1KI.18.42"]
+  },
+  {
+    "id": "cana",
+    "name": "Cana",
+    "aliases": ["cana"],
+    "lat": 32.747,
+    "lng": 35.339,
+    "note": "A Galilean village of the wedding feast. Marked at traditional Kafr Kanna.",
+    "verses": ["JHN.2.1", "JHN.4.46"]
+  },
+  {
+    "id": "bethsaida",
+    "name": "Bethsaida",
+    "aliases": ["bethsaida"],
+    "lat": 32.91,
+    "lng": 35.63,
+    "note": "A fishing town at the north of the lake. The exact mound is debated.",
+    "verses": ["JHN.1.44", "LUK.9.10"]
+  },
+  {
+    "id": "caesarea-philippi",
+    "name": "Caesarea Philippi",
+    "aliases": ["caesarea philippi"],
+    "lat": 33.248,
+    "lng": 35.695,
+    "note": "The spring at the foot of Hermon where Peter confessed Christ.",
+    "verses": ["MAT.16.13", "MRK.8.27"]
+  },
+  {
+    "id": "dan",
+    "name": "Dan",
+    "aliases": ["dan"],
+    "lat": 33.249,
+    "lng": 35.652,
+    "note": "The northern city, once Laish, at the headwaters of the Jordan.",
+    "verses": ["JDG.18.29", "1KI.12.29"]
+  },
+  {
+    "id": "tyre",
+    "name": "Tyre",
+    "aliases": ["tyre", "tyrus"],
+    "lat": 33.27,
+    "lng": 35.196,
+    "note": "The island merchant city of Phoenicia.",
+    "verses": ["EZK.26.2", "MAT.15.21"]
+  },
+  {
+    "id": "sidon",
+    "name": "Sidon",
+    "aliases": ["sidon", "zidon"],
+    "lat": 33.563,
+    "lng": 35.368,
+    "note": "The Phoenician port north of Tyre.",
+    "verses": ["MAT.15.21", "ACT.27.3"]
+  },
+  {
+    "id": "damascus",
+    "name": "Damascus",
+    "aliases": ["damascus"],
+    "lat": 33.513,
+    "lng": 36.292,
+    "note": "The ancient city where Saul was stopped on the road.",
+    "verses": ["2KI.5.12", "ACT.9.3"]
+  },
+  {
+    "id": "antioch",
+    "name": "Antioch",
+    "aliases": ["antioch"],
+    "lat": 36.202,
+    "lng": 36.16,
+    "note": "The Syrian Antioch where the disciples were first called Christians.",
+    "verses": ["ACT.11.26", "ACT.13.1"]
+  },
+  {
+    "id": "tarsus",
+    "name": "Tarsus",
+    "aliases": ["tarsus"],
+    "lat": 36.917,
+    "lng": 34.895,
+    "note": "Paul's home city in Cilicia.",
+    "verses": ["ACT.9.11", "ACT.22.3"]
+  },
+  {
+    "id": "ephesus",
+    "name": "Ephesus",
+    "aliases": ["ephesus"],
+    "lat": 37.939,
+    "lng": 27.341,
+    "note": "The great city of Asia where Paul taught.",
+    "verses": ["ACT.19.1", "REV.2.1"]
+  },
+  {
+    "id": "smyrna",
+    "name": "Smyrna",
+    "aliases": ["smyrna"],
+    "lat": 38.419,
+    "lng": 27.129,
+    "note": "A church of Asia, on the Aegean coast.",
+    "verses": ["REV.2.8"]
+  },
+  {
+    "id": "pergamum",
+    "name": "Pergamum",
+    "aliases": ["pergamum", "pergamos"],
+    "lat": 39.132,
+    "lng": 27.184,
+    "note": "A royal city of Asia, named among the seven churches.",
+    "verses": ["REV.2.12"]
+  },
+  {
+    "id": "thyatira",
+    "name": "Thyatira",
+    "aliases": ["thyatira"],
+    "lat": 38.921,
+    "lng": 27.836,
+    "note": "Lydia's city, and one of the seven churches.",
+    "verses": ["ACT.16.14", "REV.2.18"]
+  },
+  {
+    "id": "sardis",
+    "name": "Sardis",
+    "aliases": ["sardis"],
+    "lat": 38.488,
+    "lng": 28.04,
+    "note": "The old capital of Lydia, named among the seven churches.",
+    "verses": ["REV.3.1"]
+  },
+  {
+    "id": "philadelphia",
+    "name": "Philadelphia",
+    "aliases": ["philadelphia"],
+    "lat": 38.35,
+    "lng": 28.521,
+    "note": "A city of Asia named among the seven churches.",
+    "verses": ["REV.3.7"]
+  },
+  {
+    "id": "laodicea",
+    "name": "Laodicea",
+    "aliases": ["laodicea"],
+    "lat": 37.836,
+    "lng": 29.107,
+    "note": "A wealthy city of the Lycus valley, named among the seven churches.",
+    "verses": ["COL.4.16", "REV.3.14"]
+  },
+  {
+    "id": "corinth",
+    "name": "Corinth",
+    "aliases": ["corinth"],
+    "lat": 37.906,
+    "lng": 22.879,
+    "note": "The Greek city where Paul stayed and wrote.",
+    "verses": ["ACT.18.1", "1CO.1.2"]
+  },
+  {
+    "id": "athens",
+    "name": "Athens",
+    "aliases": ["athens"],
+    "lat": 37.972,
+    "lng": 23.726,
+    "note": "Where Paul spoke on the Areopagus.",
+    "verses": ["ACT.17.16", "ACT.17.22"]
+  },
+  {
+    "id": "thessalonica",
+    "name": "Thessalonica",
+    "aliases": ["thessalonica"],
+    "lat": 40.64,
+    "lng": 22.944,
+    "note": "The Macedonian city of the Thessalonian church.",
+    "verses": ["ACT.17.1", "1TH.1.1"]
+  },
+  {
+    "id": "philippi",
+    "name": "Philippi",
+    "aliases": ["philippi"],
+    "lat": 41.012,
+    "lng": 24.286,
+    "note": "The Roman colony where Lydia and the jailer believed.",
+    "verses": ["ACT.16.12", "PHP.1.1"]
+  },
+  {
+    "id": "berea",
+    "name": "Berea",
+    "aliases": ["berea"],
+    "lat": 40.52,
+    "lng": 22.202,
+    "note": "The Macedonian city that searched the Scriptures.",
+    "verses": ["ACT.17.10", "ACT.17.11"]
+  },
+  {
+    "id": "rome",
+    "name": "Rome",
+    "aliases": ["rome"],
+    "lat": 41.89,
+    "lng": 12.492,
+    "note": "The capital where Paul arrived in chains.",
+    "verses": ["ACT.28.16", "ROM.1.7"]
+  },
+  {
+    "id": "malta",
+    "name": "Malta",
+    "aliases": ["malta", "melita"],
+    "lat": 35.918,
+    "lng": 14.409,
+    "note": "The island where Paul's ship was wrecked.",
+    "verses": ["ACT.28.1"]
+  },
+  {
+    "id": "crete",
+    "name": "Crete",
+    "aliases": ["crete"],
+    "lat": 35.24,
+    "lng": 24.809,
+    "note": "The island Paul sailed past, and where Titus worked.",
+    "verses": ["ACT.27.12", "TIT.1.5"]
+  },
+  {
+    "id": "cyprus",
+    "name": "Cyprus",
+    "aliases": ["cyprus"],
+    "lat": 35.126,
+    "lng": 33.2,
+    "note": "The island of Barnabas, and Paul's first voyage.",
+    "verses": ["ACT.4.36", "ACT.13.4"]
+  },
+  {
+    "id": "alexandria",
+    "name": "Alexandria",
+    "aliases": ["alexandria"],
+    "lat": 31.2,
+    "lng": 29.909,
+    "note": "The Egyptian port of Apollos and of the grain ships.",
+    "verses": ["ACT.18.24", "ACT.27.6"]
+  },
+  {
+    "id": "egypt",
+    "name": "Egypt",
+    "aliases": ["egypt"],
+    "lat": 30.8,
+    "lng": 31.1,
+    "note": "The land of the Nile, marked here at the delta.",
+    "verses": ["GEN.46.6", "EXO.1.8", "MAT.2.13"]
+  },
+  {
+    "id": "sinai",
+    "name": "Sinai",
+    "aliases": ["sinai", "horeb", "mount sinai", "mount horeb"],
+    "lat": 28.539,
+    "lng": 33.975,
+    "note": "The traditional mountain of the law. Horeb is often identified with it.",
+    "verses": ["EXO.3.1", "EXO.19.18", "EXO.19.20"]
+  },
+  {
+    "id": "babylon",
+    "name": "Babylon",
+    "aliases": ["babylon"],
+    "lat": 32.542,
+    "lng": 44.421,
+    "note": "The city on the Euphrates that took Judah into exile.",
+    "verses": ["2KI.24.15", "PSA.137.1", "REV.18.2"]
+  },
+  {
+    "id": "ur",
+    "name": "Ur",
+    "aliases": ["ur", "ur of the chaldees", "ur of the chaldeans"],
+    "lat": 30.962,
+    "lng": 46.104,
+    "note": "Abraham's city in the land of the Chaldeans.",
+    "verses": ["GEN.11.31", "GEN.15.7"]
+  },
+  {
+    "id": "haran",
+    "name": "Haran",
+    "aliases": ["haran", "charran"],
+    "lat": 36.864,
+    "lng": 39.031,
+    "note": "The city where Abraham's family stayed before Canaan.",
+    "verses": ["GEN.11.31", "GEN.12.4", "ACT.7.2"]
+  },
+  {
+    "id": "nineveh",
+    "name": "Nineveh",
+    "aliases": ["nineveh", "nineve"],
+    "lat": 36.359,
+    "lng": 43.153,
+    "note": "The great city of Assyria where Jonah preached.",
+    "verses": ["JON.1.2", "JON.3.3", "NAM.1.1"]
+  },
+  {
+    "id": "shushan",
+    "name": "Shushan",
+    "aliases": ["shushan", "susa"],
+    "lat": 32.189,
+    "lng": 48.257,
+    "note": "The palace city of Esther and Nehemiah.",
+    "verses": ["EST.1.2", "NEH.1.1", "DAN.8.2"]
+  },
+  {
+    "id": "ararat",
+    "name": "Ararat",
+    "aliases": ["ararat", "mountains of ararat"],
+    "lat": 39.702,
+    "lng": 44.298,
+    "note": "The mountains where the ark came to rest. A single peak is not identified.",
+    "verses": ["GEN.8.4"]
+  },
+  {
+    "id": "canaan",
+    "name": "Canaan",
+    "aliases": ["canaan"],
+    "lat": 31.9,
+    "lng": 35.2,
+    "note": "The land promised to Abraham, marked here in the central hills.",
+    "verses": ["GEN.12.5", "EXO.6.4"]
+  },
+  {
+    "id": "moab",
+    "name": "Moab",
+    "aliases": ["moab"],
+    "lat": 31.55,
+    "lng": 35.75,
+    "note": "The plateau east of the Dead Sea.",
+    "verses": ["RUT.1.1", "DEU.34.5"]
+  },
+  {
+    "id": "edom",
+    "name": "Edom",
+    "aliases": ["edom", "mount seir", "seir"],
+    "lat": 30.33,
+    "lng": 35.45,
+    "note": "The land of Esau, south of the Dead Sea.",
+    "verses": ["GEN.36.8", "NUM.20.14"]
+  },
+  {
+    "id": "nebo",
+    "name": "Mount Nebo",
+    "aliases": ["nebo", "mount nebo", "pisgah"],
+    "lat": 31.768,
+    "lng": 35.725,
+    "note": "The height in Moab where Moses looked into the land.",
+    "verses": ["DEU.32.49", "DEU.34.1"]
+  },
+  {
+    "id": "patmos",
+    "name": "Patmos",
+    "aliases": ["patmos"],
+    "lat": 37.318,
+    "lng": 26.548,
+    "note": "The Aegean island where John received the Revelation.",
+    "verses": ["REV.1.9"]
+  },
+  {
+    "id": "elah",
+    "name": "Valley of Elah",
+    "aliases": ["elah", "valley of elah"],
+    "lat": 31.69,
+    "lng": 34.958,
+    "note": "The valley where David met Goliath.",
+    "verses": ["1SA.17.2", "1SA.17.19"]
+  },
+  {
+    "id": "troas",
+    "name": "Troas",
+    "aliases": ["troas"],
+    "lat": 39.495,
+    "lng": 26.082,
+    "note": "The port where Paul saw the man of Macedonia, and later raised Eutychus.",
+    "verses": ["ACT.16.8", "ACT.20.6", "2CO.2.12"]
+  },
+  {
+    "id": "samothrace",
+    "name": "Samothrace",
+    "aliases": ["samothrace", "samothracia"],
+    "lat": 40.483,
+    "lng": 25.527,
+    "note": "The island Paul passed on the sail from Troas toward Macedonia.",
+    "verses": ["ACT.16.11"]
+  },
+  {
+    "id": "neapolis",
+    "name": "Neapolis",
+    "aliases": ["neapolis"],
+    "lat": 40.937,
+    "lng": 24.412,
+    "note": "The port for Philippi, where Paul landed in Macedonia.",
+    "verses": ["ACT.16.11"]
+  },
+  {
+    "id": "iconium",
+    "name": "Iconium",
+    "aliases": ["iconium"],
+    "lat": 37.871,
+    "lng": 32.484,
+    "note": "A city of Galatia where Paul and Barnabas preached and were driven out.",
+    "verses": ["ACT.13.51", "ACT.14.1"]
+  },
+  {
+    "id": "lystra",
+    "name": "Lystra",
+    "aliases": ["lystra"],
+    "lat": 37.603,
+    "lng": 32.333,
+    "note": "Timothy's city. Here the crowd honored Paul, then stoned him.",
+    "verses": ["ACT.14.6", "ACT.16.1"]
+  },
+  {
+    "id": "derbe",
+    "name": "Derbe",
+    "aliases": ["derbe"],
+    "lat": 37.349,
+    "lng": 33.361,
+    "note": "The last city of the first journey before they turned back. The mound is the traditional site.",
+    "verses": ["ACT.14.6", "ACT.14.20"]
+  },
+  {
+    "id": "paphos",
+    "name": "Paphos",
+    "aliases": ["paphos"],
+    "lat": 34.757,
+    "lng": 32.415,
+    "note": "The western city of Cyprus, where the proconsul believed.",
+    "verses": ["ACT.13.6"]
+  },
+  {
+    "id": "salamis",
+    "name": "Salamis",
+    "aliases": ["salamis"],
+    "lat": 35.185,
+    "lng": 33.902,
+    "note": "The eastern city of Cyprus, where they began to preach in the synagogues.",
+    "verses": ["ACT.13.5"]
+  },
+  {
+    "id": "antioch-pisidia",
+    "name": "Pisidian Antioch",
+    "aliases": ["pisidian antioch", "antioch in pisidia", "antioch of pisidia"],
+    "lat": 38.307,
+    "lng": 31.189,
+    "note": "A Roman colony in the highlands, not the Antioch in Syria. Paul preached in the synagogue here.",
+    "verses": ["ACT.13.14"]
+  },
+  {
+    "id": "perga",
+    "name": "Perga",
+    "aliases": ["perga"],
+    "lat": 36.961,
+    "lng": 30.854,
+    "note": "A city of Pamphylia where John Mark left Paul and Barnabas.",
+    "verses": ["ACT.13.13"]
+  },
+  {
+    "id": "attalia",
+    "name": "Attalia",
+    "aliases": ["attalia"],
+    "lat": 36.887,
+    "lng": 30.705,
+    "note": "The port they sailed from on the way back to Syrian Antioch.",
+    "verses": ["ACT.14.25"]
+  },
+  {
+    "id": "seleucia",
+    "name": "Seleucia",
+    "aliases": ["seleucia"],
+    "lat": 36.126,
+    "lng": 35.923,
+    "note": "The port of Syrian Antioch, where the first journey went on board.",
+    "verses": ["ACT.13.4"]
+  },
+  {
+    "id": "myra",
+    "name": "Myra",
+    "aliases": ["myra"],
+    "lat": 36.259,
+    "lng": 29.985,
+    "note": "The Lycian port where Paul changed ships for Italy.",
+    "verses": ["ACT.27.5"]
+  },
+  {
+    "id": "cnidus",
+    "name": "Cnidus",
+    "aliases": ["cnidus"],
+    "lat": 36.686,
+    "lng": 27.374,
+    "note": "A cape they reached slowly, sailing into the wind.",
+    "verses": ["ACT.27.7"]
+  },
+  {
+    "id": "fair-havens",
+    "name": "Fair Havens",
+    "aliases": ["fair havens"],
+    "lat": 34.933,
+    "lng": 24.798,
+    "note": "A bay on the south of Crete, near Lasea, where Paul urged them to winter.",
+    "verses": ["ACT.27.8"]
+  },
+  {
+    "id": "clauda",
+    "name": "Clauda",
+    "aliases": ["clauda", "cauda"],
+    "lat": 34.84,
+    "lng": 24.09,
+    "note": "The small island under whose lee they secured the boat.",
+    "verses": ["ACT.27.16"]
+  },
+  {
+    "id": "syracuse",
+    "name": "Syracuse",
+    "aliases": ["syracuse"],
+    "lat": 37.076,
+    "lng": 15.287,
+    "note": "The Sicilian port where the ship stayed three days.",
+    "verses": ["ACT.28.12"]
+  },
+  {
+    "id": "rhegium",
+    "name": "Rhegium",
+    "aliases": ["rhegium"],
+    "lat": 38.111,
+    "lng": 15.651,
+    "note": "The harbor at the toe of Italy, where they waited for a south wind.",
+    "verses": ["ACT.28.13"]
+  },
+  {
+    "id": "puteoli",
+    "name": "Puteoli",
+    "aliases": ["puteoli"],
+    "lat": 40.827,
+    "lng": 14.122,
+    "note": "The Italian port where Paul found believers and stayed seven days.",
+    "verses": ["ACT.28.13"]
+  },
+  {
+    "id": "appii-forum",
+    "name": "Appii Forum",
+    "aliases": ["appii forum", "forum of appius", "appius"],
+    "lat": 41.467,
+    "lng": 12.928,
+    "note": "A station on the Appian Way where believers from Rome met Paul. The marker is the traditional stretch of that road.",
+    "verses": ["ACT.28.15"]
+  },
+  {
+    "id": "three-taverns",
+    "name": "Three Taverns",
+    "aliases": ["three taverns", "the three taverns"],
+    "lat": 41.543,
+    "lng": 12.85,
+    "note": "Another station on the way to Rome where the brethren met him.",
+    "verses": ["ACT.28.15"]
+  },
+  {
+    "id": "cenchrea",
+    "name": "Cenchrea",
+    "aliases": ["cenchrea", "cencrea"],
+    "lat": 37.884,
+    "lng": 22.999,
+    "note": "The eastern port of Corinth, and Phoebe's church.",
+    "verses": ["ACT.18.18", "ROM.16.1"]
+  },
+  {
+    "id": "miletus",
+    "name": "Miletus",
+    "aliases": ["miletus", "miletum"],
+    "lat": 37.531,
+    "lng": 27.277,
+    "note": "Where Paul called the elders of Ephesus and prayed with them on the beach.",
+    "verses": ["ACT.20.15", "ACT.20.17"]
+  },
+  {
+    "id": "assos",
+    "name": "Assos",
+    "aliases": ["assos"],
+    "lat": 39.489,
+    "lng": 26.337,
+    "note": "Paul went here on foot while the ship sailed around the cape.",
+    "verses": ["ACT.20.13"]
+  },
+  {
+    "id": "mitylene",
+    "name": "Mitylene",
+    "aliases": ["mitylene", "mytilene"],
+    "lat": 39.107,
+    "lng": 26.555,
+    "note": "The harbor of Lesbos, the night after Assos.",
+    "verses": ["ACT.20.14"]
+  },
+  {
+    "id": "chios",
+    "name": "Chios",
+    "aliases": ["chios"],
+    "lat": 38.368,
+    "lng": 26.137,
+    "note": "An island they came over against on the sail south.",
+    "verses": ["ACT.20.15"]
+  },
+  {
+    "id": "samos",
+    "name": "Samos",
+    "aliases": ["samos"],
+    "lat": 37.754,
+    "lng": 26.977,
+    "note": "The island they reached the day after Chios.",
+    "verses": ["ACT.20.15"]
+  },
+  {
+    "id": "cos",
+    "name": "Cos",
+    "aliases": ["cos", "coos"],
+    "lat": 36.893,
+    "lng": 27.288,
+    "note": "The first island on the run from Miletus toward Tyre.",
+    "verses": ["ACT.21.1"]
+  },
+  {
+    "id": "rhodes",
+    "name": "Rhodes",
+    "aliases": ["rhodes"],
+    "lat": 36.435,
+    "lng": 28.217,
+    "note": "The island after Cos, on the way to Patara.",
+    "verses": ["ACT.21.1"]
+  },
+  {
+    "id": "patara",
+    "name": "Patara",
+    "aliases": ["patara"],
+    "lat": 36.26,
+    "lng": 29.315,
+    "note": "The Lycian port where they found a ship crossing to Phoenicia.",
+    "verses": ["ACT.21.1"]
+  },
+  {
+    "id": "ptolemais",
+    "name": "Ptolemais",
+    "aliases": ["ptolemais"],
+    "lat": 32.928,
+    "lng": 35.082,
+    "note": "A Phoenician port where they greeted the believers and stayed one day.",
+    "verses": ["ACT.21.7"]
+  },
+  {
+    "id": "kadesh",
+    "name": "Kadesh",
+    "aliases": ["kadesh", "kadeshbarnea", "kadesh-barnea"],
+    "lat": 30.687,
+    "lng": 34.495,
+    "note": "The wilderness camp of the spies and of Moses' striking the rock. Marked at the traditional oasis; the text does not fix a modern map point.",
+    "verses": ["NUM.13.26", "NUM.20.1"]
+  },
+  {
+    "id": "colossae",
+    "name": "Colossae",
+    "aliases": ["colossae", "colosse"],
+    "lat": 37.787,
+    "lng": 29.257,
+    "note": "A city of the Lycus valley. Paul wrote to the church there, and to Philemon.",
+    "verses": ["COL.1.2"]
+  },
+  {
+    "id": "hierapolis",
+    "name": "Hierapolis",
+    "aliases": ["hierapolis"],
+    "lat": 37.925,
+    "lng": 29.126,
+    "note": "A city near Colossae and Laodicea, named in the greetings.",
+    "verses": ["COL.4.13"]
+  },
+  {
+    "id": "galatia",
+    "name": "Galatia",
+    "aliases": ["galatia"],
+    "lat": 39.1,
+    "lng": 32.0,
+    "note": "A region of central Asia Minor, not one city. The letter is to the churches there.",
+    "verses": ["GAL.1.2", "ACT.16.6"]
+  }
+]
