@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { SHELVES, bookById, formatRef, parseRef, verseId } from '../lib/canon'
 import { loadBook, loadGloss, loadOriginal, loadXrefs, plain, translationName, type BookFile, type Gloss, type OriginalWord, type Translation, type Verse, type XRefGroup } from '../lib/bible'
 import { threadsForVerse, loadTrails, type ThreadHit, type Trail } from '../lib/catalog'
@@ -211,7 +211,14 @@ export function Study({
   const [openedFor, setOpenedFor] = useState('')
   const [opened, setOpened] = useState({ read: true, words: false, links: false })
   const [memoryNote, setMemoryNote] = useState('')
+  const [lineOpen, setLineOpen] = useState(false)
+  const [aroundOpen, setAroundOpen] = useState(false)
+  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 959px)').matches)
   const stripRef = useRef<HTMLDivElement>(null)
+  const railRef = useRef<HTMLDivElement>(null)
+  const lineRef = useRef<HTMLDetailsElement>(null)
+  const pendingScroll = useRef<'line' | 'word' | 'rail' | null>(null)
+  const [scrollTick, setScrollTick] = useState(0)
   const id = verseId(route.book, route.chapter, route.verse)
   const journal = state.journal[id]
 
@@ -220,7 +227,17 @@ export function Study({
     setStep('read')
     setOpened({ read: true, words: false, links: false })
     setMemoryNote('')
+    setLineOpen(false)
+    setAroundOpen(false)
   }
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 959px)')
+    const apply = () => setNarrow(media.matches)
+    apply()
+    media.addEventListener('change', apply)
+    return () => media.removeEventListener('change', apply)
+  }, [])
 
   useEffect(() => {
     setPosition(route.book, route.chapter, route.verse)
@@ -353,18 +370,38 @@ export function Study({
     strip.scrollLeft += nodeBox.left - stripBox.left - (stripBox.width - nodeBox.width) / 2
   }, [route.book, route.chapter, route.verse, numbers.length])
 
+  function queueStudyScroll(kind: 'line' | 'word' | 'rail') {
+    pendingScroll.current = kind
+    setScrollTick((tick) => tick + 1)
+  }
+
   function openStep(nextStep: StepId) {
     setStep(nextStep)
     if (nextStep === 'read' || nextStep === 'words' || nextStep === 'links') {
       setOpened((current) => ({ ...current, [nextStep]: true }))
     }
+    if (nextStep === 'words') setLineOpen(true)
+    queueStudyScroll(nextStep === 'words' ? 'line' : 'rail')
   }
 
-  function chooseWord(index: number) {
+  function chooseWord(index: number, fromEnglish = false) {
     setPick(index)
     setStep('words')
     setOpened((current) => ({ ...current, words: true }))
+    setLineOpen(true)
+    if (fromEnglish) queueStudyScroll('word')
   }
+
+  useLayoutEffect(() => {
+    const kind = pendingScroll.current
+    if (!kind) return
+    pendingScroll.current = null
+    if (!window.matchMedia('(max-width: 959px)').matches) return
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    const word = lineRef.current?.querySelector<HTMLElement>('.orig-word.on')
+    const node = kind === 'rail' ? railRef.current : kind === 'word' ? (word ?? lineRef.current) : lineRef.current
+    node?.scrollIntoView({ block: 'start', behavior })
+  }, [scrollTick])
 
   function selectEnglish(surface: string, strongs: string[]) {
     const ids = strongs.length ? strongs : strongsInKjv(kjvVerse, surface)
@@ -372,7 +409,7 @@ export function Study({
     const index = words.findIndex((item) => item.s === chosen)
     const fallback = index >= 0 ? index : words.findIndex((item) => item.s && ids.includes(item.s))
     if (fallback >= 0) {
-      chooseWord(fallback)
+      chooseWord(fallback, true)
       return
     }
     onWord({ surface, strongs: ids, ref: id })
@@ -392,7 +429,7 @@ export function Study({
           <section className="study-stage" aria-label="Verse">
             <p className="kicker">Study</p>
             <h1>{formatRef(id)}</h1>
-            <p className="lede">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'}</p>
+            <p className="lede study-direction">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'}</p>
             <div className={hex ? 'study-verse inked' : 'study-verse'} style={stageStyle}>
               <p className="vt">
                 {hosted ? (
@@ -465,9 +502,14 @@ export function Study({
             </div>
           </section>
 
-          <section className="study-around" aria-label="Around it">
-            <p className="kicker">Around it</p>
-            <h2>The sentences beside this one</h2>
+          <details className="study-fold study-around" open={!narrow || aroundOpen} onToggle={(event) => { if (window.matchMedia('(max-width: 959px)').matches) setAroundOpen(event.currentTarget.open) }}>
+            <summary>
+              <span className="kicker">Around it</span>
+              <span className="study-fold-title">The sentences beside this one</span>
+            </summary>
+            <div className="study-fold-body">
+            <p className="kicker study-fold-label">Around it</p>
+            <h2 className="study-fold-label">The sentences beside this one</h2>
             {kjv == null ? <p className="quiet">Opening the sentences beside it…</p> : null}
             {kjv != null && previous == null && next == null ? <p className="quiet">This verse stands alone in the chapter.</p> : null}
             <div className="pair">
@@ -530,10 +572,22 @@ export function Study({
                 )}
               </article>
             </div>
-          </section>
+            </div>
+          </details>
 
-          <section className="manuscript" aria-label="Original">
-            <p className="kicker">Original</p>
+          <details
+            className="study-fold manuscript"
+            ref={lineRef}
+            open={!narrow || lineOpen}
+            onToggle={(event) => { if (window.matchMedia('(max-width: 959px)').matches) setLineOpen(event.currentTarget.open) }}
+          >
+            <summary>
+              <span className="kicker">Original</span>
+              <span className="study-fold-title">{tongue}</span>
+            </summary>
+            <div className="study-fold-body">
+            <p className="kicker study-fold-label">Original</p>
+            <p className="lede study-direction">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'}</p>
             {original === null ? <p className="quiet">Opening the {tongue.toLowerCase()}…</p> : null}
             {fallback ? <p className="quiet">These are the dictionary forms behind the King James words.</p> : null}
             {words.length ? (
@@ -554,10 +608,12 @@ export function Study({
                 {aside ? <p>{aside}</p> : null}
               </>
             ) : original !== null ? <p className="quiet">No original words are recorded for this verse.</p> : null}
-          </section>
+            </div>
+          </details>
         </div>
 
         <div className="study-step-col">
+          <div className="study-step-head" ref={railRef}>
           <div className="step-progress" role="progressbar" aria-valuemin={0} aria-valuemax={4} aria-valuenow={doneCount} aria-label="Study progress">
             <i style={{ width: `${(doneCount / 4) * 100}%` }} />
           </div>
@@ -578,6 +634,7 @@ export function Study({
                 <span className="step-count">{counts[item.id]}</span>
               </button>
             ))}
+          </div>
           </div>
 
           <section
