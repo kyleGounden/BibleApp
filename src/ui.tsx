@@ -745,6 +745,7 @@ export function WordSheet({ ask, onClose }: { ask: WordAsk; onClose: () => void 
     <>
       <button type="button" className="sheet-back" aria-label="Close" onClick={onClose} />
       <aside className="sheet" role="dialog" aria-label={surface || 'Word'}>
+        <div className="sheet-scroll">
         <p className="kicker">Word</p>
         <h2>{surface || ask.surface}</h2>
         <section className="meaning">
@@ -867,6 +868,7 @@ export function WordSheet({ ask, onClose }: { ask: WordAsk; onClose: () => void 
               See {place.name} on the map
             </button>
           ) : null}
+        </div>
         </div>
       </aside>
     </>

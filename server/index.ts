@@ -7,6 +7,7 @@ import type { RowDataPacket } from 'mysql2/promise'
 import { parseSpokenRef, verseId as scriptureId } from '../src/lib/canon.js'
 import { changePassword, issueTokens, loginAccount, readUserId, refreshSubject, registerAccount, revokeRefresh, rotateRefresh, upsertUser, verifyGoogle } from './auth.js'
 import {
+  database,
   execute,
   mysqlConfigured,
   query,
@@ -784,12 +785,17 @@ app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   res.status(message === 'The church service could not complete that.' ? 500 : 503).json({ error: message })
 })
 
-const port = Number(process.env.PORT || process.env.API_PORT || 8787)
-const host = serving ? '0.0.0.0' : '127.0.0.1'
+const port = Number(process.env.PORT || process.env.HTTP_PLATFORM_PORT || process.env.API_PORT || 8787)
+const host = process.env.HOST || (process.env.HTTP_PLATFORM_PORT ? '127.0.0.1' : serving ? '0.0.0.0' : '127.0.0.1')
 const server = app.listen(port, host, () => {
   if (!process.env.GOOGLE_CLIENT_ID) console.log('Church API: Google sign-in can be added later.')
   if (!mysqlConfigured()) console.log('Church API: using a local database until MySQL is configured.')
-  console.log(`Church API on http://127.0.0.1:${port}`)
+  else {
+    database()
+      .then(() => console.log('Church database is ready.'))
+      .catch((error: unknown) => console.error('Church database is not available.', error))
+  }
+  console.log(`Church API on http://${host}:${port}`)
 })
 
 server.on('error', (error: NodeJS.ErrnoException) => {

@@ -233,8 +233,15 @@ function stepPassage(step: SermonStep): string {
 type EditorStep = { key: string; heading: string; passage: string; note: string }
 type EditorDraft = { id: string; title: string; steps: EditorStep[] }
 
+function newKey(): string {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+  const bytes = new Uint8Array(16)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')
+}
+
 function blankStep(): EditorStep {
-  return { key: crypto.randomUUID(), heading: '', passage: '', note: '' }
+  return { key: newKey(), heading: '', passage: '', note: '' }
 }
 
 function blankDraft(): EditorDraft {
@@ -247,7 +254,7 @@ function draftFrom(sermon: Sermon): EditorDraft {
     title: sermon.title,
     steps: sermon.steps.length
       ? sermon.steps.map((step) => ({
-        key: step.id || crypto.randomUUID(),
+        key: step.id || newKey(),
         heading: step.heading,
         passage: step.passage && parseRef(step.passage) ? formatRef(step.passage) : step.passage,
         note: step.note,

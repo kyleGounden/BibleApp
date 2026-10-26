@@ -12,6 +12,7 @@
     "start": "tsx server/index.ts --serve",
     "api": "tsx server/index.ts",
     "build": "tsc --noEmit && vite build",
+    "publish:iis": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-iis.ps1",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "cap:sync": "npm run build && npx cap sync",
     "cap:android": "npx cap open android",

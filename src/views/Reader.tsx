@@ -530,8 +530,9 @@ export function Reader({
       className="reading scripture"
       onTouchStart={(event) => {
         const target = event.target
-        if (target instanceof Element && target.closest('.chapter-rail, .vn')) {
+        if (target instanceof Element && target.closest('.chapter-rail, .vn, .actions, .ink-panel')) {
           delete event.currentTarget.dataset.x
+          delete event.currentTarget.dataset.y
           return
         }
         const touch = event.changedTouches[0]

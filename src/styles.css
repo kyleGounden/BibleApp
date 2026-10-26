@@ -817,6 +817,7 @@ h2 { font-size: 1.55rem; margin: 0 0 0.6rem; }
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: thin;
+  touch-action: pan-x;
 }
 .tool-row > * { flex: 0 0 auto; }
 .tool-ref { white-space: nowrap; }
@@ -1145,21 +1146,38 @@ textarea,
   border: 0;
   background: rgba(20, 16, 10, 0.35);
 }
+.sheet-open .top,
+.sheet-open .main,
+.sheet-open .bottom-nav,
+.sheet-open .side-nav,
+.sheet-open .voice-dock {
+  pointer-events: none;
+}
 .sheet {
   position: fixed;
   z-index: 41;
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--panel);
   border: 1px solid var(--rule);
   border-radius: 1rem 1rem 0 0;
   box-shadow: var(--elev);
-  padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom));
   max-height: min(78vh, 40rem);
-  overflow: auto;
+  overflow: hidden;
   animation: sheet-in 0.28s ease;
   transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+.sheet-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(78vh, 40rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom));
 }
 @keyframes sheet-in {
   from { opacity: 0; transform: translateY(12px); }
@@ -1231,6 +1249,7 @@ textarea,
 }
 @media (min-width: 960px) {
   .sheet { left: auto; top: 0; width: min(26rem, 40vw); max-height: none; border-top: 0; border-left: 1px solid var(--rule); animation-name: sheet-side; }
+  .sheet-scroll { max-height: none; }
 }
 @keyframes sheet-side {
   from { opacity: 0; transform: translateX(12px); }

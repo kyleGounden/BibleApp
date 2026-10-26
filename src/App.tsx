@@ -220,6 +220,7 @@ export function App() {
     setMoreOpen(false)
     setReadingOpen(false)
     setSearchOpen(false)
+    setSheet(null)
   }, [route])
 
   useEffect(() => {
@@ -326,7 +327,7 @@ export function App() {
   )
 
   return (
-    <div className="app">
+    <div className={sheet ? 'app sheet-open' : 'app'}>
       <a className="skip" href="#content">Skip to the text</a>
       <nav className="side-nav" aria-label="Primary">
         <div className="side-brand">
@@ -475,6 +476,7 @@ export function App() {
         <>
           <button type="button" className="sheet-back" aria-label="Close" onClick={() => setMoreOpen(false)} />
           <aside ref={moreRef} className="sheet more-sheet" role="dialog" aria-label="More">
+            <div className="sheet-scroll">
             <p className="kicker">Elsewhere</p>
             <h2>More</h2>
             {[byId.genealogy, byId.return, byId.about, byId.refs, byId.canon].map((item) => (
@@ -493,6 +495,7 @@ export function App() {
                 <small>{churchHint}</small>
               </span>
             </button>
+            </div>
           </aside>
         </>
       ) : null}

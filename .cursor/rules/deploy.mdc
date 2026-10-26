@@ -1,0 +1,12 @@
+---
+description: When the user says deploy, update the live BibleApp site
+alwaysApply: true
+---
+
+# Deploy
+
+When the user says "deploy", or says to update prod with the latest version, publish this project to the live IIS site and verify it. Do not ask them to repeat the server setup.
+
+Read the full procedure, server access, and the files that must be preserved from `C:\Users\kyle\AppData\Local\Cursor\AgentStores\cursor_agent_stores\u111497161\files\bibleapp-production.md` before connecting.
+
+Keep the server's existing `.env` and `.data`. Do not replace the JWT secret, the NIV key, or the SQLite church database. Recycle only the Scripture app pool. Leave the other sites and MySQL unchanged.

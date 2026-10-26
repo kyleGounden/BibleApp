@@ -63,6 +63,13 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['kokoro-js', '@huggingface/transformers'],
   },
-  server: { host: '127.0.0.1', port: 5173, proxy: apiProxy },
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    proxy: apiProxy,
+    // publish/ is a deploy copy. Windows locks files there and an EBUSY
+    // watch error takes the whole dev server down.
+    watch: { ignored: ['**/publish/**'] },
+  },
   preview: { host: '127.0.0.1', port: 4173, proxy: apiProxy },
 })
