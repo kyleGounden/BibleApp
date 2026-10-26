@@ -3,17 +3,18 @@ import { SHELVES, bookById, formatRef, parseRef, verseId } from '../lib/canon'
 import { loadBook, loadGloss, loadOriginal, loadXrefs, plain, translationName, type BookFile, type Gloss, type OriginalWord, type Translation, type Verse, type XRefGroup } from '../lib/bible'
 import { threadsForVerse, loadTrails, type ThreadHit, type Trail } from '../lib/catalog'
 import { EsvError, readEsvVerse, useEsvToken } from '../lib/esv'
+import { NivError, readNivVerse } from '../lib/niv'
 import { functionWord } from '../lib/grammar'
 import { bookGuide, useGuides } from '../lib/guide'
 import { loadPlaces, placesInText, type Place } from '../lib/places'
 import { go, type Route } from '../lib/router'
 import { SHELVES as SHELF_COPY, RANKS, rankIndex, type RankName } from '../lib/school'
-import { addMemory, addVerseToFolio, createFolio, inkHex, learnVerse, setHighlight, setJournal, setNote, setPosition, toggleMark, useAppState, type Journal } from '../lib/storage'
+import { addMemory, addVerseToFolio, createFolio, inkHex, learnVerse, memoryLimitNote, setHighlight, setJournal, setNote, setPosition, toggleMark, useAppState, type Journal } from '../lib/storage'
 import { ChurchNote } from './ChurchNote'
 import { useVoice } from '../lib/speech'
 import { GrammarBlock, WordLesson } from '../teach'
-import { EsvNotice, GodLine, ListenButton, SpokenText, VerseText, useDivineBook, verseMark, type WordAsk } from '../ui'
-import { markDivine, verseGod } from '../lib/divine'
+import { EsvNotice, NivNotice, GodLine, ListenButton, SpokenText, VerseText, hostedVerseGod, useDivineBook, useHostedGod, verseMark, type WordAsk } from '../ui'
+import { verseGod } from '../lib/divine'
 
 type StepId = 'read' | 'words' | 'links' | 'notes'
 
@@ -42,6 +43,7 @@ const EDITIONS: { id: Translation; title: string }[] = [
   { id: 'kjv', title: 'King James Version' },
   { id: 'web', title: 'World English Bible' },
   { id: 'esv', title: 'English Standard Version' },
+  { id: 'niv', title: 'New International Version' },
 ]
 
 function englishOf(verse: Verse | undefined, strong?: string): { phrase: string; n: number } | null {
@@ -202,8 +204,8 @@ export function Study({
   const [trails, setTrails] = useState<Trail[]>([])
   const [gloss, setGloss] = useState<Record<string, Gloss>>({})
   const [places, setPlaces] = useState<Place[]>([])
-  const [esvText, setEsvText] = useState('')
-  const [esvNote, setEsvNote] = useState('')
+  const [hostedText, setHostedText] = useState('')
+  const [hostedNote, setHostedNote] = useState('')
   const [pick, setPick] = useState(0)
   const [step, setStep] = useState<StepId>('read')
   const [openedFor, setOpenedFor] = useState('')
@@ -245,22 +247,28 @@ export function Study({
   }, [book, route.chapter, route.verse, id])
 
   useEffect(() => {
-    if (state.translation !== 'esv') return
+    if (state.translation !== 'esv' && state.translation !== 'niv') return
     let live = true
-    setEsvText('')
-    setEsvNote('')
-    readEsvVerse(id)
+    setHostedText('')
+    setHostedNote('')
+    const request = state.translation === 'niv' ? readNivVerse(id) : readEsvVerse(id)
+    request
       .then((text) => {
-        if (live) setEsvText(text)
+        if (live) setHostedText(text)
       })
       .catch((err: unknown) => {
-        if (live) setEsvNote(err instanceof EsvError ? err.message : 'The ESV text did not load.')
+        if (live) setHostedNote(err instanceof EsvError || err instanceof NivError ? err.message : 'The text did not load.')
       })
     return () => {
       live = false
     }
   }, [id, state.translation, esvToken])
 
+  const hostedPack = useHostedGod(
+    state.translation === 'esv' || state.translation === 'niv' ? state.translation : null,
+    route.book,
+    route.chapter,
+  )
   const kjvVerse = kjv?.chapters[String(route.chapter)]?.[String(route.verse)]
   const webVerse = web?.chapters[String(route.chapter)]?.[String(route.verse)]
   const pointed = original ?? []
@@ -293,9 +301,10 @@ export function Study({
   const notes = noteCount(journal, state.notes[id])
   const xrefCount = groups.reduce((sum, group) => sum + group.v.length, 0)
   const linkCount = places.length + xrefCount + trails.length + threads.length
-  const ready = [plain(kjvVerse), plain(webVerse), esvText].filter(Boolean).length
+  const hosted = state.translation === 'esv' || state.translation === 'niv'
+  const ready = [plain(kjvVerse), plain(webVerse), hostedText].filter(Boolean).length
   const doneCount = [opened.read, opened.words, opened.links, notes > 0].filter(Boolean).length
-  const activeText = state.translation === 'esv' ? esvText : state.translation === 'web' ? plain(webVerse) : plain(kjvVerse)
+  const activeText = hosted ? hostedText : state.translation === 'web' ? plain(webVerse) : plain(kjvVerse)
   const inMemory = state.deck.some((card) => card.translation === state.translation && card.verses.length === 1 && card.verses[0] === id)
   const inkId = state.highlights[id]
   const ink = inkId ? state.palette.find((item) => item.id === inkId) : undefined
@@ -386,10 +395,10 @@ export function Study({
             <p className="lede">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'}</p>
             <div className={hex ? 'study-verse inked' : 'study-verse'} style={stageStyle}>
               <p className="vt">
-                {state.translation === 'esv' ? (
-                  esvText
-                    ? <SpokenText text={esvText} god={markDivine([esvText])[0]} mark={verseMark(voice, id, 'esv')} phrase={phrase} />
-                    : (esvNote ? '' : 'Opening the verse…')
+                {hosted ? (
+                  hostedText
+                    ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, state.translation)} phrase={phrase} />
+                    : (hostedNote ? '' : 'Opening the verse…')
                 ) : state.translation === 'web' ? (
                   webVerse
                     ? <VerseText verse={webVerse} god={verseGod(webGod, route.chapter, route.verse)} spokenAt={verseMark(voice, id, 'web')} phrase={phrase} onWord={selectEnglish} />
@@ -400,8 +409,9 @@ export function Study({
                     : 'Opening the verse…'
                 )}
               </p>
-              {state.translation === 'esv' && esvNote ? <p className="miss">{esvNote}</p> : null}
-              {state.translation === 'esv' && esvText ? <EsvNotice /> : null}
+              {hosted && hostedNote ? <p className="miss">{hostedNote}</p> : null}
+              {state.translation === 'esv' && hostedText ? <EsvNotice /> : null}
+              {state.translation === 'niv' && hostedText ? <NivNotice /> : null}
             </div>
             <div className="study-tools">
               <ListenButton
@@ -585,15 +595,15 @@ export function Study({
                   {editions.map((edition) => (
                     <section key={edition.id} className={edition.id === state.translation ? 'witness on' : 'witness'}>
                       <p className="kicker">{translationName(edition.id)}</p>
-                      {edition.id === 'esv' ? (
-                        state.translation === 'esv' ? (
+                      {edition.id === 'esv' || edition.id === 'niv' ? (
+                        state.translation === edition.id ? (
                           <>
-                            <p className="vt">{esvText ? <SpokenText text={esvText} god={markDivine([esvText])[0]} mark={verseMark(voice, id, 'esv')} phrase={phrase} /> : (esvNote ? '' : 'Opening the verse…')}</p>
-                            {esvNote ? <p className="miss">{esvNote}</p> : null}
-                            {esvText ? <EsvNotice /> : null}
+                            <p className="vt">{hostedText ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, edition.id)} phrase={phrase} /> : (hostedNote ? '' : 'Opening the verse…')}</p>
+                            {hostedNote ? <p className="miss">{hostedNote}</p> : null}
+                            {hostedText ? (edition.id === 'niv' ? <NivNotice /> : <EsvNotice />) : null}
                           </>
                         ) : (
-                          <p className="quiet">Choose ESV in the bar above when you want that witness too.</p>
+                          <p className="quiet">Choose {edition.id === 'niv' ? 'NIV' : 'ESV'} in the bar above when you want that witness too.</p>
                         )
                       ) : (
                         <p className="vt">
@@ -767,7 +777,7 @@ export function Study({
                       disabled={!activeText || inMemory}
                       onClick={() => {
                         const added = addMemory(state.translation, [id], activeText)
-                        setMemoryNote(added ? 'Added to Memory.' : 'Memory could not take this verse.')
+                        setMemoryNote(added ? 'Added to Memory.' : memoryLimitNote(state.translation))
                       }}
                     >
                       {inMemory ? 'In Memory' : 'Add to Memory'}

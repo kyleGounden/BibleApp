@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { formatRef, parseRef } from '../lib/canon'
 import { searchCanon, translationShort } from '../lib/bible'
 import { EsvError, useEsvToken } from '../lib/esv'
+import { NivError } from '../lib/niv'
 import { go, type Route } from '../lib/router'
 import { useVoice, type ScriptLine } from '../lib/speech'
 import { useAppState } from '../lib/storage'
-import { EsvNotice, GodLine, ListenButton, verseMark } from '../ui'
+import { EsvNotice, GodLine, ListenButton, NivNotice, verseMark } from '../ui'
 
 function hitLine(hit: { id: string; text: string }): ScriptLine {
   const parsed = parseRef(hit.id)
@@ -42,7 +43,7 @@ export function SearchPage({ route }: { route: Extract<Route, { name: 'search' }
       .then((rows) => {
         if (!live) return
         setHits(rows)
-        const cap = state.translation === 'esv' ? 40 : 60
+        const cap = state.translation === 'esv' || state.translation === 'niv' ? 40 : 60
         setNote(rows.length >= cap ? `${cap === 40 ? 'Forty' : 'Sixty'} places shown. Add another word to narrow them.` : `${rows.length} places`)
         setBusy(false)
       })
@@ -50,7 +51,7 @@ export function SearchPage({ route }: { route: Extract<Route, { name: 'search' }
         if (!live) return
         setBusy(false)
         setHits([])
-        setNote(err instanceof EsvError ? err.message : 'The text is not on the device yet.')
+        setNote(err instanceof EsvError || err instanceof NivError ? err.message : 'The text is not on the device yet.')
       })
     return () => {
       live = false
@@ -73,6 +74,7 @@ export function SearchPage({ route }: { route: Extract<Route, { name: 'search' }
         />
       ) : null}
       {state.translation === 'esv' && hits.length ? <EsvNotice /> : null}
+      {state.translation === 'niv' && hits.length ? <NivNotice /> : null}
       {hits.map((hit) => {
         const parsed = parseRef(hit.id)
         const mark = verseMark(voice, hit.id, state.translation)

@@ -42,7 +42,7 @@ const CONTENT_SECURITY_POLICY = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://*.googleusercontent.com https://accounts.google.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.dictionaryapi.dev https://en.wiktionary.org https://accounts.google.com",
+  "connect-src 'self' https://api.dictionaryapi.dev https://en.wiktionary.org https://accounts.google.com https://fums.api.bible",
   "frame-src https://accounts.google.com",
   "object-src 'none'",
   "base-uri 'self'",
@@ -197,6 +197,32 @@ app.use('/esv-api', route(async (req, res) => {
   const type = upstream.headers.get('content-type')
   res.status(upstream.status)
   if (type) res.setHeader('Content-Type', type)
+  res.send(Buffer.from(await upstream.arrayBuffer()))
+}))
+
+const NIV_BIBLE_ID = '78a9f6124f344018-01'
+
+app.use('/bible-api', route(async (req, res) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') throw new HttpError(405, 'That request could not be read.')
+  const key = (process.env.BIBLE_API_KEY ?? '').trim()
+  if (!key) throw new HttpError(503, 'The NIV key is not set on this server.')
+  const path = req.originalUrl.replace(/^\/bible-api/, '') || '/'
+  const target = new URL(path, 'https://rest.api.bible')
+  if (target.origin !== 'https://rest.api.bible') throw new HttpError(400, 'That request could not be read.')
+  if (!target.pathname.startsWith(`/v1/bibles/${NIV_BIBLE_ID}/`)) throw new HttpError(404, 'That Bible text is not available.')
+  let upstream: globalThis.Response
+  try {
+    upstream = await fetch(target, {
+      method: req.method,
+      headers: { Accept: 'application/json', 'api-key': key },
+    })
+  } catch {
+    throw new HttpError(502, 'API.Bible did not return the text.')
+  }
+  const type = upstream.headers.get('content-type')
+  res.status(upstream.status)
+  if (type) res.setHeader('Content-Type', type)
+  res.setHeader('Cache-Control', 'private, max-age=3600')
   res.send(Buffer.from(await upstream.arrayBuffer()))
 }))
 
@@ -733,7 +759,7 @@ if (serving) {
       next()
       return
     }
-    if (req.path.startsWith('/api') || req.path.startsWith('/esv-api') || req.path.includes('.')) {
+    if (req.path.startsWith('/api') || req.path.startsWith('/esv-api') || req.path.startsWith('/bible-api') || req.path.includes('.')) {
       res.status(404).type('text/plain').send('Not found.')
       return
     }

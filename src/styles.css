@@ -3605,3 +3605,288 @@ textarea:focus,
   .return-map.is-compare .return-lane.held::before,
   .return-map.is-choosing .return-lane-pick { animation: none; }
 }
+
+.gen-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.2rem 0 1.4rem;
+}
+.gen-stats div {
+  padding: 0.75rem 0.8rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.9rem;
+  background: var(--panel);
+}
+.gen-stats dt {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.gen-stats dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1;
+}
+.gen-find { margin: 0.4rem 0 0.8rem; }
+.gen-find label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.gen-find input {
+  width: min(28rem, 100%);
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.8rem;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+}
+.gen-hits { list-style: none; margin: 0 0 1rem; padding: 0; }
+.gen-hits button {
+  display: flex;
+  width: 100%;
+  gap: 0.8rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.7rem 0.15rem;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.gen-hits strong { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; }
+.gen-hits small { color: var(--muted); }
+.gen-spine {
+  margin: 1.4rem 0 0.4rem;
+  padding: 1rem 0.4rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--wash), transparent 55%),
+    var(--panel);
+}
+.gen-spine ol {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0.2rem 0.6rem 0.9rem;
+  list-style: none;
+  overflow-x: auto;
+}
+.gen-spine li { display: flex; align-items: center; }
+.gen-spine-rule { width: 2.2rem; height: 2px; background: var(--gold); flex: none; }
+.gen-spine button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 6.2rem;
+  padding: 0.35rem 0.4rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: inherit;
+}
+.gen-spine small { color: var(--muted); font-size: 0.72rem; }
+.gen-spine strong { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; }
+.gen-spine .choice { margin-left: 0.8rem; }
+.gen-group { margin-top: 1.3rem; }
+.gen-group h2 { margin: 0 0 0.45rem; font-size: 1.35rem; }
+.gen-back { margin-bottom: 0.8rem; }
+.gen-thread { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+.gen-thread > li { position: relative; padding: 0 0 0.35rem 1.6rem; }
+.gen-thread > li::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.2rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+}
+.gen-thread > li:last-child::before { bottom: 50%; }
+.gen-band {
+  margin: 0.85rem 0 0.35rem;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.gen-thread button {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.gen-thread button:hover,
+.gen-thread button:focus-visible { background: var(--wash); }
+.gen-index {
+  flex: none;
+  width: 1.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.gen-thread strong { display: block; font-family: var(--serif); font-size: 1.35rem; font-weight: 500; line-height: 1.15; }
+.gen-thread em { display: block; color: var(--muted); font-style: normal; font-size: 0.92rem; }
+.gen-thread small { display: block; color: var(--muted); }
+.gen-thread button.is-king strong { color: var(--gold); }
+.gen-gospels { margin-top: 1rem; }
+.gen-gospels h2 { margin: 0 0 0.2rem; font-size: 1.45rem; }
+.gen-gospels section { margin-top: 1.2rem; }
+.gen-gospels ol { list-style: none; margin: 0.6rem 0 0; padding: 0; }
+.gen-gospels li button {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.35rem 0.2rem;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.gen-gospels strong { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; }
+.gen-gospels small { color: var(--muted); }
+.gen-gospels .is-shared strong,
+.gen-gospels .is-gold strong { color: var(--gold); }
+.gen-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.gen-christ {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--gold);
+  border-radius: 1rem;
+  background: var(--wash);
+  color: inherit;
+  text-align: left;
+}
+.gen-christ small { color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; }
+.gen-christ strong { font-family: var(--serif); font-size: 2rem; font-weight: 500; }
+.gen-notes { margin-top: 1rem; }
+.gen-notes p { margin: 0.35rem 0; }
+.gen-lives { margin-top: 1rem; }
+.life-scroll { overflow-x: auto; margin-top: 0.8rem; }
+.life-chart { min-width: 46rem; }
+.life-row {
+  display: grid;
+  grid-template-columns: 9.2rem minmax(32rem, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+.life-row button {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.28rem 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.life-row strong { font-family: var(--serif); font-weight: 500; }
+.life-row small { color: var(--muted); }
+.life-track { position: relative; height: 1.35rem; }
+.life-bar {
+  position: absolute;
+  top: 0.28rem;
+  height: 0.72rem;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--gold) 55%, var(--panel));
+}
+.life-bar.is-flood { background: var(--gold); }
+.life-flood {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+  font-style: normal;
+}
+.life-axis { height: 1.4rem; }
+.life-axis i {
+  position: absolute;
+  top: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: normal;
+}
+.gen-tree-tools { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin: 0.8rem 0; }
+.gen-tree-tools .quiet { margin: 0; }
+.gen-tree {
+  height: min(70vh, 40rem);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 1.15rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--wash), transparent 42%),
+    var(--panel);
+  touch-action: none;
+  cursor: grab;
+}
+.gen-tree svg { transform-origin: 0 0; display: block; }
+.gen-tree line { stroke: var(--gold); stroke-width: 1.4; }
+.gen-node { cursor: pointer; }
+.gen-node circle { fill: var(--panel); stroke: var(--gold); stroke-width: 1.6; }
+.gen-node text {
+  fill: var(--ink);
+  font-size: 13px;
+  font-family: var(--serif);
+  text-anchor: middle;
+}
+.gen-node.is-king circle { fill: var(--gold); }
+.gen-node.is-king text { fill: var(--gold); font-size: 15px; }
+.gen-register { margin-top: 1.2rem; }
+.gen-register h2 { margin: 0 0 0.4rem; font-size: 1.4rem; }
+.gen-kin { margin-top: 1rem; }
+.gen-kin h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+.gen-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.9rem 0; }
+.gen-note { font-family: var(--serif); font-size: 1.15rem; }
+.gen-path { margin-top: 0.6rem; }
+.gen-path h2 { margin: 0 0 0.35rem; font-size: 1.15rem; }
+.gen-path ol { list-style: none; margin: 0; padding: 0; }
+.gen-path li { position: relative; padding: 0 0 0.15rem 1.1rem; }
+.gen-path li::before {
+  content: "";
+  position: absolute;
+  left: 0.28rem;
+  top: 0.15rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+}
+.gen-path button {
+  padding: 0.12rem 0.3rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+}
+.gen-path button.is-king { color: var(--gold); }
+.gen-scripture { margin-top: 1.1rem; }
+@media (max-width: 720px) {
+  .gen-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gen-split { grid-template-columns: 1fr; }
+  .gen-hits button { flex-direction: column; gap: 0.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gen-tree svg { transition: none; }
+}
+

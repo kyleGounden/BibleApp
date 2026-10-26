@@ -20,6 +20,28 @@ const NARRATIVE =
 const QUOTE_INTRO =
   /(?:thus\s+(?:says|saith)\s+(?:the\s+)?(?:lord|god)|(?:says|saith|declares)\s+(?:the\s+)?(?:lord|god)|(?:god|the\s+lord(?:\s+god)?|jesus(?:\s+christ)?|christ|the\s+father|the\s+holy\s+spirit|the\s+spirit|the\s+holy\s+ghost|the\s+angel\s+of\s+(?:the\s+)?(?:lord|god)|a\s+voice(?:\s+\w+){0,10})\s+(?:answered\s+)?(?:said|says|saith|saying|spoke|spake|spoken|called|cried|asked|replied|told|declared|commanded|answered))\b[^“”"']{0,60}$/i
 
+const HOSTED_VERB =
+  'said|says|saith|saying|spoke|spake|spoken|called|cried|asked|replied|told|declared|commanded|answered|prayed|testified|speak'
+
+const HOSTED_INTRO = new RegExp(
+  `(?:thus\\s+(?:says|saith)\\s+(?:the\\s+)?(?:lord|god)|(?:says|saith|declares)\\s+(?:the\\s+)?(?:lord|god)|(?:god|the\\s+lord(?:\\s+god)?|jesus(?:\\s+christ)?|christ|the\\s+father|the\\s+holy\\s+spirit|the\\s+spirit|the\\s+holy\\s+ghost|the\\s+angel\\s+of\\s+(?:the\\s+)?(?:lord|god)|a\\s+voice(?:\\s+\\w+){0,10})(?:[^“”"'.?!]{0,90})\\s+(?:answered\\s+)?(?:${HOSTED_VERB}))\\b[^“”"']{0,50}$`,
+  'i',
+)
+
+const SPEAKER_AFTER =
+  /^[,:]?\s*(?:jesus(?:\s+christ)?|god|the\s+lord(?:\s+god)?|he)\s+(?:answered|said|says|saith|replied|asked|declared|told|called|spoke|spoken)\b/i
+
+const OTHER_NAME =
+  'the\\s+pharisees|the\\s+disciples|his\\s+disciples|the\\s+crowd|the\\s+people|the\\s+jews|the\\s+soldiers|the\\s+chief\\s+priests|the\\s+teachers\\s+of\\s+the\\s+law|the\\s+scribes|the\\s+servants?|the\\s+woman|the\\s+man|the\\s+serpent|the\\s+high\\s+priest|thomas|peter|philip|judas|mary|martha|pilate|nicodemus|andrew|james|john|caiaphas|herod|they|she'
+
+const OTHER_SPEAKER = new RegExp(
+  `(?:^|[.?!]\\s+)((?:but |and |then |so )?(?:[A-Za-z]+\\s+)?(?:${OTHER_NAME}))\\s+(?:answered|replied|asked|said|cried|called|declared|told|spoke|says|say)\\b[^“”"']{0,60}$`,
+  'i',
+)
+
+const SCENE_CHANGE =
+  /^(?:After\s+(?:Jesus|he|this|these|six|the)\b|When\s+(?:he|they|Jesus|she|the\s+\w+)\s+(?:had|finished|left|came|saw|heard|went)\b|Meanwhile\b|The\s+next\b|At\s+that\s+time\b|Now\s+(?:a|when|Jesus|there|the)\b)/i
+
 const HE_SAID = /^(?:And |Moreover |Then |So )?he said(?:\s+unto\s+(?:him|her|them))?\s*,\s*/
 
 export function unionRanges(groups: Range[][]): Range[] {
@@ -33,10 +55,26 @@ export function unionRanges(groups: Range[][]): Range[] {
   return out
 }
 
-export function markDivine(verses: string[]): Range[][] {
-  const quoted = verses.reduce((sum, verse) => sum + (verse.match(/[“”]/g)?.length ?? 0), 0) > 12
-  const marked = quoted ? markQuoted(verses) : markPlain(verses)
+function curlyCount(verses: string[]): number {
+  return verses.reduce((sum, verse) => sum + (verse.match(/[“”]/g)?.length ?? 0), 0)
+}
+
+export function markDivine(verses: string[], hosted = false): Range[][] {
+  const quoted = hosted ? curlyCount(verses) > 0 : curlyCount(verses) > 12
+  const marked = quoted ? markQuoted(verses, false, hosted).ranges : markPlain(verses)
   return marked.map((ranges, index) => clipRanges(ranges, verses[index]?.length ?? 0))
+}
+
+export function markHostedChapter(verses: string[], carried: boolean): { ranges: Range[][]; openDivine: boolean } {
+  if (!carried && curlyCount(verses) === 0) {
+    const ranges = markPlain(verses).map((spans, index) => clipRanges(spans, verses[index]?.length ?? 0))
+    return { ranges, openDivine: false }
+  }
+  const marked = markQuoted(verses, carried, true)
+  return {
+    ranges: marked.ranges.map((spans, index) => clipRanges(spans, verses[index]?.length ?? 0)),
+    openDivine: marked.openDivine,
+  }
 }
 
 function clipRanges(ranges: Range[], length: number): Range[] {
@@ -140,20 +178,40 @@ function markPlain(verses: string[]): Range[][] {
 
 type Frame = { verse: number; index: number; divine: boolean; kind: 'double' | 'single' | 'straight' }
 
-function markQuoted(verses: string[]): Range[][] {
+function markQuoted(verses: string[], carried: boolean, hosted: boolean): { ranges: Range[][]; openDivine: boolean } {
   const out: Range[][] = verses.map(() => [])
   const stack: Frame[] = []
+  if (hosted && carried && verses.length) stack.push({ verse: 0, index: 0, divine: true, kind: 'double' })
+  const closeDivineBefore = (verse: number, index: number) => {
+    while (stack.some((frame) => frame.divine)) {
+      const top = stack.at(-1)
+      if (!top) break
+      if (!top.divine || (top.verse === verse && top.index > index)) {
+        stack.pop()
+        continue
+      }
+      stack.pop()
+      addSpan(out, verses, top.verse, top.index, verse, index)
+    }
+  }
   const openAt = (verse: number, index: number, kind: Frame['kind']) => {
-    const divine = Boolean(stack.at(-1)?.divine) || introBefore(verses, verse, index)
+    const cut = hosted && kind !== 'single' ? otherSpeakerCut(verses[verse] ?? '', index) : null
+    if (cut != null) closeDivineBefore(verse, cut)
+    const divine = cut == null && (Boolean(stack.at(-1)?.divine) || introBefore(verses, verse, index, hosted))
     stack.push({ verse, index: index + 1, divine, kind })
   }
   const closeAt = (verse: number, index: number) => {
     const frame = stack.pop()
-    if (!frame?.divine) return
+    if (!frame) return
+    const divine = frame.divine || (hosted && frame.kind !== 'single' && speakerAfter(verses, verse, index))
+    if (!divine) return
     addSpan(out, verses, frame.verse, frame.index, verse, index)
   }
   for (let verse = 0; verse < verses.length; verse += 1) {
-    const text = verses[verse]
+    const text = verses[verse] ?? ''
+    if (hosted && stack.some((frame) => frame.divine) && !/^\s*[“"]/.test(text) && SCENE_CHANGE.test(text.trim())) {
+      closeDivineBefore(verse, 0)
+    }
     for (let index = 0; index < text.length; index += 1) {
       const char = text[index]
       if (char === '“' || char === '"') {
@@ -172,21 +230,35 @@ function markQuoted(verses: string[]): Range[][] {
       if (char === '’' && stack.at(-1)?.kind === 'single') closeAt(verse, index)
     }
   }
+  const openDivine = stack.some((frame) => frame.divine)
   const last = verses.length - 1
   while (stack.length) {
     const frame = stack.pop()
     if (frame?.divine && last >= 0) addSpan(out, verses, frame.verse, frame.index, last, verses[last].length)
   }
-  return out.map((ranges) => unionRanges([ranges]))
+  return { ranges: out.map((ranges) => unionRanges([ranges])), openDivine }
 }
 
-function introBefore(verses: string[], verse: number, index: number): boolean {
+function introBefore(verses: string[], verse: number, index: number, hosted = false): boolean {
   let sample = verses[verse].slice(Math.max(0, index - 180), index)
   if (sample.length < 180 && verse > 0) {
     const prev = verses[verse - 1]
     sample = `${prev.slice(Math.max(0, prev.length - (180 - sample.length)))} ${sample}`
   }
-  return QUOTE_INTRO.test(sample)
+  return (hosted ? HOSTED_INTRO : QUOTE_INTRO).test(sample)
+}
+
+function speakerAfter(verses: string[], verse: number, index: number): boolean {
+  const sample = verses[verse]?.slice(index + 1, index + 48) ?? ''
+  return SPEAKER_AFTER.test(sample.trim())
+}
+
+function otherSpeakerCut(text: string, quoteAt: number): number | null {
+  const from = Math.max(0, quoteAt - 160)
+  const sample = text.slice(from, quoteAt)
+  const match = sample.match(OTHER_SPEAKER)
+  if (!match || match.index == null || !match[1]) return null
+  return from + match.index + match[0].indexOf(match[1])
 }
 
 function addSpan(out: Range[][], verses: string[], verse: number, start: number, endVerse: number, end: number) {

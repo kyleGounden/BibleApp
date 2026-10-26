@@ -1,17 +1,24 @@
 import { BOOKS, bookById, expandRef, parseRef, verseId } from './canon'
 import { EsvError, loadEsvChapter, readEsvPassage, readEsvVerse, searchEsv } from './esv'
+import { NivError, loadNivChapter, readNivPassage, readNivVerse, searchNiv } from './niv'
 
-export type Translation = 'kjv' | 'web' | 'esv'
+export type Translation = 'kjv' | 'web' | 'esv' | 'niv'
+
+export function isHosted(translation: Translation): boolean {
+  return translation === 'esv' || translation === 'niv'
+}
 
 export function translationShort(translation: Translation): string {
   if (translation === 'web') return 'WEB'
   if (translation === 'esv') return 'ESV'
+  if (translation === 'niv') return 'NIV'
   return 'KJV'
 }
 
 export function translationName(translation: Translation): string {
   if (translation === 'web') return 'World English Bible'
   if (translation === 'esv') return 'English Standard Version'
+  if (translation === 'niv') return 'New International Version'
   return 'King James Version'
 }
 
@@ -40,11 +47,13 @@ async function fetchJson<T>(path: string): Promise<T> {
 
 export function loadChapter(translation: Translation, book: string, chapter: number): Promise<BookFile> {
   if (translation === 'esv') return loadEsvChapter(book, chapter)
+  if (translation === 'niv') return loadNivChapter(book, chapter)
   return loadBook(translation, book)
 }
 
 export function loadBook(translation: Translation, book: string): Promise<BookFile> {
   if (translation === 'esv') return Promise.reject(new EsvError('network', 'ESV is read one chapter at a time from Crossway.'))
+  if (translation === 'niv') return Promise.reject(new NivError('network', 'NIV is read one chapter at a time from API.Bible.'))
   const key = `${translation}/${book}`
   let pending = books.get(key)
   if (!pending) {
@@ -90,11 +99,16 @@ export function verseKey(chapter: number, verse: number): string {
 export async function readVerse(prefer: Translation, id: string): Promise<{ text: string; translation: Translation; id: string } | null> {
   const parsed = parseRef(id)
   if (!parsed) return null
-  const order: Translation[] = prefer === 'esv' ? ['esv', 'kjv', 'web'] : prefer === 'web' ? ['web', 'kjv'] : ['kjv', 'web']
+  const order: Translation[] = prefer === 'niv' ? ['niv', 'kjv', 'web'] : prefer === 'esv' ? ['esv', 'kjv', 'web'] : prefer === 'web' ? ['web', 'kjv'] : ['kjv', 'web']
   for (const translation of order) {
     try {
       if (translation === 'esv') {
         const text = await readEsvVerse(verseId(parsed.book, parsed.chapter, parsed.verse))
+        if (text) return { text, translation, id: verseId(parsed.book, parsed.chapter, parsed.verse) }
+        continue
+      }
+      if (translation === 'niv') {
+        const text = await readNivVerse(verseId(parsed.book, parsed.chapter, parsed.verse))
         if (text) return { text, translation, id: verseId(parsed.book, parsed.chapter, parsed.verse) }
         continue
       }
@@ -110,15 +124,15 @@ export async function readVerse(prefer: Translation, id: string): Promise<{ text
 
 export async function readPassage(prefer: Translation, id: string): Promise<{ id: string; text: string; translation: Translation }[]> {
   const ids = expandRef(id)
-  if (prefer === 'esv') {
+  if (prefer === 'esv' || prefer === 'niv') {
     try {
-      const esv = await readEsvPassage(ids)
-      if (esv.length) return esv.map((row) => ({ ...row, translation: 'esv' as const }))
+      const hosted = prefer === 'niv' ? await readNivPassage(ids) : await readEsvPassage(ids)
+      if (hosted.length) return hosted.map((row) => ({ ...row, translation: prefer }))
     } catch {
       /* the local editions still answer */
     }
   }
-  const fallback: Translation = prefer === 'esv' ? 'kjv' : prefer
+  const fallback: Translation = prefer === 'esv' || prefer === 'niv' ? 'kjv' : prefer
   const rows = await Promise.all(ids.map((item) => readVerse(fallback, item)))
   return rows.filter((row): row is { id: string; text: string; translation: Translation } => Boolean(row))
 }
@@ -155,6 +169,7 @@ export async function searchCanon(translation: Translation, query: string): Prom
   const needle = query.trim()
   if (needle.length < 2) return []
   if (translation === 'esv') return searchEsv(needle)
+  if (translation === 'niv') return searchNiv(needle)
   const folded = needle.toLowerCase()
   let index = searchCache.get(translation)
   if (!index) {

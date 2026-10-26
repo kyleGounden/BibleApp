@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { formatRef, verseId } from './lib/canon'
 import { parseHash, go, type Route } from './lib/router'
 import { followLive, setLiveWatch, useFollow } from './lib/follow'
@@ -28,6 +28,8 @@ import { King } from './views/King'
 import { About } from './views/About'
 import { Return } from './views/Return'
 
+const Genealogy = lazy(() => import('./views/Genealogy').then((mod) => ({ default: mod.Genealogy })))
+
 const NEXT: Record<Theme, Theme> = { day: 'dusk', dusk: 'night', night: 'day' }
 
 type Dest = {
@@ -41,7 +43,7 @@ type Dest = {
 const GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Read', ids: ['library'] },
   { label: 'Understand', ids: ['study', 'refs'] },
-  { label: 'The story', ids: ['king', 'prophecy', 'return', 'about'] },
+  { label: 'The story', ids: ['king', 'prophecy', 'genealogy', 'return', 'about'] },
   { label: 'Keep', ids: ['memorize'] },
   { label: 'Explore', ids: ['canon'] },
 ]
@@ -59,6 +61,7 @@ function tabOn(route: Route, tab: string): boolean {
   if (tab === 'return') return route.name === 'return'
   if (tab === 'church') return route.name === 'church' || route.name === 'join'
   if (tab === 'canon') return route.name === 'canon' || route.name === 'trail' || route.name === 'places' || route.name === 'place' || route.name === 'journey'
+  if (tab === 'genealogy') return route.name === 'genealogy' || route.name === 'genealogy-line' || route.name === 'genealogy-person'
   return false
 }
 
@@ -103,6 +106,7 @@ function ReadingTools({ translation, scale, theme }: { translation: Translation;
           <button type="button" className={translation === 'kjv' ? 'on' : ''} onClick={() => setTranslation('kjv')}>KJV</button>
           <button type="button" className={translation === 'web' ? 'on' : ''} onClick={() => setTranslation('web')}>WEB</button>
           <button type="button" className={translation === 'esv' ? 'on' : ''} onClick={() => setTranslation('esv')}>ESV</button>
+          <button type="button" className={translation === 'niv' ? 'on' : ''} onClick={() => setTranslation('niv')}>NIV</button>
         </div>
       </div>
       <div className="tool" aria-label="Type">
@@ -272,7 +276,7 @@ export function App() {
   const due = dueCards(state.deck).length
   const place = formatRef(verseId(state.book, state.chapter, state.verse))
   const studyHref = `/study/${state.book}/${state.chapter}/${state.verse}`
-  const pageKey = route.name === 'study' ? 'studio' : route.name === 'desk' ? 'desk' : route.name === 'places' || route.name === 'place' || route.name === 'journey' ? 'atlas' : route.name === 'prophecy' || route.name === 'thread' || route.name === 'prophecy-verse' ? 'prophecy' : route.name === 'return' ? 'return' : (window.location.hash || 'library')
+  const pageKey = route.name === 'study' ? 'studio' : route.name === 'desk' ? 'desk' : route.name === 'places' || route.name === 'place' || route.name === 'journey' ? 'atlas' : route.name === 'prophecy' || route.name === 'thread' || route.name === 'prophecy-verse' ? 'prophecy' : route.name === 'return' ? 'return' : route.name === 'genealogy' || route.name === 'genealogy-line' || route.name === 'genealogy-person' ? 'genealogy' : (window.location.hash || 'library')
   const dests: Dest[] = [
     { id: 'library', label: 'Scripture', href: '/', icon: 'M5 4h5.5A3.5 3.5 0 0 1 14 7.5V20a3 3 0 0 0-3-2H5zM19 4h-5.5A3.5 3.5 0 0 0 10 7.5V20a3 3 0 0 1 3-2H19z', hint: 'The books' },
     { id: 'study', label: 'Study', href: '/study', icon: 'M5 4h14v16H5zM8 8h8M8 12h8M8 16h5', hint: 'Words and meaning' },
@@ -283,9 +287,10 @@ export function App() {
     { id: 'canon', label: 'Canon', href: '/canon', icon: 'M4 6h16M4 12h16M4 18h10', hint: 'Books, trails, and places' },
     { id: 'about', label: 'About', href: '/about', icon: 'M4 18V6l8-2.5L20 6v12l-8 2.5L4 18zM12 3.5v17', hint: 'Why the book holds' },
     { id: 'return', label: 'Return', href: '/return', icon: 'M4 17h16M8 17a4 4 0 0 1 8 0M12 9.5V6.5M10.2 8.2 12 6.5l1.8 1.7', hint: 'When he comes again' },
+    { id: 'genealogy', label: 'Genealogy', href: '/genealogy', icon: 'M12 20V10M12 10H7M12 10h5M7 10V7.2M17 10V7.2M12 7.2V5M12 5a1.4 1.4 0 1 0 0-2.8A1.4 1.4 0 0 0 12 5zM7 7.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zM17 7.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z', hint: 'The families' },
   ]
   const byId = Object.fromEntries(dests.map((item) => [item.id, item]))
-  const moreOn = tabOn(route, 'refs') || tabOn(route, 'canon') || tabOn(route, 'church') || tabOn(route, 'about') || tabOn(route, 'return')
+  const moreOn = tabOn(route, 'refs') || tabOn(route, 'canon') || tabOn(route, 'church') || tabOn(route, 'about') || tabOn(route, 'return') || tabOn(route, 'genealogy')
   const churchOn = tabOn(route, 'church')
   const accountLabel = session.user ? session.user.name.split(' ')[0] : 'Sign in'
   const churchHint = session.user ? (session.church?.name || 'Your congregation') : 'Your congregation'
@@ -450,6 +455,11 @@ export function App() {
           {route.name === 'king' ? <King route={route} /> : null}
           {route.name === 'about' ? <About /> : null}
           {route.name === 'return' ? <Return route={route} /> : null}
+          {route.name === 'genealogy' || route.name === 'genealogy-line' || route.name === 'genealogy-person' ? (
+            <Suspense fallback={<p className="quiet">Opening the register…</p>}>
+              <Genealogy route={route} />
+            </Suspense>
+          ) : null}
         </div>
       </main>
       <nav ref={bottomRef} className="bottom-nav" aria-label="Primary">
@@ -467,7 +477,7 @@ export function App() {
           <aside ref={moreRef} className="sheet more-sheet" role="dialog" aria-label="More">
             <p className="kicker">Elsewhere</p>
             <h2>More</h2>
-            {[byId.return, byId.about, byId.refs, byId.canon].map((item) => (
+            {[byId.genealogy, byId.return, byId.about, byId.refs, byId.canon].map((item) => (
               <button key={item.id} type="button" className={tabOn(route, item.id) ? 'more-row on' : 'more-row'} onClick={() => goTo(item.href)}>
                 <span className="nav-ico"><Mark d={item.icon} /></span>
                 <span>

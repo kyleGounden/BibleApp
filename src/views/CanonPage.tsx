@@ -3,10 +3,11 @@ import { BOOKS, CIRCUIT, bookName, formatRef, parseRef, verseId } from '../lib/c
 import { bookGuide, useGuides } from '../lib/guide'
 import { loadChapter, loadXrefs, plain } from '../lib/bible'
 import { EsvError, useEsvToken } from '../lib/esv'
+import { NivError } from '../lib/niv'
 import { loadTrails, type Trail } from '../lib/catalog'
 import { go } from '../lib/router'
-import { addMemory, continueCircuit, inkHex, isChapterRead, markChapterRead, resetCircuit, useAppState } from '../lib/storage'
-import { EsvNotice, GodLine } from '../ui'
+import { addMemory, continueCircuit, inkHex, isChapterRead, markChapterRead, memoryLimitNote, resetCircuit, useAppState } from '../lib/storage'
+import { EsvNotice, GodLine, NivNotice } from '../ui'
 
 export function CanonPage() {
   const state = useAppState()
@@ -50,7 +51,7 @@ export function CanonPage() {
       if (!live) return
       setMemoryId(verseId(place.book, place.chapter, 1))
       setMemoryText('')
-      if (state.translation === 'esv') setMemoryNote(err instanceof EsvError ? err.message : 'The ESV text did not load.')
+      if (state.translation === 'esv' || state.translation === 'niv') setMemoryNote(err instanceof EsvError || err instanceof NivError ? err.message : 'The text did not load.')
     })
     return () => {
       live = false
@@ -70,6 +71,7 @@ export function CanonPage() {
             {memoryId ? <p className="quiet">Verse to keep: {formatRef(memoryId)}</p> : null}
             {memoryText && memoryId ? <p className="vt"><GodLine translation={state.translation} id={memoryId} text={memoryText} mark={null} /></p> : null}
             {state.translation === 'esv' && memoryText ? <EsvNotice /> : null}
+            {state.translation === 'niv' && memoryText ? <NivNotice /> : null}
             {memoryNote ? <p className="miss">{memoryNote}</p> : null}
             <div className="row">
               <button type="button" className="choice gold" onClick={() => go(`/read/${place.book}/${place.chapter}`)}>Open the chapter</button>
@@ -80,7 +82,7 @@ export function CanonPage() {
                 onClick={() => {
                   if (!memoryId || !memoryText) return
                   if (!addMemory(state.translation, [memoryId], memoryText)) {
-                    setMemoryNote('Saved ESV text stays within 500 verses, the limit Crossway sets for a copy kept on this device.')
+                    setMemoryNote(memoryLimitNote(state.translation))
                     return
                   }
                   go('/memorize')

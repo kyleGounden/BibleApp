@@ -19,7 +19,7 @@ import {
   type VersePiece,
 } from '../lib/srs'
 import { releaseMemory, reviewMemory, shownStreak, useAppState } from '../lib/storage'
-import { EsvNotice } from '../ui'
+import { EsvNotice, NivNotice } from '../ui'
 
 type Drill = 'read' | 'fade' | 'letters' | 'write'
 type Help = 0 | 1 | 2
@@ -296,6 +296,7 @@ export function Memorize() {
             })}
           </p>
           {result.card.translation === 'esv' ? <EsvNotice /> : null}
+          {result.card.translation === 'niv' ? <NivNotice /> : null}
         </div>
         <div className="row memory-actions">
           {voice.supported ? (
@@ -462,6 +463,7 @@ export function Memorize() {
         ) : null}
         <p className="memory-note">{note}</p>
         {card.translation === 'esv' ? <EsvNotice /> : null}
+        {card.translation === 'niv' ? <NivNotice /> : null}
       </div>
       <div className="row memory-actions">
         {step === 'read' ? (

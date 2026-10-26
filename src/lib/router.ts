@@ -23,6 +23,9 @@ export type Route =
   | { name: 'king'; section?: string }
   | { name: 'about' }
   | { name: 'return'; view?: 'amill' | 'postmill' | 'premill'; station?: string }
+  | { name: 'genealogy' }
+  | { name: 'genealogy-line'; id: string }
+  | { name: 'genealogy-person'; id: string }
 
 function num(value: string | undefined, fallback: number): number {
   const parsed = Number(value)
@@ -56,6 +59,9 @@ export function parseHash(hash = window.location.hash): Route {
   if (head === 'strong' && parts[1]) return { name: 'strong', id: parts[1].toUpperCase() }
   if (head === 'search') return { name: 'search', q: parts.slice(1).join('/') }
   if (head === 'king') return parts[1] ? { name: 'king', section: parts[1].toLowerCase() } : { name: 'king' }
+  if (head === 'genealogy' && parts[1] === 'line' && parts[2]) return { name: 'genealogy-line', id: parts[2].toLowerCase() }
+  if (head === 'genealogy' && parts[1] === 'person' && parts[2]) return { name: 'genealogy-person', id: parts[2].toLowerCase() }
+  if (head === 'genealogy') return { name: 'genealogy' }
   if (head === 'about') return { name: 'about' }
   if (head === 'return') {
     const view = parts[1]

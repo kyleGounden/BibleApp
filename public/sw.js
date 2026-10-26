@@ -1,4 +1,4 @@
-const CACHE = 'scripture-v3'
+const CACHE = 'scripture-v4'
 
 self.addEventListener('install', (event) => {
   self.skipWaiting()
@@ -28,7 +28,7 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return
   const url = new URL(request.url)
   if (url.origin !== self.location.origin) return
-  if (url.pathname.startsWith('/esv-api') || url.pathname.startsWith('/api')) return
+  if (url.pathname.startsWith('/esv-api') || url.pathname.startsWith('/bible-api') || url.pathname.startsWith('/api')) return
   if (shellRequest(request, url)) {
     event.respondWith(
       caches.open(CACHE).then(async (cache) => {

@@ -14,7 +14,7 @@ import {
   type KingChamber,
 } from '../lib/king'
 import { go, type Route } from '../lib/router'
-import { addMemory, useAppState } from '../lib/storage'
+import { addMemory, memoryLimitNote, useAppState } from '../lib/storage'
 import { VerseQuote } from '../ui'
 
 function Scripture({ id, translation }: { id: string; translation: Translation }) {
@@ -164,7 +164,7 @@ function KeepVerse({ id, translation }: { id: string; translation: Translation }
       const kept = addMemory(rows[0].translation, rows.map((row) => row.id), text)
       if (!kept) {
         setTone('miss')
-        setNote('Saved ESV text stays within 500 verses, the limit Crossway sets for a copy kept on this device.')
+        setNote(memoryLimitNote(rows[0].translation))
         return
       }
       setTone('quiet')

@@ -276,7 +276,13 @@ export function shownStreak(streak: Streak, now = Date.now()): number {
 }
 
 function asTranslation(value: unknown): Translation {
-  return value === 'kjv' || value === 'web' || value === 'esv' ? value : 'kjv'
+  return value === 'kjv' || value === 'web' || value === 'esv' || value === 'niv' ? value : 'kjv'
+}
+
+export function memoryLimitNote(translation: Translation): string {
+  if (translation === 'niv') return 'Saved NIV text stays within 500 verses on this device.'
+  if (translation === 'esv') return 'Saved ESV text stays within 500 verses, the limit Crossway sets for a copy kept on this device.'
+  return 'Memory could not take this verse.'
 }
 
 function load(): State {
@@ -518,8 +524,8 @@ export function removeInk(id: string): void {
 export function addMemory(translation: Translation, verses: string[], text: string): boolean {
   const id = cardId(translation, verses)
   if (state.deck.some((card) => card.id === id)) return true
-  if (translation === 'esv') {
-    const kept = state.deck.filter((card) => card.translation === 'esv').reduce((sum, card) => sum + card.verses.length, 0)
+  if (translation === 'esv' || translation === 'niv') {
+    const kept = state.deck.filter((card) => card.translation === translation).reduce((sum, card) => sum + card.verses.length, 0)
     if (kept + verses.length > 500) return false
   }
   const first = verses[0]

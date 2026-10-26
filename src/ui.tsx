@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { formatRef, parseRef } from './lib/canon'
 import { lookupEnglish, type DictEntry } from './lib/dictionary'
-import { godSlices, loadDivine, markDivine, verseGod, type DivineBook, type Range } from './lib/divine'
-import { loadGloss, loadOriginal, plain, readPassage, translationName, type Gloss, type OriginalWord, type Translation, type Verse } from './lib/bible'
+import { godSlices, loadDivine, markDivine, markHostedChapter, verseGod, type DivineBook, type Range } from './lib/divine'
+import { isHosted, loadChapter, loadGloss, loadOriginal, plain, readPassage, translationName, type Gloss, type OriginalWord, type Translation, type Verse } from './lib/bible'
 import { setEsvToken, useEsvToken } from './lib/esv'
 import { loadPlaces, matchPlace, type Place } from './lib/places'
 import { go } from './lib/router'
@@ -41,6 +41,21 @@ export function EsvNotice({ full = false }: { full?: boolean }) {
   return (
     <p className="quiet">
       ESV® · <a href="https://www.esv.org/" target="_blank" rel="noreferrer">www.esv.org</a>
+    </p>
+  )
+}
+
+export function NivNotice({ full = false }: { full?: boolean }) {
+  if (full) {
+    return (
+      <p className="colophon">
+        Scripture quotations marked “NIV” are from The Holy Bible, New International Version® NIV® Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.® Used by permission of Biblica, Inc.® All rights reserved worldwide.
+      </p>
+    )
+  }
+  return (
+    <p className="quiet">
+      NIV® · <a href="https://www.biblica.com/" target="_blank" rel="noreferrer">Biblica</a>
     </p>
   )
 }
@@ -301,10 +316,102 @@ export function SpokenText({ text, mark, god, phrase }: { text: string; mark: nu
   )
 }
 
+export type HostedPack = { ranges: Map<number, Range[]>; texts: Map<number, string> }
+
+const openCache = new Map<string, Promise<boolean>>()
+const packCache = new Map<string, Promise<HostedPack>>()
+let hostedStamp = ''
+
+function rememberStamp(stamp: string) {
+  if (stamp === hostedStamp) return
+  hostedStamp = stamp
+  openCache.clear()
+  packCache.clear()
+}
+
+function orderedChapter(file: { chapters: Record<string, Record<string, Verse>> }, chapter: number) {
+  const slot = file.chapters[String(chapter)] ?? {}
+  const numbers = Object.keys(slot).map(Number).filter((number) => Number.isFinite(number)).sort((a, b) => a - b)
+  return { numbers, texts: numbers.map((number) => plain(slot[String(number)])) }
+}
+
+function chapterEndedOpen(translation: Translation, book: string, chapter: number, depth = 0): Promise<boolean> {
+  if (chapter < 1 || depth >= 4) return Promise.resolve(false)
+  const key = `${hostedStamp}/${translation}/${book}/${chapter}`
+  const hit = openCache.get(key)
+  if (hit) return hit
+  const pending = (async () => {
+    const file = await loadChapter(translation, book, chapter)
+    const { texts } = orderedChapter(file, chapter)
+    if (!markHostedChapter(texts, true).openDivine) return false
+    if (markHostedChapter(texts, false).openDivine) return true
+    if (chapter <= 1 || depth + 1 >= 4) return false
+    const carried = await chapterEndedOpen(translation, book, chapter - 1, depth + 1)
+    return markHostedChapter(texts, carried).openDivine
+  })().catch((error: unknown) => {
+    openCache.delete(key)
+    throw error
+  })
+  openCache.set(key, pending)
+  return pending
+}
+
+export function loadHostedPack(translation: Translation, book: string, chapter: number): Promise<HostedPack> {
+  const key = `${hostedStamp}/${translation}/${book}/${chapter}`
+  const hit = packCache.get(key)
+  if (hit) return hit
+  const pending = (async () => {
+    const carried = chapter > 1 ? await chapterEndedOpen(translation, book, chapter - 1).catch(() => false) : false
+    const file = await loadChapter(translation, book, chapter)
+    const { numbers, texts } = orderedChapter(file, chapter)
+    const marked = markHostedChapter(texts, carried)
+    return {
+      ranges: new Map(numbers.map((number, index) => [number, marked.ranges[index] ?? []])),
+      texts: new Map(numbers.map((number, index) => [number, texts[index] ?? ''])),
+    }
+  })().catch((error: unknown) => {
+    packCache.delete(key)
+    throw error
+  })
+  packCache.set(key, pending)
+  return pending
+}
+
+export function hostedVerseGod(pack: HostedPack | null, verse: number, text: string): Range[] {
+  const stored = pack?.texts.get(verse)
+  if (pack && stored === text) return pack.ranges.get(verse) ?? []
+  return markDivine([text], true)[0] ?? []
+}
+
+export function useHostedGod(translation: Translation | null, book: string | null, chapter: number | null): HostedPack | null {
+  const token = useEsvToken()
+  const [pack, setPack] = useState<HostedPack | null>(null)
+  useEffect(() => {
+    rememberStamp(token)
+    if (!translation || !isHosted(translation) || !book || !chapter) {
+      setPack(null)
+      return
+    }
+    let live = true
+    setPack(null)
+    loadHostedPack(translation, book, chapter)
+      .then((next) => {
+        if (live) setPack(next)
+      })
+      .catch(() => {
+        if (live) setPack(null)
+      })
+    return () => {
+      live = false
+    }
+  }, [translation, book, chapter, token])
+  return pack
+}
+
 export function useDivineBook(translation: Translation | null, book: string | null): DivineBook | null {
   const [file, setFile] = useState<DivineBook | null>(null)
   useEffect(() => {
-    if (!translation || translation === 'esv' || !book) {
+    if (!translation || translation === 'esv' || translation === 'niv' || !book) {
       setFile(null)
       return
     }
@@ -331,8 +438,10 @@ export function GodLine({
   mark: number | null
 }) {
   const parsed = parseRef(id)
-  const stored = useDivineBook(translation === 'esv' ? null : translation, parsed?.book ?? null)
-  const god = translation === 'esv' ? markDivine([text])[0] : parsed ? verseGod(stored, parsed.chapter, parsed.verse) : []
+  const hosted = translation === 'esv' || translation === 'niv'
+  const stored = useDivineBook(hosted ? null : translation, parsed?.book ?? null)
+  const pack = useHostedGod(hosted ? translation : null, parsed?.book ?? null, parsed?.chapter ?? null)
+  const god = hosted ? hostedVerseGod(pack, parsed?.verse ?? 0, text) : parsed ? verseGod(stored, parsed.chapter, parsed.verse) : []
   return <SpokenText text={text} mark={mark} god={god} />
 }
 
@@ -455,8 +564,9 @@ export function VerseQuote({ id, translation }: { id: string; translation: Trans
   }, [id, translation])
   const parsed = parseRef(id)
   const voice = useVoice()
-  const stored = useDivineBook(translation === 'esv' ? null : translation, parsed?.book ?? null)
-  const esvGod = translation === 'esv' ? markDivine(rows.map((row) => row.text)) : []
+  const hosted = translation === 'esv' || translation === 'niv'
+  const stored = useDivineBook(hosted ? null : translation, parsed?.book ?? null)
+  const pack = useHostedGod(hosted ? translation : null, parsed?.book ?? null, parsed?.chapter ?? null)
   const speaking = rows.some((row) => verseMark(voice, row.id, row.translation) != null)
   const quoteLines = rows.map(lineFromRow)
   return (
@@ -476,9 +586,12 @@ export function VerseQuote({ id, translation }: { id: string; translation: Trans
           translation={translation}
         />
       </div>
-      {rows.map((row, index) => {
+      {rows.map((row) => {
         const rowRef = parseRef(row.id)
-        const god = row.translation === 'esv' ? esvGod[index] : rowRef ? verseGod(stored, rowRef.chapter, rowRef.verse) : []
+        const sameChapter = Boolean(rowRef && parsed && rowRef.book === parsed.book && rowRef.chapter === parsed.chapter)
+        const god = row.translation === 'esv' || row.translation === 'niv'
+          ? (sameChapter ? hostedVerseGod(pack, rowRef?.verse ?? 0, row.text) : markDivine([row.text], true)[0])
+          : rowRef ? verseGod(stored, rowRef.chapter, rowRef.verse) : []
         return (
           <p key={row.id} className="vt">
             <SpokenText text={row.text} mark={verseMark(voice, row.id, row.translation)} god={god} />
@@ -488,6 +601,7 @@ export function VerseQuote({ id, translation }: { id: string; translation: Trans
       {missing ? <p className="quiet">This verse is not in the open edition.</p> : null}
       {!rows.length && !missing ? <p className="quiet">Opening the verse…</p> : null}
       {rows.some((row) => row.translation === 'esv') ? <EsvNotice /> : null}
+      {rows.some((row) => row.translation === 'niv') ? <NivNotice /> : null}
       {rows[0] && rows[0].translation !== translation ? (
         <p className="quiet">{translationName(rows[0].translation)}</p>
       ) : null}

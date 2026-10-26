@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react'
 import { CIRCUIT, bookById, bookName, neighbor, parseRef, verseId } from '../lib/canon'
 import { useFollow } from '../lib/follow'
-import { loadBook, loadChapter, loadXrefs, plain, translationShort, type BookFile } from '../lib/bible'
-import { markDivine, verseGod } from '../lib/divine'
+import { loadBook, loadChapter, loadXrefs, plain, translationShort, type BookFile, type Verse } from '../lib/bible'
+import { markHostedChapter, verseGod } from '../lib/divine'
 import { EsvError, useEsvToken } from '../lib/esv'
 import { threadsForVerse, type ThreadHit } from '../lib/catalog'
 import { go, type Route } from '../lib/router'
@@ -10,8 +10,19 @@ import { getVoice, pauseVoice, resumeVoice, startVoice, useVoice } from '../lib/
 import { loadPlaces, placesInText, type Place } from '../lib/places'
 import { FollowBar } from './FollowBar'
 import { SettingStrip } from './SettingStrip'
-import { addInk, addMemory, inkHex, INK_LABEL_CAP, isChapterRead, markChapterRead, PALETTE_CAP, removeInk, setHighlight, setPosition, toggleMarks, updateInk, useAppState } from '../lib/storage'
-import { EsvNotice, VerseText, useDivineBook, type WordAsk } from '../ui'
+import { addInk, addMemory, inkHex, INK_LABEL_CAP, isChapterRead, markChapterRead, memoryLimitNote, PALETTE_CAP, removeInk, setHighlight, setPosition, toggleMarks, updateInk, useAppState } from '../lib/storage'
+import { EsvNotice, NivNotice, VerseText, hostedVerseGod, useDivineBook, useHostedGod, type HostedPack, type WordAsk } from '../ui'
+import { NivError } from '../lib/niv'
+
+function interimHosted(verses: Record<string, Verse>): HostedPack {
+  const nums = Object.keys(verses).map(Number).sort((a, b) => a - b)
+  const texts = nums.map((number) => plain(verses[String(number)]))
+  const marked = markHostedChapter(texts, false)
+  return {
+    ranges: new Map(nums.map((number, index) => [number, marked.ranges[index] ?? []])),
+    texts: new Map(nums.map((number, index) => [number, texts[index] ?? ''])),
+  }
+}
 
 function copyWithCommand(text: string): boolean {
   const previous = document.activeElement
@@ -206,7 +217,7 @@ export function Reader({
   }, [route.book, route.chapter, route.verse, selected])
 
   useEffect(() => {
-    if (!book || state.translation === 'esv') return
+    if (!book || state.translation === 'esv' || state.translation === 'niv') return
     let live = true
     setFile(null)
     setError('')
@@ -223,16 +234,16 @@ export function Reader({
   }, [book, state.translation])
 
   useEffect(() => {
-    if (!book || state.translation !== 'esv') return
+    if (!book || (state.translation !== 'esv' && state.translation !== 'niv')) return
     let live = true
     setFile(null)
     setError('')
-    loadChapter('esv', book.id, route.chapter)
+    loadChapter(state.translation, book.id, route.chapter)
       .then((next) => {
         if (live) setFile(next)
       })
       .catch((err: unknown) => {
-        if (live) setError(err instanceof EsvError ? err.message : 'This chapter did not load.')
+        if (live) setError(err instanceof EsvError || err instanceof NivError ? err.message : 'This chapter did not load.')
       })
     return () => {
       live = false
@@ -362,16 +373,19 @@ export function Reader({
     return () => window.removeEventListener('keydown', onKey)
   }, [colorsOpen])
 
+  const hostedPack = useHostedGod(
+    state.translation === 'esv' || state.translation === 'niv' ? state.translation : null,
+    book?.id ?? null,
+    route.chapter,
+  )
+
   if (!book) return <p>That book is not in the canon.</p>
   const verses = file?.chapters[String(route.chapter)]
   const numbers = verses ? Object.keys(verses).map(Number).sort((a, b) => a - b) : []
-  const divine = useDivineBook(state.translation === 'esv' ? null : state.translation, book?.id ?? null)
-  const esvGod = useMemo(() => {
-    if (state.translation !== 'esv' || !verses) return new Map<number, [number, number][]>()
-    const nums = Object.keys(verses).map(Number).sort((a, b) => a - b)
-    const marked = markDivine(nums.map((number) => plain(verses[String(number)])))
-    return new Map(nums.map((number, index) => [number, marked[index] ?? []]))
-  }, [state.translation, verses])
+  const hosted = state.translation === 'esv' || state.translation === 'niv'
+  const divine = useDivineBook(hosted ? null : state.translation, book?.id ?? null)
+  const interimPack = hosted && verses ? interimHosted(verses) : null
+  const godPack = hostedPack ?? interimPack
   const max = numbers[numbers.length - 1] ?? 1
   const prev = neighbor(book.id, route.chapter, -1)
   const next = neighbor(book.id, route.chapter, 1)
@@ -473,7 +487,7 @@ export function Reader({
     }
     if (!ids.length) return
     if (!addMemory(state.translation, ids, lines.join(' '))) {
-      setError('Saved ESV text stays within 500 verses, the limit Crossway sets for a copy kept on this device.')
+      setError(memoryLimitNote(state.translation))
       return
     }
     go('/memorize')
@@ -604,7 +618,7 @@ export function Reader({
                 verse={text}
                 dropCap={number === numbers[0]}
                 spokenAt={speaking ? voice.charIndex : null}
-                god={state.translation === 'esv' ? esvGod.get(number) : verseGod(divine, route.chapter, number)}
+                god={hosted ? hostedVerseGod(godPack, number, plain(text)) : verseGod(divine, route.chapter, number)}
                 onWord={(surface, strongs) => {
                   pick(number, false)
                   onWord({ surface, strongs, ref: verseId(book.id, route.chapter, number) })
@@ -615,6 +629,7 @@ export function Reader({
         )
       })}
       {state.translation === 'esv' && file ? <EsvNotice /> : null}
+      {state.translation === 'niv' && file ? <NivNotice /> : null}
       <div className="pager">
         <button type="button" onClick={() => move(-1)} disabled={!prev}>{prev ? `${bookName(prev.book)} ${prev.chapter}` : 'Start'}</button>
         <button type="button" className={isChapterRead(book.id, route.chapter) ? 'choice gold' : ''} onClick={() => markChapterRead(book.id, route.chapter)}>

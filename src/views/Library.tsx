@@ -5,7 +5,7 @@ import { loadChapter, plain, translationShort } from '../lib/bible'
 import { useEsvToken } from '../lib/esv'
 import { go } from '../lib/router'
 import { useAppState } from '../lib/storage'
-import { EsvNotice, GodLine } from '../ui'
+import { EsvNotice, GodLine, NivNotice } from '../ui'
 
 export function Library() {
   const state = useAppState()
@@ -161,6 +161,7 @@ export function Library() {
         The Android and iOS projects use the same Capacitor shell.
       </p>
       <EsvNotice full />
+      <NivNotice full />
     </div>
   )
 }

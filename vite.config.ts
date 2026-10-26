@@ -13,6 +13,10 @@ const apiProxy: Record<string, ProxyOptions> = {
     changeOrigin: true,
     rewrite: (path) => path.replace(/^\/esv-api/, ''),
   },
+  '/bible-api': {
+    target: `http://127.0.0.1:${apiPort}`,
+    changeOrigin: true,
+  },
   '/api': {
     target: `http://127.0.0.1:${apiPort}`,
     changeOrigin: true,
