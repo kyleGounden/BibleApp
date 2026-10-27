@@ -90,9 +90,11 @@ export function Reader({
     }, 1200)
   }
   const [file, setFile] = useState<BookFile | null>(null)
+  const [pending, setPending] = useState(true)
   const [error, setError] = useState('')
   const [selected, setSelected] = useState(route.verse ?? 1)
   const [end, setEnd] = useState(route.verse ?? 1)
+  const [settleVerse, setSettleVerse] = useState<number | null>(null)
   const [threads, setThreads] = useState<ThreadHit[]>([])
   const [xrefCount, setXrefCount] = useState(0)
   const [chapterPlaces, setChapterPlaces] = useState<Place[]>([])
@@ -133,6 +135,12 @@ export function Reader({
     setEnd(verse)
     anchor.current = verse
   }, [route.book, route.chapter, route.verse])
+
+  useEffect(() => {
+    setSettleVerse(selected)
+    const timer = window.setTimeout(() => setSettleVerse((current) => (current === selected ? null : current)), 480)
+    return () => window.clearTimeout(timer)
+  }, [selected, route.book, route.chapter])
 
   const followMark = useFollow().following
   const followPassage = followMark?.sermon.steps[followMark.step]?.passage ?? ''
@@ -219,14 +227,19 @@ export function Reader({
   useEffect(() => {
     if (!book || state.translation === 'esv' || state.translation === 'niv') return
     let live = true
-    setFile(null)
+    setPending(true)
     setError('')
     loadBook(state.translation, book.id)
       .then((next) => {
-        if (live) setFile(next)
+        if (!live) return
+        setFile(next)
+        setPending(false)
       })
       .catch(() => {
-        if (live) setError('This book is not on the device.')
+        if (!live) return
+        setFile(null)
+        setPending(false)
+        setError('This book is not on the device.')
       })
     return () => {
       live = false
@@ -236,14 +249,19 @@ export function Reader({
   useEffect(() => {
     if (!book || (state.translation !== 'esv' && state.translation !== 'niv')) return
     let live = true
-    setFile(null)
+    setPending(true)
     setError('')
     loadChapter(state.translation, book.id, route.chapter)
       .then((next) => {
-        if (live) setFile(next)
+        if (!live) return
+        setFile(next)
+        setPending(false)
       })
       .catch((err: unknown) => {
-        if (live) setError(err instanceof EsvError || err instanceof NivError ? err.message : 'This chapter did not load.')
+        if (!live) return
+        setFile(null)
+        setPending(false)
+        setError(err instanceof EsvError || err instanceof NivError ? err.message : 'This chapter did not load.')
       })
     return () => {
       live = false
@@ -591,7 +609,7 @@ export function Reader({
   return (
     <article
       ref={articleRef}
-      className="reading scripture"
+      className={['reading', 'scripture', pending && file ? 'is-pending' : ''].filter(Boolean).join(' ')}
       onTouchStart={(event) => {
         const target = event.target
         if (target instanceof Element && target.closest('.chapter-rail, .vn, .actions, .ink-panel')) {
@@ -653,7 +671,11 @@ export function Reader({
         </div>
       ) : null}
       {error ? <p className="miss">{error}</p> : null}
-      {!file && !error ? <p className="quiet">Opening the chapter…</p> : null}
+      {!file && pending && !error ? (
+        <div className="reading-skeleton" aria-busy="true" aria-label="Opening the chapter">
+          <i /><i /><i /><i /><i />
+        </div>
+      ) : null}
       {numbers.map((number) => {
         const text = verses?.[String(number)]
         if (!text) return null
@@ -663,7 +685,7 @@ export function Reader({
         const ink = inkId ? state.palette.find((item) => item.id === inkId) : undefined
         const hex = ink ? inkHex(ink.color) : null
         return (
-          <div key={number} id={`v${number}`} data-verse={number} className={['verse', number === numbers[0] ? 'first' : '', on ? 'on' : '', speaking ? 'speaking' : '', hex ? 'inked' : ''].filter(Boolean).join(' ')} style={hex ? { '--ink': hex } as CSSProperties : undefined} aria-current={speaking ? 'location' : undefined}>
+          <div key={number} id={`v${number}`} data-verse={number} className={['verse', number === numbers[0] ? 'first' : '', on ? 'on' : '', speaking ? 'speaking' : '', settleVerse === number ? 'settle' : '', hex ? 'inked' : ''].filter(Boolean).join(' ')} style={hex ? { '--ink': hex } as CSSProperties : undefined} aria-current={speaking ? 'location' : undefined}>
             <button
               type="button"
               className="vn"

@@ -119,8 +119,13 @@ export function CanonPage() {
       </section>
       <section style={{ marginTop: '1.4rem' }}>
         <h2>Atlas</h2>
-        <p className="quiet">Biblical places, marked on a map.</p>
-        <button type="button" className="choice" onClick={() => go('/places')}>Open the atlas</button>
+        <p className="quiet">Biblical places, marked on a map. Walk a journey stop by stop with the voice.</p>
+        <div className="row">
+          <button type="button" className="choice gold" onClick={() => go(guides?.journeys[0] ? `/journey/${guides.journeys[0].id}` : '/places')}>
+            Walk a journey
+          </button>
+          <button type="button" className="choice" onClick={() => go('/places')}>Open the atlas</button>
+        </div>
       </section>
       {Object.keys(state.highlights).length ? (
         <section>

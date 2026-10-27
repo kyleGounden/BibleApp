@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { env } from '@huggingface/transformers'
 import { KokoroTTS } from 'kokoro-js'
 import { dataDirectory } from './sqlite.js'
 
@@ -18,6 +19,15 @@ function ttsDirectory(): string {
   const dir = join(dataDirectory(), 'tts')
   mkdirSync(dir, { recursive: true })
   return dir
+}
+
+/** App-pool identity can write .data, not node_modules — keep HF weights there. */
+function configureModelCache(): void {
+  const dir = join(dataDirectory(), 'hf-cache')
+  mkdirSync(dir, { recursive: true })
+  env.cacheDir = dir
+  process.env.HF_HOME = dir
+  process.env.TRANSFORMERS_CACHE = dir
 }
 
 export function isTtsVoice(value: string): value is TtsVoiceId {
@@ -69,6 +79,7 @@ function encodeWav(samples: Float32Array, sampleRate: number): Buffer {
 
 async function loadModel(): Promise<KokoroTTS> {
   if (!loading) {
+    configureModelCache()
     loading = KokoroTTS.from_pretrained(MODEL, {
       dtype: 'q8',
       device: 'cpu',

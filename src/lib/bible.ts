@@ -37,7 +37,10 @@ let glossPromise: Promise<Record<string, Gloss>> | null = null
 const concord = new Map<string, Promise<Record<string, { n: number; v: string[] }>>>()
 const strongs = new Map<string, Promise<Record<string, string[]>>>()
 const originals = new Map<string, Promise<OriginalBook>>()
-const searchCache = new Map<Translation, Promise<{ id: string; text: string }[]>>()
+export type SearchHit = { id: string; text: string }
+
+const searchCache = new Map<Translation, Promise<SearchHit[]>>()
+const bookSearchCache = new Map<string, Promise<SearchHit[]>>()
 
 async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(path)
@@ -165,37 +168,113 @@ export function loadConcord(letter: string): Promise<Record<string, { n: number;
   return pending
 }
 
-export async function searchCanon(translation: Translation, query: string): Promise<{ id: string; text: string }[]> {
+function bookSearchRows(translation: Translation, bookId: string): Promise<SearchHit[]> {
+  const key = `${translation}/${bookId}`
+  let pending = bookSearchCache.get(key)
+  if (!pending) {
+    pending = loadBook(translation, bookId).then((file) => {
+      const rows: SearchHit[] = []
+      for (const [chapter, verses] of Object.entries(file.chapters)) {
+        for (const [verse, value] of Object.entries(verses)) {
+          const text = plain(value)
+          if (text) rows.push({ id: verseId(bookId, Number(chapter), Number(verse)), text })
+        }
+      }
+      return rows
+    })
+    bookSearchCache.set(key, pending)
+  }
+  return pending
+}
+
+function ensureSearchIndex(translation: Translation): Promise<SearchHit[]> {
+  let index = searchCache.get(translation)
+  if (!index) {
+    index = Promise.all(BOOKS.map((book) => bookSearchRows(translation, book.id))).then((groups) => groups.flat())
+    searchCache.set(translation, index)
+  }
+  return index
+}
+
+function matchRows(rows: SearchHit[], folded: string, limit: number): SearchHit[] {
+  const hits: SearchHit[] = []
+  for (const row of rows) {
+    if (row.text.toLowerCase().includes(folded)) {
+      hits.push(row)
+      if (hits.length >= limit) break
+    }
+  }
+  return hits
+}
+
+export async function searchCanon(translation: Translation, query: string): Promise<SearchHit[]> {
   const needle = query.trim()
   if (needle.length < 2) return []
   if (translation === 'esv') return searchEsv(needle)
   if (translation === 'niv') return searchNiv(needle)
   const folded = needle.toLowerCase()
-  let index = searchCache.get(translation)
-  if (!index) {
-    index = Promise.all(
-      BOOKS.map(async (book) => {
-        const file = await loadBook(translation, book.id)
-        const rows: { id: string; text: string }[] = []
-        for (const [chapter, verses] of Object.entries(file.chapters)) {
-          for (const [verse, value] of Object.entries(verses)) {
-            const text = plain(value)
-            if (text) rows.push({ id: verseId(book.id, Number(chapter), Number(verse)), text })
-          }
+  const rows = await ensureSearchIndex(translation)
+  return matchRows(rows, folded, 60)
+}
+
+export type SearchStreamState = {
+  hits: SearchHit[]
+  done: boolean
+  scanned: number
+  total: number
+}
+
+/** Progressive KJV/WEB search: emit early hits as each book loads. Hosted translations resolve in one shot. */
+export async function searchCanonStream(
+  translation: Translation,
+  query: string,
+  onUpdate: (state: SearchStreamState) => void,
+  signal?: AbortSignal,
+): Promise<SearchHit[]> {
+  const needle = query.trim()
+  if (needle.length < 2) {
+    onUpdate({ hits: [], done: true, scanned: 0, total: 0 })
+    return []
+  }
+  const limit = translation === 'esv' || translation === 'niv' ? 40 : 60
+  if (translation === 'esv' || translation === 'niv') {
+    const hits = translation === 'esv' ? await searchEsv(needle) : await searchNiv(needle)
+    if (signal?.aborted) return []
+    onUpdate({ hits, done: true, scanned: 1, total: 1 })
+    return hits
+  }
+
+  const folded = needle.toLowerCase()
+  const cached = searchCache.get(translation)
+  if (cached) {
+    const rows = await cached
+    if (signal?.aborted) return []
+    const hits = matchRows(rows, folded, limit)
+    onUpdate({ hits, done: true, scanned: BOOKS.length, total: BOOKS.length })
+    return hits
+  }
+
+  const hits: SearchHit[] = []
+  const total = BOOKS.length
+  for (let index = 0; index < BOOKS.length; index += 1) {
+    if (signal?.aborted) return hits
+    const book = BOOKS[index]
+    try {
+      const rows = await bookSearchRows(translation, book.id)
+      if (hits.length < limit) {
+        for (const row of rows) {
+          if (!row.text.toLowerCase().includes(folded)) continue
+          hits.push(row)
+          if (hits.length >= limit) break
         }
-        return rows
-      }),
-    ).then((groups) => groups.flat())
-    searchCache.set(translation, index)
-  }
-  const rows = await index
-  const hits: { id: string; text: string }[] = []
-  for (const row of rows) {
-    if (row.text.toLowerCase().includes(folded)) {
-      hits.push(row)
-      if (hits.length >= 60) break
+      }
+    } catch {
+      /* skip a missing book file */
     }
+    onUpdate({ hits: hits.slice(), done: false, scanned: index + 1, total })
   }
+  void ensureSearchIndex(translation)
+  if (!signal?.aborted) onUpdate({ hits: hits.slice(), done: true, scanned: total, total })
   return hits
 }
 

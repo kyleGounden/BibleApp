@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { formatRef, verseId } from './lib/canon'
+import { formatRef, parseSpokenRef, verseId } from './lib/canon'
 import { parseHash, go, type Route } from './lib/router'
 import { followLive, setLiveWatch, useFollow } from './lib/follow'
 import { bootSession, useSession } from './lib/session'
@@ -379,6 +379,11 @@ export function App() {
               const q = query.trim()
               if (!q) return
               setSearchOpen(false)
+              const spoken = parseSpokenRef(q)
+              if (spoken) {
+                go(`/read/${spoken.book}/${spoken.chapter}/${spoken.verse}`)
+                return
+              }
               go(`/search/${encodeURIComponent(q)}`)
             }}
           >

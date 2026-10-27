@@ -998,6 +998,9 @@ export function VoiceDock() {
       <div className="voice-progress" aria-hidden="true">
         <i style={{ width: `${progress * 100}%` }} />
       </div>
+      <div className="sr-only" aria-live="polite">
+        {voice.error || voice.notice || (voice.status === 'playing' ? `Reading ${place}` : '')}
+      </div>
       <div className="voice-row">
         {voice.status === 'idle' ? (
           <button type="button" className="choice" onClick={() => stopVoice()}>Dismiss</button>

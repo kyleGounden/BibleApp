@@ -14,14 +14,18 @@ export function Library() {
   const book = bookById(state.book)
   const shelfName = SHELVES.find((shelf) => shelf.books.includes(state.book))?.name ?? 'Canon'
   const [verseText, setVerseText] = useState('')
+  const [verseIn, setVerseIn] = useState(false)
   const [openBook, setOpenBook] = useState<string | null>(null)
   const readCount = Object.values(state.read).reduce((sum, chapters) => sum + chapters.length, 0)
   const marks = [...state.marks].reverse().slice(0, 5)
+  const firstRun = readCount === 0
+  const featuredJourney = guides?.journeys[0]
 
   useEffect(() => {
     if (!book) return
     let live = true
     setVerseText('')
+    setVerseIn(false)
     loadChapter(state.translation, book.id, state.chapter)
       .then((file) => {
         if (!live) return
@@ -35,6 +39,20 @@ export function Library() {
     }
   }, [book, state.translation, state.chapter, state.verse, esvToken])
 
+  useEffect(() => {
+    if (!verseText) {
+      setVerseIn(false)
+      return
+    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setVerseIn(true)
+      return
+    }
+    const frame = window.requestAnimationFrame(() => setVerseIn(true))
+    return () => window.cancelAnimationFrame(frame)
+  }, [verseText])
+
   function readBook(id: string) {
     if (id === state.book) go(`/read/${id}/${state.chapter}/${state.verse}`)
     else go(`/read/${id}/1`)
@@ -44,12 +62,16 @@ export function Library() {
     <div>
       <p className="kicker">The canon</p>
       <h1>The Scriptures</h1>
-      <p className="lede">Read a book, then follow its words into the rest of the canon.</p>
-      <section className="opening" aria-label="Current place">
+      <p className="lede">
+        {firstRun
+          ? 'Begin in the text, or walk the story of the King.'
+          : 'Read a book, then follow its words into the rest of the canon.'}
+      </p>
+      <section className={firstRun ? 'opening opening-hero' : 'opening'} aria-label="Current place">
         <p className="kicker">{shelfName} · {translationShort(state.translation)}</p>
         <h2>{book?.name ?? state.book} {state.chapter}:{state.verse}</h2>
         {verseText ? (
-          <p className="opening-verse">
+          <p className={verseIn ? 'opening-verse is-in' : 'opening-verse'}>
             <GodLine translation={state.translation} id={verseId(state.book, state.chapter, state.verse)} text={verseText} mark={null} />
           </p>
         ) : null}
@@ -57,19 +79,30 @@ export function Library() {
           <i style={{ transform: `scaleX(${readCount / CIRCUIT.length})` }} />
         </div>
         <p className="quiet canon-count">{readCount} of {CIRCUIT.length} chapters read</p>
-        <div className="row">
+        <div className="row opening-cta">
           <button type="button" className="choice" onClick={() => go(`/read/${state.book}/${state.chapter}/${state.verse}`)}>
             Continue reading
-          </button>
-          <button type="button" className="choice" onClick={() => go(`/study/${state.book}/${state.chapter}/${state.verse}`)}>
-            Study this verse
           </button>
           <button type="button" className="choice gold" onClick={() => go('/king')}>
             Get to know the King
           </button>
-          <button type="button" className="choice" onClick={() => go('/about')}>
+        </div>
+        <div className="opening-more">
+          <button type="button" className="text-btn" onClick={() => go(`/study/${state.book}/${state.chapter}/${state.verse}`)}>
+            Study this verse
+          </button>
+          <button type="button" className="text-btn" onClick={() => go('/about')}>
             Why this book
           </button>
+          {featuredJourney ? (
+            <button type="button" className="text-btn" onClick={() => go(`/journey/${featuredJourney.id}`)}>
+              Walk a journey
+            </button>
+          ) : (
+            <button type="button" className="text-btn" onClick={() => go('/places')}>
+              Walk a journey
+            </button>
+          )}
         </div>
         {marks.length ? (
           <div className="chips" aria-label="Marked verses">

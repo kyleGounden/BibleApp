@@ -5,7 +5,7 @@ import { formatRef, parseRef } from '../lib/canon'
 import { journeyById, readPath, useGuides } from '../lib/guide'
 import { loadPlaces, type Place } from '../lib/places'
 import { go, type Route } from '../lib/router'
-import { useVoice } from '../lib/speech'
+import { startScript, stopVoice, useVoice } from '../lib/speech'
 import { useAppState } from '../lib/storage'
 import { ListenButton, SpokenText, verseScripts } from '../ui'
 
@@ -36,12 +36,16 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
   const journeyId = route.name === 'journey' ? route.id : ''
   const journey = guides && journeyId ? journeyById(guides, journeyId) : undefined
   const [stopIndex, setStopIndex] = useState<number | null>(null)
+  const [walking, setWalking] = useState(false)
   const fittedJourney = useRef('')
   const frame = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const [places, setPlaces] = useState<Place[]>([])
   const [error, setError] = useState('')
+  const walkToken = useRef(0)
+  const armedKey = useRef('')
+  const walkPhase = useRef<'idle' | 'starting' | 'speaking'>('idle')
 
   useEffect(() => {
     let live = true
@@ -75,6 +79,10 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
 
   useEffect(() => {
     setStopIndex(null)
+    setWalking(false)
+    walkToken.current += 1
+    walkPhase.current = 'idle'
+    armedKey.current = ''
   }, [journeyId])
 
   useEffect(() => {
@@ -99,7 +107,10 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
           title: place.name,
           zIndexOffset: 200 + index,
         })
-        marker.on('click', () => setStopIndex(index))
+        marker.on('click', () => {
+          if (walking) return
+          setStopIndex(index)
+        })
         marker.addTo(group)
       })
       const chosen = stopIndex != null ? resolved[stopIndex] : undefined
@@ -108,7 +119,7 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
         if (resolved.length === 1) map.setView([resolved[0].lat, resolved[0].lng], 8, { animate: false })
         else if (resolved.length > 1) map.fitBounds(L.latLngBounds(resolved.map((place) => [place.lat, place.lng])), { padding: [28, 28], animate: false })
       } else if (chosen) {
-        map.panTo([chosen.lat, chosen.lng], { animate: false })
+        map.flyTo([chosen.lat, chosen.lng], Math.max(map.getZoom(), walking ? 8 : 7), { animate: true, duration: walking ? 1.1 : 0.55 })
       }
     } else {
       fittedJourney.current = ''
@@ -127,7 +138,7 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
       window.cancelAnimationFrame(frameId)
       group.remove()
     }
-  }, [places, selectedId, journey, stopIndex])
+  }, [places, selectedId, journey, stopIndex, walking])
 
   useEffect(() => {
     const list = listRef.current
@@ -135,11 +146,105 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
     const row = journeyId ? list.querySelector(`[data-stop="${stopIndex}"]`) : selectedId ? list.querySelector(`[data-place="${selectedId}"]`) : null
     if (!(row instanceof HTMLElement)) return
     const top = list.scrollTop + row.getBoundingClientRect().top - list.getBoundingClientRect().top
-    list.scrollTo({ top: Math.max(0, top - 8) })
-  }, [places, selectedId, journeyId, stopIndex])
+    list.scrollTo({ top: Math.max(0, top - 8), behavior: walking ? 'smooth' : 'auto' })
+  }, [places, selectedId, journeyId, stopIndex, walking])
+
+  useEffect(() => {
+    if (!walking || !journey || stopIndex == null) return
+    const stop = journey.stops[stopIndex]
+    if (!stop) {
+      setWalking(false)
+      return
+    }
+    const token = ++walkToken.current
+    const key = `journey-walk:${journey.id}:${stopIndex}`
+    armedKey.current = key
+    walkPhase.current = 'starting'
+    const place = places.find((entry) => entry.id === stop.place)
+    let cancelled = false
+
+    void (async () => {
+      const note = stop.note.trim()
+        ? [{ key: `${key}:note`, label: place?.name ?? stop.place, text: stop.note, href: readPath(stop) }]
+        : []
+      const verses = stop.ref ? await verseScripts([stop.ref], state.translation) : []
+      if (cancelled || token !== walkToken.current) return
+      const lines = [...note, ...verses]
+      if (!lines.length) {
+        window.setTimeout(() => {
+          if (cancelled || token !== walkToken.current) return
+          walkPhase.current = 'idle'
+          armedKey.current = ''
+          if (stopIndex >= journey.stops.length - 1) setWalking(false)
+          else setStopIndex(stopIndex + 1)
+        }, 900)
+        return
+      }
+      await startScript({
+        key,
+        title: `${journey.title} · ${stopIndex + 1}`,
+        lines,
+        translation: state.translation,
+      })
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [walking, journey, stopIndex, places, state.translation])
+
+  useEffect(() => {
+    if (!walking) return
+    if ((voice.status === 'playing' || voice.status === 'paused') && voice.scriptKey === armedKey.current) {
+      walkPhase.current = 'speaking'
+      return
+    }
+    if (walkPhase.current !== 'speaking' || voice.status !== 'idle') return
+    walkPhase.current = 'idle'
+    armedKey.current = ''
+    if (!journey || stopIndex == null) {
+      setWalking(false)
+      return
+    }
+    if (stopIndex >= journey.stops.length - 1) {
+      setWalking(false)
+      return
+    }
+    setStopIndex(stopIndex + 1)
+  }, [voice.status, voice.scriptKey, walking, journey, stopIndex])
+
+  useEffect(() => () => {
+    walkToken.current += 1
+    if (armedKey.current.startsWith('journey-walk:')) stopVoice()
+  }, [])
 
   const stop = journey && stopIndex != null ? journey.stops[stopIndex] : undefined
   const selected = places.find((place) => place.id === (stop ? stop.place : selectedId))
+
+  function beginWalk() {
+    if (!journey?.stops.length) return
+    setWalking(true)
+    setStopIndex(0)
+  }
+
+  function endWalk() {
+    walkToken.current += 1
+    walkPhase.current = 'idle'
+    armedKey.current = ''
+    setWalking(false)
+    stopVoice()
+  }
+
+  function skipStop(dir: -1 | 1) {
+    if (!journey || stopIndex == null) return
+    const next = stopIndex + dir
+    if (next < 0 || next >= journey.stops.length) return
+    walkToken.current += 1
+    walkPhase.current = 'idle'
+    armedKey.current = ''
+    stopVoice()
+    setStopIndex(next)
+  }
 
   return (
     <div>
@@ -153,11 +258,27 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
               key={item.id}
               type="button"
               className={item.id === journeyId ? 'chip on' : 'chip'}
-              onClick={() => go(item.id === journeyId ? '/places' : `/journey/${item.id}`)}
+              onClick={() => {
+                endWalk()
+                go(item.id === journeyId ? '/places' : `/journey/${item.id}`)
+              }}
             >
               {item.title}
             </button>
           ))}
+        </div>
+      ) : null}
+      {journey ? (
+        <div className="journey-walk" role="group" aria-label="Walk this journey">
+          {walking ? (
+            <>
+              <button type="button" className="choice gold" onClick={endWalk}>Stop walk</button>
+              <button type="button" className="choice" onClick={() => skipStop(-1)} disabled={stopIndex == null || stopIndex <= 0}>Previous stop</button>
+              <button type="button" className="choice" onClick={() => skipStop(1)} disabled={stopIndex == null || stopIndex >= journey.stops.length - 1}>Next stop</button>
+            </>
+          ) : (
+            <button type="button" className="choice gold" onClick={beginWalk}>Walk this journey</button>
+          )}
         </div>
       ) : null}
       {error ? <p className="miss">{error}</p> : null}
@@ -170,17 +291,33 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
             <p className="kicker">Journey</p>
             <h2>{journey.title}</h2>
             <p>{journey.summary}</p>
-            <p className="quiet">A stop stays on the map. Open the verse when you want the text.</p>
+            <p className="quiet">Walk the road stop by stop, or tap a pin when you want one place.</p>
           </article>
         ) : selected && stop ? (
-          <article className="panel place-card">
-            <p className="kicker">Stop {(stopIndex ?? 0) + 1}</p>
+          <article className={walking ? 'panel place-card is-walk' : 'panel place-card'}>
+            <p className="kicker">{walking ? 'Walking' : 'Stop'} {(stopIndex ?? 0) + 1} of {journey?.stops.length ?? 0}</p>
             <h2>{selected.name}</h2>
             <p>{stop.note}</p>
             <p className="quiet">{selected.note}</p>
             <button type="button" className="choice gold" onClick={() => go(readPath(stop))}>
               {stop.ref ? formatRef(stop.ref) : 'Read this chapter'}
             </button>
+            {!walking ? (
+              <ListenButton
+                scriptKey={`journey-stop:${journeyId}:${stopIndex}`}
+                title={selected.name}
+                label="Read this stop"
+                className="choice"
+                translation={state.translation}
+                lines={async () => {
+                  const note = stop.note.trim()
+                    ? [{ key: `journey-stop:${journeyId}:${stopIndex}:note`, label: selected.name, text: stop.note, href: readPath(stop) }]
+                    : []
+                  const verses = stop.ref ? await verseScripts([stop.ref], state.translation) : []
+                  return [...note, ...verses]
+                }}
+              />
+            ) : null}
           </article>
         ) : selected ? (
           <article className={voice.lineKey === `place:${selected.id}:note` ? 'panel place-card speaking' : 'panel place-card'}>
@@ -240,7 +377,15 @@ export function PlacesPage({ route }: { route: Extract<Route, { name: 'places' }
                     type="button"
                     data-stop={index}
                     className={index === stopIndex ? 'list-btn on' : 'list-btn'}
-                    onClick={() => setStopIndex(index)}
+                    onClick={() => {
+                      if (walking) {
+                        walkToken.current += 1
+                        walkPhase.current = 'idle'
+                        armedKey.current = ''
+                        stopVoice()
+                      }
+                      setStopIndex(index)
+                    }}
                   >
                     <strong>{index + 1}. {place?.name ?? item.place}</strong>
                     <span className="quiet">{item.note}</span>
