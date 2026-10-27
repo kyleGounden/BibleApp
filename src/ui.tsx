@@ -912,11 +912,51 @@ function MarkIcon({ playing }: { playing: boolean }) {
   )
 }
 
+const VOICE_MORE_EVENT = 'scripture:voice-more'
+const TOOLS_OPEN_EVENT = 'scripture:tools-open'
+
+export function setVoiceMoreOpen(open: boolean) {
+  window.dispatchEvent(new CustomEvent(VOICE_MORE_EVENT, { detail: { open } }))
+}
+
+export function setToolsChromeOpen(open: boolean) {
+  window.dispatchEvent(new CustomEvent(TOOLS_OPEN_EVENT, { detail: { open } }))
+}
+
 export function VoiceDock() {
   const voice = useVoice()
   const [more, setMore] = useState(false)
   const dock = useRef<HTMLElement>(null)
+  const wasActive = useRef(false)
   const open = voice.status !== 'idle' || Boolean(voice.error)
+  const active = voice.status === 'playing' || voice.status === 'paused'
+
+  useEffect(() => {
+    if (active && !wasActive.current) setMore(false)
+    wasActive.current = active
+  }, [active])
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(VOICE_MORE_EVENT, { detail: { open: more && open } }))
+  }, [more, open])
+
+  useEffect(() => {
+    const onTools = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail
+      if (detail?.open) setMore(false)
+    }
+    const onVoiceMore = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail
+      if (detail && detail.open === false) setMore(false)
+    }
+    window.addEventListener(TOOLS_OPEN_EVENT, onTools)
+    window.addEventListener(VOICE_MORE_EVENT, onVoiceMore)
+    return () => {
+      window.removeEventListener(TOOLS_OPEN_EVENT, onTools)
+      window.removeEventListener(VOICE_MORE_EVENT, onVoiceMore)
+    }
+  }, [])
+
   useEffect(() => {
     const node = dock.current
     if (!open || !node) {
@@ -931,12 +971,30 @@ export function VoiceDock() {
       watch.disconnect()
       document.documentElement.style.setProperty('--dock-h', '0px')
     }
-  }, [open, more, voice.status, voice.error, voice.notice])
+  }, [open, more, voice.status, voice.error, voice.notice, voice.phraseWord])
+
   if (!open) return null
   const progress = voice.total > 0 ? Math.min(1, (voice.index + 1) / voice.total) : 0
   const place = voice.label || voice.title || 'Reading'
+  const phrase = voice.phraseWord ? (
+    <p className="voice-phrase">
+      {voice.phraseBefore ? `${voice.phraseBefore} ` : null}
+      <mark>{voice.phraseWord}</mark>
+      {voice.phraseAfter ? ` ${voice.phraseAfter}` : null}
+    </p>
+  ) : null
+
+  function toggleMore() {
+    setMore((value) => {
+      const next = !value
+      if (next) setToolsChromeOpen(false)
+      return next
+    })
+  }
+
   return (
-    <section className="voice-dock" aria-label="Reading aloud" ref={dock}>
+    <section className={more ? 'voice-dock expanded' : 'voice-dock'} aria-label="Reading aloud" ref={dock}>
+      <button type="button" className="voice-handle" aria-expanded={more} aria-label={more ? 'Hide reading controls' : 'Show reading controls'} onClick={toggleMore} />
       <div className="voice-progress" aria-hidden="true">
         <i style={{ width: `${progress * 100}%` }} />
       </div>
@@ -958,13 +1016,7 @@ export function VoiceDock() {
             {place}
             {voice.total > 1 ? <span> · {voice.index + 1} of {voice.total}</span> : null}
           </p>
-          {voice.phraseWord ? (
-            <p className="voice-phrase">
-              {voice.phraseBefore ? `${voice.phraseBefore} ` : null}
-              <mark>{voice.phraseWord}</mark>
-              {voice.phraseAfter ? ` ${voice.phraseAfter}` : null}
-            </p>
-          ) : null}
+          <div className="voice-desk-phrase">{phrase}</div>
           {voice.notice ? <p className="quiet voice-status">{voice.notice}</p> : null}
           {voice.error ? <p className="miss">{voice.error}</p> : null}
         </div>
@@ -972,7 +1024,7 @@ export function VoiceDock() {
           <>
             <button type="button" className="icon-btn" aria-label="Previous line" onClick={() => skipVoice(-1)}>‹</button>
             <button type="button" className="icon-btn" aria-label="Next line" onClick={() => skipVoice(1)}>›</button>
-            <div className="seg" role="group" aria-label="Reading speed">
+            <div className="seg voice-desk-extra" role="group" aria-label="Reading speed">
               {VOICE_RATES.map((value) => (
                 <button key={value} type="button" className={voice.rate === value ? 'on' : ''} onClick={() => setVoiceRate(value)}>
                   {value}×
@@ -982,14 +1034,27 @@ export function VoiceDock() {
           </>
         ) : null}
         {voice.href ? (
-          <button type="button" className="choice" onClick={() => voice.href && go(voice.href)}>Open</button>
+          <button type="button" className="choice voice-desk-extra" onClick={() => voice.href && go(voice.href)}>Open</button>
         ) : null}
-        <button type="button" className="text-btn" aria-expanded={more} onClick={() => setMore((value) => !value)}>
+        <button type="button" className="text-btn voice-toggle" aria-expanded={more} onClick={toggleMore}>
           {more ? 'Less' : 'More'}
         </button>
       </div>
       {more ? (
         <div className="voice-more">
+          {phrase}
+          {voice.status !== 'idle' ? (
+            <div className="seg voice-mobile-extra" role="group" aria-label="Reading speed">
+              {VOICE_RATES.map((value) => (
+                <button key={value} type="button" className={voice.rate === value ? 'on' : ''} onClick={() => setVoiceRate(value)}>
+                  {value}×
+                </button>
+              ))}
+            </div>
+          ) : null}
+          {voice.href ? (
+            <button type="button" className="choice voice-mobile-extra" onClick={() => voice.href && go(voice.href)}>Open</button>
+          ) : null}
           <button type="button" className="choice" onClick={() => stopVoice()}>Stop</button>
           {voice.chapterMode ? (
             <button

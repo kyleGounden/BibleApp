@@ -11,7 +11,7 @@ import { loadPlaces, placesInText, type Place } from '../lib/places'
 import { FollowBar } from './FollowBar'
 import { SettingStrip } from './SettingStrip'
 import { addInk, addMemory, inkHex, INK_LABEL_CAP, isChapterRead, markChapterRead, memoryLimitNote, PALETTE_CAP, removeInk, setHighlight, setPosition, toggleMarks, updateInk, useAppState } from '../lib/storage'
-import { EsvNotice, NivNotice, VerseText, hostedVerseGod, useDivineBook, useHostedGod, type HostedPack, type WordAsk } from '../ui'
+import { EsvNotice, NivNotice, VerseText, hostedVerseGod, setToolsChromeOpen, setVoiceMoreOpen, useDivineBook, useHostedGod, type HostedPack, type WordAsk } from '../ui'
 import { NivError } from '../lib/niv'
 
 function interimHosted(verses: Record<string, Verse>): HostedPack {
@@ -387,7 +387,7 @@ export function Reader({
       watch.disconnect()
       document.documentElement.style.setProperty('--tools-h', '0px')
     }
-  }, [book?.id])
+  }, [book?.id, quiet, toolsOpen, voice.status])
 
   useEffect(() => {
     if (!colorsOpen) return
@@ -397,6 +397,28 @@ export function Reader({
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [colorsOpen])
+
+  const wasIdle = useRef(true)
+  useEffect(() => {
+    const idle = voice.status === 'idle'
+    if (!idle && wasIdle.current) {
+      setToolsOpen(false)
+      setColorsOpen(false)
+    }
+    wasIdle.current = idle
+  }, [voice.status])
+
+  useEffect(() => {
+    const onVoiceMore = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail
+      if (detail?.open) {
+        setToolsOpen(false)
+        setColorsOpen(false)
+      }
+    }
+    window.addEventListener('scripture:voice-more', onVoiceMore)
+    return () => window.removeEventListener('scripture:voice-more', onVoiceMore)
+  }, [])
 
   const hostedPack = useHostedGod(
     state.translation === 'esv' || state.translation === 'niv' ? state.translation : null,
@@ -462,8 +484,25 @@ export function Reader({
   }
 
   const here = voice.book === book?.id && voice.chapter === route.chapter
+  const listening = voice.status !== 'idle'
+  const toolsCollapsed = (quiet || listening) && !toolsOpen
+
+  function openTools() {
+    setToolsOpen(true)
+    setVoiceMoreOpen(false)
+    setToolsChromeOpen(true)
+  }
+
+  function closeTools() {
+    setToolsOpen(false)
+    setColorsOpen(false)
+    setToolsChromeOpen(false)
+  }
+
   function readAloud() {
     if (!book) return
+    setToolsOpen(false)
+    setColorsOpen(false)
     if (voice.status === 'playing' && here) {
       pauseVoice()
       return
@@ -664,13 +703,15 @@ export function Reader({
         <button type="button" onClick={() => move(1)} disabled={!next}>{next ? `${bookName(next.book)} ${next.chapter}` : 'End'}</button>
       </div>
       </div>
-      <div ref={toolsRef} className={quiet && !toolsOpen ? 'actions quiet-bar' : 'actions'} aria-label="Verse actions">
-        {quiet && !toolsOpen ? (
+      <div ref={toolsRef} className={toolsCollapsed ? 'actions quiet-bar' : 'actions'} aria-label="Verse actions">
+        {toolsCollapsed ? (
           <>
-            <button type="button" className="choice gold" onClick={readAloud} disabled={listenDisabled} aria-label={playingHere ? 'Pause reading' : here && voice.status === 'paused' ? 'Resume reading' : 'Read aloud'}>
-              {playingHere ? 'Pause' : resumeHere ? 'Resume' : 'Read aloud'}
-            </button>
-            <button type="button" className="choice gold" onClick={() => setToolsOpen(true)}>Tools</button>
+            {listening ? null : (
+              <button type="button" className="choice gold" onClick={readAloud} disabled={listenDisabled} aria-label={playingHere ? 'Pause reading' : here && voice.status === 'paused' ? 'Resume reading' : 'Read aloud'}>
+                {playingHere ? 'Pause' : resumeHere ? 'Resume' : 'Read aloud'}
+              </button>
+            )}
+            <button type="button" className="choice gold" onClick={openTools}>Tools</button>
           </>
         ) : (
           <>
@@ -718,6 +759,12 @@ export function Reader({
                 </ul>
               </div>
             ) : null}
+            <div className="tools-head">
+              <span className="quiet tool-ref">{bookName(book.id)} {route.chapter}:{selected}{end > selected ? `–${end}` : ''}</span>
+              {quiet || listening ? (
+                <button type="button" className="choice gold tools-hide" onClick={closeTools}>Hide</button>
+              ) : null}
+            </div>
             <div className="inks" role="group" aria-label="Highlight">
               {state.palette.map((ink) => {
                 const hex = inkHex(ink.color)
@@ -740,7 +787,6 @@ export function Reader({
               <button type="button" className="swatch add" aria-expanded={colorsOpen} aria-label="Add a highlight color" onClick={() => setColorsOpen((open) => !open)}>+</button>
             </div>
             <div className="tool-row">
-              <span className="quiet tool-ref">{bookName(book.id)} {route.chapter}:{selected}{end > selected ? `–${end}` : ''}</span>
               <button type="button" className="choice gold" onClick={readAloud} disabled={listenDisabled} aria-label={playingHere ? 'Pause reading' : here && voice.status === 'paused' ? 'Resume reading' : 'Read aloud'}>
                 {playingHere ? 'Pause' : resumeHere ? 'Resume' : 'Read aloud'}
               </button>

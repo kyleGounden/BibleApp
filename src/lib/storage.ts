@@ -79,7 +79,7 @@ const KEY = 'scripture.v1'
 const initial: State = {
   theme: 'day',
   scale: 1,
-  translation: 'kjv',
+  translation: 'niv',
   book: 'GEN',
   chapter: 1,
   verse: 1,
