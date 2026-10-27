@@ -55,6 +55,49 @@ function englishOf(verse: Verse | undefined, strong?: string): { phrase: string;
   return null
 }
 
+function linkedEnglish(list: OriginalWord[], index: number, verse: Verse | undefined): { phrase: string; n: number; strong: string } | null {
+  if (!verse || typeof verse === 'string' || !list.length) return null
+  const at = Math.min(Math.max(index, 0), list.length - 1)
+  const order = [at]
+  for (let step = 1; step < list.length; step++) {
+    if (at + step < list.length) order.push(at + step)
+    if (at - step >= 0) order.push(at - step)
+  }
+  for (const cursor of order) {
+    const strong = list[cursor]?.s
+    if (!strong) continue
+    const found = englishOf(verse, strong)
+    if (found) return { ...found, strong }
+  }
+  return null
+}
+
+const SKIP_MARK = new Set(['the', 'of', 'and'])
+
+function phraseOccurs(text: string, needle: string): boolean {
+  const hay = text.toLowerCase()
+  const want = needle.toLowerCase()
+  let from = 0
+  while (want && from < hay.length) {
+    const at = hay.indexOf(want, from)
+    if (at < 0) return false
+    const end = at + want.length
+    const before = at > 0 ? text[at - 1] : ''
+    const after = text[end] ?? ''
+    if (!/[A-Za-z]/.test(before) && !/[A-Za-z]/.test(after)) return true
+    from = end
+  }
+  return false
+}
+
+function visiblePhrase(phrase: string | undefined, text: string): string | undefined {
+  if (!phrase || !text) return undefined
+  if (phraseOccurs(text, phrase)) return phrase
+  const parts = phrase.split(/[^A-Za-z']+/).filter((word) => word && !SKIP_MARK.has(word.toLowerCase()))
+  parts.sort((a, b) => b.length - a.length)
+  return parts.find((word) => phraseOccurs(text, word))
+}
+
 function strongsInKjv(verse: Verse | undefined, surface: string): string[] {
   if (!verse || typeof verse === 'string') return []
   const want = surface.toLowerCase()
@@ -291,7 +334,8 @@ export function Study({
   const pointed = original ?? []
   const fallback = original !== null && pointed.length === 0
   const words = pointed.length ? pointed : fromGloss(kjvVerse, gloss)
-  const word = words[Math.min(pick, Math.max(words.length - 1, 0))]
+  const chosen = Math.min(pick, Math.max(words.length - 1, 0))
+  const word = words[chosen]
   const language = languageOf(word, book?.testament ?? 'OT')
   const rtl = book?.testament === 'OT'
   const learned = rankIndex(state.school.verses[id])
@@ -303,18 +347,10 @@ export function Study({
   const previous = numbers.filter((number) => number < route.verse).pop()
   const next = numbers.find((number) => number > route.verse)
   const hit = englishOf(kjvVerse, word?.s)
-  const aside = word
-    ? hit
-      ? hit.n > 1
-        ? `The King James gathers this with other original words into “${hit.phrase}.”`
-        : `The King James reads “${hit.phrase}.”`
-      : !word.s && functionWord(word.w, word.m)
-        ? 'This is written as part of the word beside it.'
-        : ''
-    : ''
+  const linked = linkedEnglish(words, chosen, kjvVerse)
   const open = STEPS.find((item) => item.id === step) ?? STEPS[0]
-  const activeStrongs = word?.s ? [word.s] : []
-  const phrase = hit?.phrase
+  const activeStrongs = linked ? [linked.strong] : []
+  const markIn = (text: string) => visiblePhrase(linked?.phrase, text)
   const notes = noteCount(journal, state.notes[id])
   const xrefCount = groups.reduce((sum, group) => sum + group.v.length, 0)
   const linkCount = places.length + xrefCount + trails.length + threads.length
@@ -322,6 +358,25 @@ export function Study({
   const ready = [plain(kjvVerse), plain(webVerse), hostedText].filter(Boolean).length
   const doneCount = [opened.read, opened.words, opened.links, notes > 0].filter(Boolean).length
   const activeText = hosted ? hostedText : state.translation === 'web' ? plain(webVerse) : plain(kjvVerse)
+  const marked = markIn(activeText)
+  const readingName = translationName(state.translation)
+  const aside = !word
+    ? ''
+    : state.translation === 'kjv'
+      ? hit
+        ? hit.n > 1
+          ? `The King James gathers this with other original words into “${hit.phrase}.”`
+          : `The King James reads “${hit.phrase}.”`
+        : !word.s && functionWord(word.w, word.m)
+          ? 'This is written as part of the word beside it.'
+          : ''
+      : marked
+        ? `The ${readingName} reads “${marked}.”`
+        : hit
+          ? `This word is not in the ${readingName}. The King James reads “${hit.phrase}.”`
+          : !word.s && functionWord(word.w, word.m)
+            ? 'This is written as part of the word beside it.'
+            : ''
   const inMemory = state.deck.some((card) => card.translation === state.translation && card.verses.length === 1 && card.verses[0] === id)
   const inkId = state.highlights[id]
   const ink = inkId ? state.palette.find((item) => item.id === inkId) : undefined
@@ -434,11 +489,11 @@ export function Study({
               <p className="vt">
                 {hosted ? (
                   hostedText
-                    ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, state.translation)} phrase={phrase} />
+                    ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, state.translation)} phrase={markIn(hostedText)} />
                     : (hostedNote ? '' : 'Opening the verse…')
                 ) : state.translation === 'web' ? (
                   webVerse
-                    ? <VerseText verse={webVerse} god={verseGod(webGod, route.chapter, route.verse)} spokenAt={verseMark(voice, id, 'web')} phrase={phrase} onWord={selectEnglish} />
+                    ? <VerseText verse={webVerse} god={verseGod(webGod, route.chapter, route.verse)} spokenAt={verseMark(voice, id, 'web')} phrase={markIn(plain(webVerse))} onWord={selectEnglish} />
                     : 'Opening the verse…'
                 ) : (
                   kjvVerse
@@ -582,12 +637,12 @@ export function Study({
             onToggle={(event) => { if (window.matchMedia('(max-width: 959px)').matches) setLineOpen(event.currentTarget.open) }}
           >
             <summary>
-              <span className="kicker">Original</span>
+              <span className="kicker">Original (manuscript)</span>
               <span className="study-fold-title">{tongue}</span>
             </summary>
             <div className="study-fold-body">
-            <p className="kicker study-fold-label">Original</p>
-            <p className="lede study-direction">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'}</p>
+            <p className="kicker study-fold-label">Original (manuscript)</p>
+            <p className="lede study-direction">{tongue}. {rtl ? 'Read each word from the right.' : 'Read each word from the left.'} The word you choose is marked in the verse above.</p>
             {original === null ? <p className="quiet">Opening the {tongue.toLowerCase()}…</p> : null}
             {fallback ? <p className="quiet">These are the dictionary forms behind the King James words.</p> : null}
             {words.length ? (
@@ -597,7 +652,7 @@ export function Study({
                     <button
                       key={`${item.w}-${item.m}-${index}`}
                       type="button"
-                      className={['orig-word', languageOf(item, book.testament) === 'Greek' ? 'gr' : 'he', index === Math.min(pick, words.length - 1) ? 'on' : ''].filter(Boolean).join(' ')}
+                      className={['orig-word', languageOf(item, book.testament) === 'Greek' ? 'gr' : 'he', index === chosen ? 'on' : ''].filter(Boolean).join(' ')}
                       onClick={() => chooseWord(index)}
                     >
                       <span>{item.w}</span>
@@ -655,7 +710,7 @@ export function Study({
                       {edition.id === 'esv' || edition.id === 'niv' ? (
                         state.translation === edition.id ? (
                           <>
-                            <p className="vt">{hostedText ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, edition.id)} phrase={phrase} /> : (hostedNote ? '' : 'Opening the verse…')}</p>
+                            <p className="vt">{hostedText ? <SpokenText text={hostedText} god={hostedVerseGod(hostedPack, route.verse, hostedText)} mark={verseMark(voice, id, edition.id)} phrase={markIn(hostedText)} /> : (hostedNote ? '' : 'Opening the verse…')}</p>
                             {hostedNote ? <p className="miss">{hostedNote}</p> : null}
                             {hostedText ? (edition.id === 'niv' ? <NivNotice /> : <EsvNotice />) : null}
                           </>
@@ -670,7 +725,7 @@ export function Study({
                               : '—'
                           ) : (
                             webVerse
-                              ? <VerseText verse={webVerse} god={verseGod(webGod, route.chapter, route.verse)} spokenAt={verseMark(voice, id, 'web')} phrase={phrase} onWord={selectEnglish} />
+                              ? <VerseText verse={webVerse} god={verseGod(webGod, route.chapter, route.verse)} spokenAt={verseMark(voice, id, 'web')} phrase={markIn(plain(webVerse))} onWord={selectEnglish} />
                               : '—'
                           )}
                         </p>

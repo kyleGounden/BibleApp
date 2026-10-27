@@ -204,7 +204,7 @@ export function VerseText({
 }) {
   let offset = 0
   let dropped = false
-  const hits = typeof verse === 'string' ? phraseHits(verse, phrase) : []
+  const hits = typeof verse === 'string' ? phraseHits(verse, phrase) : phraseHits(verse.map((token) => token[0]).join(''), phrase)
   if (typeof verse === 'string') {
     const parts = verse.split(/([A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*)/g)
     return (
@@ -255,7 +255,7 @@ export function VerseText({
         const slices = godSlices(value, start, god)
         offset += value.length
         const strongs = token[1]?.split('+').filter(Boolean) ?? []
-        const lit = Boolean(activeStrongs?.some((item) => strongs.includes(item)))
+        const lit = Boolean(activeStrongs?.some((item) => strongs.includes(item))) || overlaps(start, value.length, hits)
         const surface = value.replace(/\s+/g, ' ').trim()
         const drop = dropCap && /[A-Za-z]/.test(value) && !dropped
         if (drop) dropped = true

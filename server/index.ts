@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { basename, join, sep } from 'node:path'
+import { basename, extname, join, sep } from 'node:path'
 import express, { type NextFunction, type Request, type Response } from 'express'
 import type { RowDataPacket } from 'mysql2/promise'
 import { parseSpokenRef, verseId as scriptureId } from '../src/lib/canon.js'
@@ -39,11 +39,12 @@ const dist = join(process.cwd(), 'dist')
 
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
-  "script-src 'self' https://accounts.google.com",
+  "script-src 'self' 'wasm-unsafe-eval' https://accounts.google.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://*.googleusercontent.com https://accounts.google.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.dictionaryapi.dev https://en.wiktionary.org https://accounts.google.com https://fums.api.bible",
+  "connect-src 'self' https://huggingface.co https://*.huggingface.co https://*.hf.co https://*.aws.cdn.hf.co https://*.xethub.hf.co https://api.dictionaryapi.dev https://en.wiktionary.org https://accounts.google.com https://fums.api.bible",
+  "worker-src 'self' blob:",
   "frame-src https://accounts.google.com",
   "object-src 'none'",
   "base-uri 'self'",
@@ -746,6 +747,9 @@ if (serving) {
     index: false,
     setHeaders(res, filePath) {
       const name = basename(filePath)
+      const ext = extname(filePath)
+      if (ext === '.wasm') res.setHeader('Content-Type', 'application/wasm')
+      else if (ext === '.mjs') res.setHeader('Content-Type', 'text/javascript')
       if (name === 'index.html' || name === 'sw.js' || name === 'boot.js') {
         res.setHeader('Cache-Control', 'no-cache')
         return

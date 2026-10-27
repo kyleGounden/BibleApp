@@ -1,5 +1,7 @@
 import { KokoroTTS } from 'kokoro-js'
 import { env, type ProgressInfo } from '@huggingface/transformers'
+import ortWasm from '../../node_modules/@huggingface/transformers/dist/ort-wasm-simd-threaded.jsep.wasm?url'
+import ortMjs from '../../node_modules/@huggingface/transformers/dist/ort-wasm-simd-threaded.jsep.mjs?url'
 
 const MODEL = 'onnx-community/Kokoro-82M-v1.0-ONNX'
 
@@ -35,20 +37,38 @@ function onProgress(info: ProgressInfo): void {
   if (info.status === 'initiate' || info.status === 'download') report('Preparing the voice')
 }
 
+function configureOrt(): void {
+  env.allowLocalModels = false
+  const wasm = env.backends.onnx.wasm
+  if (!wasm) return
+  // One thread, in this worker. A second worker needs cross-origin isolation,
+  // which would block sign-in and the map. The runtime files come from this
+  // site so the voice does not depend on a third-party script host.
+  wasm.numThreads = 1
+  wasm.proxy = false
+  const origin = self.location?.href ?? import.meta.url
+  wasm.wasmPaths = {
+    wasm: new URL(ortWasm, origin).href,
+    mjs: new URL(ortMjs, origin).href,
+  }
+}
+
+async function createModel(): Promise<KokoroTTS> {
+  configureOrt()
+  // q8 on WebGPU comes out as static. The same weights on WASM speak clearly,
+  // and they skip the long shader compile before the first word.
+  return KokoroTTS.from_pretrained(MODEL, {
+    dtype: 'q8',
+    device: 'wasm',
+    progress_callback: onProgress,
+  })
+}
+
 function loadModel(): Promise<KokoroTTS> {
   if (!loading) {
     lastPercent = -1
     report('Preparing the voice')
-    loading = (async () => {
-      env.allowLocalModels = false
-      const wasm = env.backends.onnx.wasm
-      if (wasm) wasm.numThreads = 1
-      return KokoroTTS.from_pretrained(MODEL, {
-        dtype: 'q8',
-        device: 'wasm',
-        progress_callback: onProgress,
-      })
-    })()
+    loading = createModel()
     loading.catch(() => {
       loading = null
     })

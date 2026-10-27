@@ -12,7 +12,7 @@ export const STUDIO_VOICES = [
 export type StudioVoiceId = (typeof STUDIO_VOICES)[number]['id']
 
 const STUDIO_PREFIX = 'studio:'
-const CACHE_MAX = 8
+const CACHE_MAX = 12
 
 export type StudioWord = { start: number; end: number; at: number }
 

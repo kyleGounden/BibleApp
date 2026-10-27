@@ -5,7 +5,6 @@ import { go } from './router'
 import {
   clipIsReady,
   followClip,
-  followerCount,
   onStudioProgress,
   pauseClip,
   playClip,
@@ -15,6 +14,7 @@ import {
   stopClip,
   studioId,
   warmupStudio,
+  type StudioClip,
   type StudioVoiceId,
 } from './studioVoice'
 
@@ -108,9 +108,14 @@ let studioDown = false
 let preparing = false
 let undoFollow: (() => void) | null = null
 let cancelStamp = 0
+let scheduleEpoch = 0
+let liveBreath: Breath | null = null
 const heldUtterances = new Set<SpeechSynthesisUtterance>()
 const rejectedVoices = new Set<string>()
 const DEFAULT_STUDIO: StudioVoiceId = 'af_heart'
+const BREATH_SENTENCES = 1
+const BREATH_CHARS = 220
+const STUDIO_LOOKAHEAD = 2
 
 type Pending = { kind: 'part'; at: number } | { kind: 'verse' }
 type Shaped = { text: string; map: number[] }
@@ -248,7 +253,7 @@ function rewindToWord(text: string, at: number): number {
 
 function sentencePieces(text: string): Piece[] {
   const rough: Piece[] = []
-  for (const match of text.matchAll(/[^.!?]+[.!?]+["')\]]*\s*|[^.!?]+$/g)) {
+  for (const match of text.matchAll(/[^.!?]+[.!?]+["')\]\u201D\u2019»]*\s*|[^.!?]+$/g)) {
     if (!match[0].trim() || match.index == null) continue
     rough.push({ text: match[0], start: match.index })
   }
@@ -594,10 +599,11 @@ async function chapterLines(bookId: string, chapterNumber: number, from: number)
   return linesFrom(bookId, chapterNumber, file.chapters[String(chapterNumber)], from, null)
 }
 
-function queueNext(): void {
+function queueNext(force = false): void {
   if (!chapterMode || !flow || sleep === 'end' || upcoming || status !== 'playing') return
-  const line = lines[index]
-  if (!line?.book || line.chapter == null || index < lines.length - 1) return
+  const line = lines[force ? lines.length - 1 : index]
+  if (!line?.book || line.chapter == null) return
+  if (!force && index < lines.length - 1) return
   const next = neighbor(line.book, line.chapter, 1)
   if (!next || !translation) return
   const translationNow = translation
@@ -691,8 +697,10 @@ function settle(message = ''): void {
   error = message
   notice = ''
   preparing = false
+  liveBreath = null
   clearStall()
   clearFollow()
+  clearStudioPipe()
   stopClip()
   silenceEngine()
   publish()
@@ -734,8 +742,7 @@ type SpokenPiece = {
   utterance?: SpeechSynthesisUtterance
 }
 
-function chunkLimit(studio: boolean): number {
-  if (studio) return 180
+function chunkLimit(): number {
   // One short sentence. Chromium drops a long utterance and never reports the end.
   return Math.max(80, Math.round(12 * Math.max(rate, 0.75) * 7))
 }
@@ -801,16 +808,7 @@ function armStall(piece: SpokenPiece): void {
 
 const studioCue = new Set<string>()
 
-function cueKey(piece: SpokenPiece): string {
-  return `${piece.id}:${piece.lineIndex}:${piece.partAt}`
-}
-
-function clearStudioCue(): void {
-  studioCue.clear()
-}
-
 function clearFollow(): void {
-  clearStudioCue()
   const undo = undoFollow
   undoFollow = null
   undo?.()
@@ -846,18 +844,6 @@ function pieceFromParts(
   }
 }
 
-function pieceAfter(piece: SpokenPiece): SpokenPiece | null {
-  const nextPart = piece.parts[piece.partAt + 1]
-  if (nextPart) return pieceFromParts(piece.line, piece.lineIndex, piece.parts, piece.partAt + 1, nextPart.start, piece.id, piece.engine)
-  const nextIndex = piece.lineIndex + 1
-  if (nextIndex >= lines.length) return null
-  const line = lines[nextIndex]
-  if (!line || pastRange(line)) return null
-  if (piece.engine === 'studio' && (foreignScript(line) || !wantsStudio(line))) return null
-  const parts = chunks(line.text, chunkLimit(piece.engine === 'studio'))
-  return pieceFromParts(line, nextIndex, parts, 0, 0, piece.id, piece.engine)
-}
-
 function adoptPiece(piece: SpokenPiece): void {
   const at = piece.place(wordStarts(piece.shaped.text)[0] ?? 0)
   const moved = index !== piece.lineIndex
@@ -887,22 +873,415 @@ function finishPiece(piece: SpokenPiece): void {
   })
 }
 
-function prefetchStudio(voice: StudioVoiceId, piece: SpokenPiece): void {
-  const texts: string[] = []
-  let cursor = pieceAfter(piece)
-  while (cursor && texts.length < 2) {
-    if (cursor.shaped.text) texts.push(cursor.shaped.text)
-    cursor = pieceAfter(cursor)
+type BreathMark = { lineIndex: number; source: number }
+
+type Breath = {
+  id: number
+  text: string
+  marks: BreathMark[]
+  startLine: number
+  startSource: number
+  nextLine: number
+  nextSource: number
+}
+
+type PipeItem = {
+  breath: Breath
+  key: string
+  clip: Promise<StudioClip>
+}
+
+let studioPipe: PipeItem[] = []
+
+function clearStudioPipe(): void {
+  studioPipe = []
+  studioCue.clear()
+}
+
+function breathLine(line: ScriptLine | undefined): line is ScriptLine {
+  return Boolean(line && !pastRange(line) && !foreignScript(line) && chosenStudio())
+}
+
+function sentenceClosed(text: string): boolean {
+  return /[.!?]["')\]\u201D\u2019»]*\s*$/.test(text.trim())
+}
+
+function shapeSlice(lineText: string, start: number, end: number): Shaped {
+  const shaped = shapeSpeech(lineText.slice(start, end))
+  return { text: shaped.text, map: shaped.map.map((at) => start + at) }
+}
+
+// A highlight can land on the space or closing quote after a sentence. Move
+// forward to the next word. Stepping back from that quote speaks the previous
+// word again and never leaves it.
+function alignStart(text: string, at: number): number {
+  if (at <= 0) return 0
+  if (at >= text.length) return text.length
+  if (/[A-Za-z0-9]/.test(text[at] ?? '')) return rewindToWord(text, at)
+  const next = wordStarts(text).find((start) => start >= at)
+  return next ?? text.length
+}
+
+function packBreath(id: number, spans: { lineIndex: number; shaped: Shaped }[], nextLine: number, nextSource: number): Breath | null {
+  const chars: string[] = []
+  const marks: BreathMark[] = []
+  for (const span of spans) {
+    if (!span.shaped.text) continue
+    if (chars.length && chars[chars.length - 1] !== ' ' && !span.shaped.text.startsWith(' ')) {
+      chars.push(' ')
+      const bridge = span.shaped.map[0] ?? 0
+      marks.push({ lineIndex: span.lineIndex, source: bridge })
+    }
+    for (let i = 0; i < span.shaped.text.length; i += 1) {
+      chars.push(span.shaped.text[i])
+      marks.push({ lineIndex: span.lineIndex, source: span.shaped.map[i] ?? 0 })
+    }
   }
-  void (async () => {
-    for (const text of texts) {
-      try {
-        await prepareClip(voice, rate, text)
-      } catch {
-        return
+  if (!chars.length || !marks.length) return null
+  return {
+    id,
+    text: chars.join(''),
+    marks,
+    startLine: marks[0].lineIndex,
+    startSource: marks[0].source,
+    nextLine,
+    nextSource,
+  }
+}
+
+// Kokoro plans pitch across the whole passage, and a long passage is one slow
+// forward pass. One breath is a single sentence, or about 180 characters, so
+// the first line can play while the next sentence is already being prepared.
+function takeBreath(fromLine: number, fromChar: number, id: number): Breath | null {
+  const spans: { lineIndex: number; shaped: Shaped }[] = []
+  let lineIndex = fromLine
+  let cursor = Math.max(0, fromChar)
+  let sentences = 0
+  let chars = 0
+  let nextLine = fromLine
+  let nextSource = cursor
+
+  const close = () => packBreath(id, spans, nextLine, nextSource)
+
+  while (lineIndex < lines.length && sentences < BREATH_SENTENCES) {
+    const line = lines[lineIndex]
+    if (!breathLine(line)) {
+      nextLine = lineIndex
+      nextSource = 0
+      break
+    }
+    if (lineIndex === fromLine) cursor = alignStart(line.text, cursor)
+    if (cursor >= line.text.length) {
+      lineIndex += 1
+      cursor = 0
+      nextLine = lineIndex
+      nextSource = 0
+      continue
+    }
+    const pieces = sentencePieces(line.text).filter((piece) => piece.start + piece.text.length > cursor)
+    if (!pieces.length) {
+      lineIndex += 1
+      cursor = 0
+      nextLine = lineIndex
+      nextSource = 0
+      continue
+    }
+    for (const piece of pieces) {
+      const start = Math.max(cursor, piece.start)
+      const end = piece.start + piece.text.length
+      if (start >= end) continue
+      const raw = line.text.slice(start, end)
+      const shaped = shapeSlice(line.text, start, end)
+      const gap = spans.length > 0 && shaped.text ? 1 : 0
+      if (!shaped.text) {
+        cursor = end
+        continue
+      }
+      if (spans.length === 0 && shaped.text.length > BREATH_CHARS) {
+        const limited = splitLong({ text: raw, start }, BREATH_CHARS, true)[0]
+        const cutEnd = limited.start + limited.text.length
+        spans.push({ lineIndex, shaped: shapeSlice(line.text, limited.start, cutEnd) })
+        nextLine = lineIndex
+        nextSource = cutEnd
+        return close()
+      }
+      if (spans.length > 0 && chars + gap + shaped.text.length > BREATH_CHARS) {
+        const room = BREATH_CHARS - chars - gap
+        if (room > 40) {
+          const limited = splitLong({ text: raw, start }, room, true)[0]
+          const cutEnd = limited.start + limited.text.length
+          const cut = shapeSlice(line.text, limited.start, cutEnd)
+          if (cut.text) {
+            spans.push({ lineIndex, shaped: cut })
+            nextLine = lineIndex
+            nextSource = cutEnd
+          }
+        } else {
+          nextLine = lineIndex
+          nextSource = start
+        }
+        return close()
+      }
+      spans.push({ lineIndex, shaped })
+      chars += gap + shaped.text.length
+      cursor = end
+      nextLine = lineIndex
+      nextSource = end >= line.text.length ? 0 : end
+      if (end >= line.text.length) nextLine = lineIndex + 1
+      if (sentenceClosed(raw)) {
+        sentences += 1
+        if (sentences >= BREATH_SENTENCES) return close()
       }
     }
-  })()
+    lineIndex += 1
+    cursor = 0
+    nextLine = lineIndex
+    nextSource = 0
+  }
+  return spans.length ? close() : null
+}
+
+function revealBreath(breath: Breath, spokenIndex: number): void {
+  if (!breath.marks.length || breath.id !== token) return
+  const at = Math.max(0, Math.min(breath.marks.length - 1, spokenIndex))
+  const mark = breath.marks[at]
+  const line = lines[mark.lineIndex]
+  const moved = index !== mark.lineIndex
+  index = mark.lineIndex
+  if (moved) {
+    applyLine(line)
+    lineStamp = Date.now()
+    charIndex = mark.source
+    publish()
+    queueNext()
+    if (follow && readingHere() && line?.book && line.chapter != null) {
+      const hash = window.location.hash.replace(/^#/, '').toUpperCase()
+      const head = `/read/${line.book}/${line.chapter}`.toUpperCase()
+      if (hash !== head && !hash.startsWith(`${head}/`)) go(`/read/${line.book}/${line.chapter}`)
+    }
+    return
+  }
+  publishAt(mark.source)
+}
+
+function cueKey(breath: Breath): string {
+  return `${breath.id}:${breath.startLine}:${breath.startSource}:${breath.text}`
+}
+
+function studioGap(from: Breath, to: Breath): number {
+  const a = lines[from.startLine]
+  const b = lines[to.startLine]
+  const newVerse = !a || !b || a.key !== b.key || a.verse !== b.verse
+  if (!newVerse) return 0
+  return Math.round(50 / Math.max(rate, 0.85)) / 1000
+}
+
+function feedPipe(after: Breath, voice: StudioVoiceId): void {
+  if (after.id !== token || status !== 'playing') return
+  let line = after.nextLine
+  let source = after.nextSource
+  if (studioPipe.length) {
+    const last = studioPipe[studioPipe.length - 1]
+    line = last.breath.nextLine
+    source = last.breath.nextSource
+  }
+  while (studioPipe.length < STUDIO_LOOKAHEAD) {
+    if (line >= lines.length) {
+      queueNext(true)
+      break
+    }
+    const next = takeBreath(line, source, after.id)
+    if (!next?.text) break
+    const key = cueKey(next)
+    if (studioCue.has(key) || studioPipe.some((item) => item.key === key)) {
+      line = next.nextLine
+      source = next.nextSource
+      continue
+    }
+    studioCue.add(key)
+    const clip = prepareClip(voice, rate, next.text)
+    clip.then(
+      () => undefined,
+      () => {
+        studioCue.delete(key)
+        const at = studioPipe.findIndex((item) => item.key === key)
+        if (at >= 0) studioPipe.splice(at, 1)
+      },
+    )
+    studioPipe.push({ breath: next, key, clip })
+    if (next.nextLine >= lines.length) queueNext(true)
+    line = next.nextLine
+    source = next.nextSource
+  }
+}
+
+async function catchUp(breath: Breath, voice: StudioVoiceId): Promise<void> {
+  if (breath.id !== token || status !== 'playing') return
+  clearFollow()
+  if (breath.nextLine >= lines.length) {
+    index = Math.max(0, lines.length - 1)
+    clearStudioPipe()
+    void onwards()
+    return
+  }
+  feedPipe(breath, voice)
+  const item = studioPipe[0]
+  if (!item) {
+    index = breath.nextLine
+    charIndex = breath.nextSource
+    if (pastRange(lines[index])) {
+      settle()
+      return
+    }
+    speakChunk(false)
+    return
+  }
+  preparing = true
+  if (!clipIsReady(voice, rate, item.breath.text)) setNotice('Preparing the voice')
+  let clip: StudioClip
+  try {
+    clip = await item.clip
+  } catch {
+    if (studioPipe[0]?.key === item.key) studioPipe.shift()
+    studioCue.delete(item.key)
+    preparing = false
+    setNotice('')
+    index = breath.nextLine
+    charIndex = breath.nextSource
+    if (pastRange(lines[index])) {
+      settle()
+      return
+    }
+    speakChunk(false)
+    return
+  }
+  if (breath.id !== token || status !== 'playing' || liveBreath !== breath) {
+    if (breath.id === token) preparing = false
+    return
+  }
+  if (studioPipe[0]?.key !== item.key) {
+    preparing = false
+    return
+  }
+  studioPipe.shift()
+  studioCue.delete(item.key)
+  preparing = false
+  setNotice('')
+  playBreath(item.breath, clip, voice)
+}
+
+function playBreath(breath: Breath, clip: StudioClip, voice: StudioVoiceId): void {
+  let handed = false
+  liveBreath = breath
+  preparing = false
+  setNotice('')
+  playClip(
+    clip,
+    (at) => {
+      if (breath.id !== token || handed || status !== 'playing') return
+      revealBreath(breath, at)
+    },
+    () => {
+      if (breath.id !== token || handed) return
+      void catchUp(breath, voice)
+    },
+  )
+  void attachNext(breath, voice, () => {
+    handed = true
+  })
+}
+
+async function attachNext(current: Breath, voice: StudioVoiceId, markHanded: () => void): Promise<void> {
+  if (current.id !== token || status !== 'playing') return
+  const epoch = scheduleEpoch
+  feedPipe(current, voice)
+  const item = studioPipe[0]
+  if (!item) return
+  let clip: StudioClip
+  try {
+    clip = await item.clip
+  } catch {
+    if (studioPipe[0]?.key === item.key) studioPipe.shift()
+    studioCue.delete(item.key)
+    if (current.id === token && status === 'playing' && liveBreath === current) {
+      void attachNext(current, voice, markHanded)
+    }
+    return
+  }
+  if (epoch !== scheduleEpoch || current.id !== token || status !== 'playing' || liveBreath !== current) return
+  if (studioPipe[0]?.key !== item.key) return
+  studioPipe.shift()
+  studioCue.delete(item.key)
+  const next = item.breath
+  let childHanded = false
+  const cancel = followClip(
+    clip,
+    (at) => {
+      if (next.id !== token || status !== 'playing') return
+      revealBreath(next, at)
+    },
+    () => {
+      if (next.id !== token) return
+      void catchUp(next, voice)
+    },
+    studioGap(current, next),
+    () => {
+      childHanded = true
+      markHanded()
+      if (next.id !== token || status !== 'playing') return
+      liveBreath = next
+      revealBreath(next, 0)
+      queueNext()
+      if (next.nextLine >= lines.length) queueNext(true)
+      feedPipe(next, voice)
+      void attachNext(next, voice, () => {
+        childHanded = true
+      })
+    },
+  )
+  if (!cancel) {
+    if (current.id !== token || status !== 'playing' || liveBreath !== current) return
+    markHanded()
+    playBreath(next, clip, voice)
+    return
+  }
+  undoFollow = () => {
+    const started = childHanded
+    childHanded = false
+    if (!started) cancel()
+  }
+}
+
+async function speakBreath(breath: Breath, voice: StudioVoiceId): Promise<void> {
+  const id = breath.id
+  preparing = true
+  primeStudioAudio()
+  liveBreath = breath
+  clearStudioPipe()
+  studioCue.add(cueKey(breath))
+  const first = prepareClip(voice, rate, breath.text)
+  feedPipe(breath, voice)
+  if (!clipIsReady(voice, rate, breath.text)) setNotice('Preparing the voice')
+  try {
+    const clip = await first
+    if (id !== token || status !== 'playing') {
+      if (id === token) preparing = false
+      return
+    }
+    preparing = false
+    setNotice('')
+    playBreath(breath, clip, voice)
+  } catch {
+    if (id !== token) return
+    preparing = false
+    liveBreath = null
+    clearStudioPipe()
+    studioDown = true
+    setNotice('')
+    error = 'The studio voice did not load, so this device is reading.'
+    publish()
+    if (status === 'playing') speakChunk(true)
+  }
 }
 
 function speakPiece(piece: SpokenPiece): void {
@@ -949,119 +1328,11 @@ function speakPiece(piece: SpokenPiece): void {
   armStall(piece)
 }
 
-async function cueStudio(piece: SpokenPiece, voice: StudioVoiceId, markHanded: () => void): Promise<void> {
-  if (piece.done || piece.id !== token || status !== 'playing') return
-  const spec = pieceAfter(piece)
-  if (!spec) return
-  const key = cueKey(spec)
-  if (studioCue.has(key)) return
-  if (followerCount() >= 2) {
-    window.setTimeout(() => {
-      if (piece.id !== token || status !== 'playing') return
-      void cueStudio(piece, voice, markHanded)
-    }, 400)
-    return
-  }
-  studioCue.add(key)
-  let clip: Awaited<ReturnType<typeof prepareClip>>
-  try {
-    clip = await prepareClip(voice, rate, spec.shaped.text)
-  } catch {
-    studioCue.delete(key)
-    return
-  }
-  if (piece.done || piece.id !== token || status !== 'playing') {
-    studioCue.delete(key)
-    return
-  }
-  let childHanded = false
-  const gap = pauseMs(spec.partAt === 0 ? 'verse' : endingOf(piece.shaped.text), 'studio') / 1000
-  const cancel = followClip(
-    clip,
-    (at) => {
-      if (spec.id !== token || spec.done) return
-      publishAt(spec.place(at))
-    },
-    () => {
-      if (spec.id !== token || spec.done) return
-      finishPiece(spec)
-    },
-    gap,
-    () => {
-      childHanded = true
-      markHanded()
-      if (spec.id !== token || status !== 'playing') return
-      piece.done = true
-      index = spec.lineIndex
-      applyLine(spec.line)
-      charIndex = spec.place(wordStarts(spec.shaped.text)[0] ?? 0)
-      if (spec.partAt === 0) lineStamp = Date.now()
-      publish()
-      queueNext()
-      void cueStudio(spec, voice, () => {
-        childHanded = true
-      })
-    },
-  )
-  if (!cancel) {
-    studioCue.delete(key)
-    return
-  }
-  undoFollow = () => {
-    const started = childHanded
-    childHanded = false
-    if (!started) cancel()
-  }
-  void cueStudio(spec, voice, () => {
-    childHanded = true
-  })
-}
-
-async function speakWithStudio(piece: SpokenPiece, voice: StudioVoiceId): Promise<void> {
-  const { shaped, place, id } = piece
-  preparing = true
-  primeStudioAudio()
-  if (!clipIsReady(voice, rate, shaped.text)) setNotice('Preparing the voice')
-  const pendingClip = prepareClip(voice, rate, shaped.text)
-  prefetchStudio(voice, piece)
-  let handed = false
-  try {
-    const clip = await pendingClip
-    if (id !== token || status !== 'playing') {
-      if (id === token) preparing = false
-      return
-    }
-    preparing = false
-    setNotice('')
-    playClip(
-      clip,
-      (at) => {
-        if (id !== token || handed) return
-        publishAt(place(at))
-      },
-      () => {
-        if (id !== token || handed) return
-        finishPiece(piece)
-      },
-    )
-    void cueStudio(piece, voice, () => {
-      handed = true
-    })
-  } catch {
-    if (id !== token) return
-    preparing = false
-    studioDown = true
-    setNotice('')
-    error = 'The studio voice did not load, so this device is reading.'
-    publish()
-    if (status === 'playing') speakChunk(true)
-  }
-}
-
 function speakChunk(interrupt = true): void {
   if (interrupt) {
     token += 1
     clearFollow()
+    clearStudioPipe()
     window.clearTimeout(speakTimer)
     clearFallback()
     clearStall()
@@ -1070,13 +1341,30 @@ function speakChunk(interrupt = true): void {
     silenceEngine()
   } else {
     token += 1
+    clearFollow()
+    clearStudioPipe()
   }
   pending = null
   const line = lines[index]
   if (!line || status !== 'playing' || !supported) return
   const voice = chosenStudio()
-  const studio = Boolean(voice && wantsStudio(line))
-  const parts = chunks(line.text, chunkLimit(studio))
+  if (voice && wantsStudio(line)) {
+    const breath = takeBreath(index, charIndex, token)
+    if (!breath) {
+      void onwards()
+      return
+    }
+    index = breath.startLine
+    applyLine(lines[index])
+    charIndex = breath.startSource
+    if (breath.startSource <= 24) lineStamp = Date.now()
+    publish()
+    queueNext()
+    if (breath.nextLine >= lines.length) queueNext(true)
+    void speakBreath(breath, voice)
+    return
+  }
+  const parts = chunks(line.text, chunkLimit())
   let partAt = 0
   for (let partIndex = 0; partIndex < parts.length; partIndex += 1) {
     const end = partIndex + 1 < parts.length ? parts[partIndex + 1].start : line.text.length
@@ -1091,7 +1379,7 @@ function speakChunk(interrupt = true): void {
     void onwards()
     return
   }
-  const piece = pieceFromParts(line, index, parts, partAt, Math.max(charIndex, part.start), token, studio ? 'studio' : 'device')
+  const piece = pieceFromParts(line, index, parts, partAt, Math.max(charIndex, part.start), token, 'device')
   if (!piece) {
     const next = parts[partAt + 1]
     if (next) {
@@ -1107,10 +1395,6 @@ function speakChunk(interrupt = true): void {
   charIndex = piece.place(wordStarts(piece.shaped.text)[0] ?? 0)
   publish()
   queueNext()
-  if (studio && voice) {
-    void speakWithStudio(piece, voice)
-    return
-  }
   setNotice('')
   runSpeech(() => {
     if (piece.id !== token || status !== 'playing') return
@@ -1179,6 +1463,7 @@ function arm(nextTitle: string, nextKey: string): number {
   clearFallback()
   clearStall()
   clearFollow()
+  clearStudioPipe()
   stopClip()
   silenceEngine()
   primeEngine()
@@ -1281,6 +1566,7 @@ export async function startVoice(input: {
 
 export function pauseVoice(): void {
   if (status !== 'playing') return
+  scheduleEpoch += 1
   status = 'paused'
   preparing = false
   window.clearTimeout(speakTimer)
@@ -1303,6 +1589,9 @@ export function resumeVoice(): void {
   const next = pending
   pending = null
   if (!next && resumeClip()) {
+    const breath = liveBreath
+    const voice = chosenStudio()
+    if (breath && voice) void attachNext(breath, voice, () => undefined)
     publish()
     return
   }
@@ -1347,6 +1636,7 @@ export function skipVoice(dir: -1 | 1): void {
   clearFallback()
   clearStall()
   clearFollow()
+  clearStudioPipe()
   stopClip()
   silenceEngine()
   status = 'playing'
@@ -1438,6 +1728,7 @@ function bindMedia(): void {
 }
 
 onStudioProgress((label) => {
+  // Only while waiting for audible audio — background lookahead stays quiet.
   if (!preparing || status !== 'playing') return
   setNotice(label)
 })

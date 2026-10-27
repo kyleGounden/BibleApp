@@ -2127,7 +2127,7 @@ textarea:focus,
   line-height: 1;
   margin-bottom: 0.35rem;
 }
-.manuscript .study-direction { display: none; }
+.manuscript .study-direction { margin: 0 0 0.55rem; }
 .study-verse {
   margin: 0.4rem 0 0.85rem;
 }
