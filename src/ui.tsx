@@ -19,6 +19,7 @@ import {
   toggleVoice,
   toggleVoiceFlow,
   useVoice,
+  warmVoiceLines,
   VOICE_RATES,
   type ScriptLine,
   type SleepChoice,
@@ -500,6 +501,16 @@ export function ListenButton({
   const mine = voice.scriptKey === scriptKey && voice.status !== 'idle'
   const text = mine && voice.status === 'playing' ? 'Pause' : mine && voice.status === 'paused' ? 'Resume' : label
   const empty = Array.isArray(lines) && !lines.some((line) => line.text.trim())
+
+  const warmKey = Array.isArray(lines)
+    ? `${scriptKey}\n${lines.map((line) => line.text).join('\n').slice(0, 480)}`
+    : ''
+
+  useEffect(() => {
+    if (!warmKey || empty || !Array.isArray(lines)) return
+    warmVoiceLines(lines)
+  }, [warmKey, empty])
+
   if (!voice.supported) return null
 
   async function press() {

@@ -1,5 +1,8 @@
 // Kokoro runs in the browser (Apache-2.0). The weights download on first use
-// and then stay in the browser cache. English only.
+// and then stay in the browser cache. English only. Preferred path is the
+// server cache (+ IndexedDB), with the local worker as fallback.
+
+import { readVoiceClip, writeVoiceClip } from './voiceCache'
 
 export const STUDIO_VOICES = [
   { id: 'af_heart', label: 'Heart — warm American' },
@@ -12,7 +15,7 @@ export const STUDIO_VOICES = [
 export type StudioVoiceId = (typeof STUDIO_VOICES)[number]['id']
 
 const STUDIO_PREFIX = 'studio:'
-const CACHE_MAX = 12
+const CACHE_MAX = 24
 
 export type StudioWord = { start: number; end: number; at: number }
 
@@ -159,11 +162,80 @@ function wordsIn(text: string, duration: number, offset: number, base: number): 
   return words
 }
 
-async function synthesize(voice: StudioVoiceId, speed: number, text: string): Promise<StudioClip> {
+function toClip(text: string, samples: Float32Array, sampleRate: number): StudioClip {
+  if (!samples.length) throw new Error('The studio voice returned no audio.')
+  const duration = samples.length / sampleRate
+  return { samples, sampleRate, words: wordsIn(text, duration, 0, 0) }
+}
+
+function decodeWav(bytes: ArrayBuffer): { samples: Float32Array; sampleRate: number } {
+  const view = new DataView(bytes)
+  if (bytes.byteLength < 44 || view.getUint32(0, false) !== 0x52494646 || view.getUint32(8, false) !== 0x57415645) {
+    throw new Error('The studio voice returned a bad clip.')
+  }
+  let offset = 12
+  let sampleRate = 24000
+  let channels = 1
+  let bits = 16
+  let dataOffset = -1
+  let dataSize = 0
+  while (offset + 8 <= bytes.byteLength) {
+    const id = view.getUint32(offset, false)
+    const size = view.getUint32(offset + 4, true)
+    const start = offset + 8
+    if (id === 0x666d7420) {
+      channels = view.getUint16(start, true)
+      sampleRate = view.getUint32(start + 4, true)
+      bits = view.getUint16(start + 14, true)
+    } else if (id === 0x64617461) {
+      dataOffset = start
+      dataSize = size
+      break
+    }
+    offset = start + size + (size % 2)
+  }
+  if (dataOffset < 0 || channels !== 1 || bits !== 16) throw new Error('The studio voice returned a bad clip.')
+  const count = Math.floor(dataSize / 2)
+  const samples = new Float32Array(count)
+  for (let i = 0; i < count; i += 1) {
+    samples[i] = view.getInt16(dataOffset + i * 2, true) / 0x8000
+  }
+  return { samples, sampleRate }
+}
+
+async function fetchServerClip(voice: StudioVoiceId, speed: number, text: string): Promise<StudioClip> {
+  const response = await fetch('/api/voice/clip', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'audio/wav' },
+    body: JSON.stringify({ voice, speed, text }),
+  })
+  if (!response.ok) throw new Error(`Studio voice HTTP ${response.status}`)
+  const wav = await response.arrayBuffer()
+  const decoded = decodeWav(wav)
+  return toClip(text, decoded.samples, decoded.sampleRate)
+}
+
+async function synthesizeLocal(voice: StudioVoiceId, speed: number, text: string): Promise<StudioClip> {
   const audio = await generateClip(voice, speed, text)
-  if (!audio.samples.length) throw new Error('The studio voice returned no audio.')
-  const duration = audio.samples.length / audio.sampleRate
-  return { samples: audio.samples, sampleRate: audio.sampleRate, words: wordsIn(text, duration, 0, 0) }
+  return toClip(text, audio.samples, audio.sampleRate)
+}
+
+async function resolveClip(voice: StudioVoiceId, speed: number, text: string): Promise<StudioClip> {
+  const key = cacheKey(voice, speed, text)
+  const stored = await readVoiceClip(key)
+  if (stored) return toClip(text, stored.samples, stored.sampleRate)
+
+  try {
+    const clip = await fetchServerClip(voice, speed, text)
+    void writeVoiceClip(key, clip.samples, clip.sampleRate)
+    return clip
+  } catch {
+    /* offline or cold server — fall through to the device worker */
+  }
+
+  const clip = await synthesizeLocal(voice, speed, text)
+  void writeVoiceClip(key, clip.samples, clip.sampleRate)
+  return clip
 }
 
 export function prepareClip(voice: StudioVoiceId, speed: number, text: string): Promise<StudioClip> {
@@ -174,7 +246,7 @@ export function prepareClip(voice: StudioVoiceId, speed: number, text: string): 
     remember(key, hit)
     return hit
   }
-  const job = synthesize(voice, speed, text).then(
+  const job = resolveClip(voice, speed, text).then(
     (clip) => {
       ready.add(key)
       return clip
@@ -187,6 +259,14 @@ export function prepareClip(voice: StudioVoiceId, speed: number, text: string): 
   )
   remember(key, job)
   return job
+}
+
+/** Fire-and-forget warm for upcoming breaths (server + IDB parallel). */
+export function prefetchClips(voice: StudioVoiceId, speed: number, texts: string[]): void {
+  for (const text of texts) {
+    if (!text.trim()) continue
+    void prepareClip(voice, speed, text)
+  }
 }
 
 function wordAt(clip: StudioClip, seconds: number): number {

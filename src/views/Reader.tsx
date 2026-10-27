@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react'
-import { CIRCUIT, bookById, bookName, neighbor, parseRef, verseId } from '../lib/canon'
+import { CIRCUIT, bookById, bookName, formatRef, neighbor, parseRef, verseId } from '../lib/canon'
 import { useFollow } from '../lib/follow'
 import { loadBook, loadChapter, loadXrefs, plain, translationShort, type BookFile, type Verse } from '../lib/bible'
 import { markHostedChapter, verseGod } from '../lib/divine'
 import { EsvError, useEsvToken } from '../lib/esv'
 import { threadsForVerse, type ThreadHit } from '../lib/catalog'
 import { go, type Route } from '../lib/router'
-import { getVoice, pauseVoice, resumeVoice, startVoice, useVoice } from '../lib/speech'
+import { getVoice, pauseVoice, resumeVoice, startVoice, useVoice, warmVoiceLines } from '../lib/speech'
 import { loadPlaces, placesInText, type Place } from '../lib/places'
 import { FollowBar } from './FollowBar'
 import { SettingStrip } from './SettingStrip'
@@ -338,6 +338,31 @@ export function Reader({
   useEffect(() => {
     return () => window.clearTimeout(copiedTimer.current)
   }, [])
+
+  useEffect(() => {
+    const chapter = file?.chapters[String(route.chapter)]
+    if (!book || !chapter) return
+    const from = selected || Object.keys(chapter).map(Number).sort((a, b) => a - b)[0] || 1
+    const script = Object.keys(chapter)
+      .map(Number)
+      .filter((number) => Number.isFinite(number) && number >= from)
+      .sort((a, b) => a - b)
+      .slice(0, 8)
+      .map((number) => {
+        const id = verseId(book.id, route.chapter, number)
+        return {
+          key: id,
+          label: formatRef(id),
+          text: plain(chapter[String(number)]),
+          book: book.id,
+          chapter: route.chapter,
+          verse: number,
+          href: `/read/${book.id}/${route.chapter}/${number}`,
+        }
+      })
+      .filter((line) => line.text.trim())
+    if (script.length) warmVoiceLines(script)
+  }, [book, file, route.chapter, selected, state.translation])
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

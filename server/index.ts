@@ -33,6 +33,7 @@ import {
   verseId,
 } from './http.js'
 import { dataDirectory } from './sqlite.js'
+import { clipCached, getOrCreateClip, isTtsVoice, warmupTts, type TtsVoiceId } from './tts.js'
 
 const serving = process.argv.includes('--serve')
 const dist = join(process.cwd(), 'dist')
@@ -81,20 +82,20 @@ localSecret()
 
 const attempts = new Map<string, number[]>()
 
-function limited(key: string): boolean {
+function limited(key: string, max = 10, windowMs = 10 * 60 * 1000): boolean {
   const now = Date.now()
-  const recent = (attempts.get(key) ?? []).filter((time) => now - time < 10 * 60 * 1000)
+  const recent = (attempts.get(key) ?? []).filter((time) => now - time < windowMs)
   recent.push(now)
   attempts.set(key, recent)
-  return recent.length > 10
+  return recent.length > max
 }
 
 function clientAddress(req: Request): string {
   return req.ip || req.socket.remoteAddress || 'unknown'
 }
 
-function limitedAddress(req: Request, action: string): void {
-  if (limited(`${action}:${clientAddress(req)}`)) throw new HttpError(429, 'Wait a little, then try again.')
+function limitedAddress(req: Request, action: string, max = 10, windowMs = 10 * 60 * 1000): void {
+  if (limited(`${action}:${clientAddress(req)}`, max, windowMs)) throw new HttpError(429, 'Wait a little, then try again.')
 }
 
 function duplicate(error: unknown): boolean {
@@ -181,6 +182,68 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/config', (_req, res) => {
   res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID ?? '' })
 })
+
+const VOICE_SPEEDS = new Set([0.8, 1, 1.25, 1.5])
+
+function queryText(value: unknown): string {
+  if (typeof value === 'string') return value
+  if (Array.isArray(value) && typeof value[0] === 'string') return value[0]
+  return ''
+}
+
+function voiceRequest(req: Request): { voice: TtsVoiceId; speed: number; text: string } {
+  const body = req.method === 'GET' || req.method === 'HEAD' ? {} : bodyOf(req)
+  const voice = clean(typeof body.voice === 'string' ? body.voice : queryText(req.query.voice), 32)
+  const text = clean(typeof body.text === 'string' ? body.text : queryText(req.query.text), 2000)
+  const speedRaw = typeof body.speed === 'number' ? body.speed : Number(queryText(req.query.speed) || req.query.speed)
+  const speed = VOICE_SPEEDS.has(speedRaw) ? speedRaw : 1
+  if (!isTtsVoice(voice)) throw new HttpError(400, 'That voice is not available.')
+  if (!text) throw new HttpError(400, 'There is no text to read.')
+  return { voice, speed, text }
+}
+
+function sendVoiceWav(res: Response, wav: Buffer): void {
+  res.setHeader('Content-Type', 'audio/wav')
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+  res.setHeader('Content-Length', String(wav.length))
+  res.send(wav)
+}
+
+app.head('/api/voice/clip', route(async (req, res) => {
+  limitedAddress(req, 'voice-head', 120, 10 * 60 * 1000)
+  const { voice, speed, text } = voiceRequest(req)
+  if (!clipCached(voice, speed, text)) {
+    res.status(404).end()
+    return
+  }
+  res.setHeader('Content-Type', 'audio/wav')
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+  res.status(200).end()
+}))
+
+app.get('/api/voice/clip', route(async (req, res) => {
+  limitedAddress(req, 'voice-get', 120, 10 * 60 * 1000)
+  const { voice, speed, text } = voiceRequest(req)
+  try {
+    const wav = await getOrCreateClip(voice, speed, text)
+    sendVoiceWav(res, wav)
+  } catch (error) {
+    console.error('Studio voice generate failed:', error)
+    throw new HttpError(503, 'The studio voice did not load.')
+  }
+}))
+
+app.post('/api/voice/clip', route(async (req, res) => {
+  limitedAddress(req, 'voice-post', 120, 10 * 60 * 1000)
+  const { voice, speed, text } = voiceRequest(req)
+  try {
+    const wav = await getOrCreateClip(voice, speed, text)
+    sendVoiceWav(res, wav)
+  } catch (error) {
+    console.error('Studio voice generate failed:', error)
+    throw new HttpError(503, 'The studio voice did not load.')
+  }
+}))
 
 app.use('/esv-api', route(async (req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') throw new HttpError(405, 'That request could not be read.')
@@ -799,6 +862,7 @@ const server = app.listen(port, host, () => {
       .then(() => console.log('Church database is ready.'))
       .catch((error: unknown) => console.error('Church database is not available.', error))
   }
+  warmupTts()
   console.log(`Church API on http://${host}:${port}`)
 })
 

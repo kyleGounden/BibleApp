@@ -9,6 +9,7 @@ import {
   pauseClip,
   playClip,
   prepareClip,
+  prefetchClips,
   primeStudioAudio,
   resumeClip,
   stopClip,
@@ -114,8 +115,8 @@ const heldUtterances = new Set<SpeechSynthesisUtterance>()
 const rejectedVoices = new Set<string>()
 const DEFAULT_STUDIO: StudioVoiceId = 'af_heart'
 const BREATH_SENTENCES = 1
-const BREATH_CHARS = 220
-const STUDIO_LOOKAHEAD = 2
+const BREATH_CHARS = 140
+const STUDIO_LOOKAHEAD = 3
 
 type Pending = { kind: 'part'; at: number } | { kind: 'verse' }
 type Shaped = { text: string; map: number[] }
@@ -950,8 +951,8 @@ function packBreath(id: number, spans: { lineIndex: number; shaped: Shaped }[], 
 }
 
 // Kokoro plans pitch across the whole passage, and a long passage is one slow
-// forward pass. One breath is a single sentence, or about 180 characters, so
-// the first line can play while the next sentence is already being prepared.
+// forward pass. One breath is a single sentence, or about 140 characters, so
+// the next clips can finish while the current one plays (server + IDB help).
 function takeBreath(fromLine: number, fromChar: number, id: number): Breath | null {
   const spans: { lineIndex: number; shaped: Shaped }[] = []
   let lineIndex = fromLine
@@ -1488,6 +1489,44 @@ export function nextTicket(): number {
   return ticket
 }
 
+function openingBreathTexts(fromLine = 0, fromChar = 0, count = STUDIO_LOOKAHEAD + 1): string[] {
+  const voice = chosenStudio()
+  if (!voice || !lines.length) return []
+  const out: string[] = []
+  let line = fromLine
+  let source = fromChar
+  for (let i = 0; i < count; i += 1) {
+    const breath = takeBreath(line, source, token)
+    if (!breath?.text) break
+    out.push(breath.text)
+    line = breath.nextLine
+    source = breath.nextSource
+  }
+  return out
+}
+
+function warmOpening(fromLine = 0, fromChar = 0): void {
+  const voice = chosenStudio()
+  if (!voice) return
+  prefetchClips(voice, rate, openingBreathTexts(fromLine, fromChar))
+}
+
+/** Prefetch the first studio breaths for a script before the user presses Read aloud. */
+export function warmVoiceLines(script: ScriptLine[]): void {
+  const voice = chosenStudio()
+  if (!voice || !script.length) return
+  const savedLines = lines
+  const savedStop = stopAt
+  lines = script.filter((line) => line.text.trim())
+  stopAt = null
+  try {
+    warmOpening(0, 0)
+  } finally {
+    lines = savedLines
+    stopAt = savedStop
+  }
+}
+
 export async function startScript(input: {
   key: string
   title: string
@@ -1514,6 +1553,7 @@ export async function startScript(input: {
   stopAt = null
   applyLine(lines[0])
   publish()
+  warmOpening(0, 0)
   speakChunk()
 }
 
@@ -1542,6 +1582,7 @@ export async function startVoice(input: {
     index = 0
     charIndex = 0
     applyLine(lines[0])
+    warmOpening(0, 0)
     speakChunk()
     return
   }
@@ -1557,6 +1598,7 @@ export async function startVoice(input: {
     index = 0
     charIndex = 0
     applyLine(lines[0])
+    warmOpening(0, 0)
     speakChunk()
   } catch (err) {
     if (run !== session) return
